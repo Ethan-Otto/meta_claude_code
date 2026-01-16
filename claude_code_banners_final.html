@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Banners — Final 15</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Serif+4:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --terracotta: #c4704f;
+      --terracotta-dark: #a85d3f;
+      --coral: #cc785c;
+      --coral-light: #d4896d;
+      --cream: #faf7f2;
+      --cream-dark: #f0ebe3;
+      --dark: #1a1612;
+      --dark-light: #2a2420;
+      --text-dark: #1a1612;
+      --text-light: #faf7f2;
+      --text-muted: rgba(26, 22, 18, 0.6);
+      --text-muted-light: rgba(250, 247, 242, 0.7);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      padding: 40px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 32px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #222;
+    }
+
+    .banner-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .banner-label {
+      color: #444;
+      font-size: 11px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .banner {
+      width: 100%;
+      height: 260px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .page-title h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 36px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .page-title p {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       TERRACOTTA FAMILY
+       ============================================= */
+
+    /* T1: Terracotta Refined */
+    .t1 {
+      background: var(--terracotta);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .t1 .content {
+      text-align: center;
+    }
+    .t1 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+    .t1 .divider {
+      width: 48px;
+      height: 1px;
+      background: var(--text-dark);
+      margin: 16px auto;
+      opacity: 0.3;
+    }
+    .t1 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-dark);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* T2: Terracotta Framed */
+    .t2 {
+      background: var(--terracotta);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .t2 .frame {
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(26, 22, 18, 0.2);
+    }
+    .t2 .content {
+      text-align: center;
+      z-index: 1;
+    }
+    .t2 .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-dark);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 12px;
+    }
+    .t2 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 52px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .t2 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      opacity: 0.7;
+      margin-top: 14px;
+      letter-spacing: 1px;
+    }
+
+    /* T3: Terracotta Split */
+    .t3 {
+      background: var(--terracotta);
+      display: flex;
+      flex-direction: column;
+    }
+    .t3 .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .t3 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .t3 .footer {
+      background: var(--dark);
+      padding: 14px 0;
+      text-align: center;
+    }
+    .t3 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--terracotta);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* T4: Terracotta Left */
+    .t4 {
+      background: var(--terracotta);
+      display: flex;
+      align-items: center;
+      padding: 0 64px;
+    }
+    .t4 .content {}
+    .t4 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 54px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .t4 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-dark);
+      opacity: 0.7;
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       DARK EDITORIAL FAMILY
+       ============================================= */
+
+    /* D1: Dark Centered */
+    .d1 {
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .d1 .content {
+      text-align: center;
+    }
+    .d1 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 60px;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: -1px;
+    }
+    .d1 .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--coral);
+      margin: 20px auto;
+    }
+    .d1 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--coral);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* D2: Dark Asymmetric */
+    .d2 {
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      padding: 0 72px;
+    }
+    .d2 .content {}
+    .d2 .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--coral);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .d2 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 64px;
+      font-weight: 500;
+      color: var(--text-light);
+      line-height: 1;
+    }
+    .d2 .tagline {
+      font-family: 'Source Serif 4', serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted-light);
+      font-style: italic;
+      margin-top: 16px;
+    }
+
+    /* D3: Dark Top Bar */
+    .d3 {
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+    }
+    .d3 .accent-bar {
+      height: 4px;
+      background: var(--coral);
+    }
+    .d3 .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .d3 .content {
+      text-align: center;
+    }
+    .d3 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 58px;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+    .d3 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted-light);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 14px;
+    }
+
+    /* D4: Dark Sophisticated */
+    .d4 {
+      background: linear-gradient(180deg, #1f1a16 0%, var(--dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d4 .content {
+      text-align: center;
+    }
+    .d4 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 56px;
+      font-weight: 400;
+      color: var(--text-light);
+      letter-spacing: 1px;
+    }
+    .d4 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--coral);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 18px;
+    }
+    .d4 .brand {
+      position: absolute;
+      bottom: 20px;
+      right: 24px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      color: rgba(250, 247, 242, 0.3);
+      letter-spacing: 1px;
+    }
+
+    /* =============================================
+       CORAL FAMILY
+       ============================================= */
+
+    /* C1: Coral Minimal */
+    .c1 {
+      background: var(--coral);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c1 .content {
+      text-align: center;
+    }
+    .c1 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 60px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .c1 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 14px;
+    }
+
+    /* C2: Coral Framed */
+    .c2 {
+      background: var(--coral);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .c2 .frame {
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .c2 .content {
+      text-align: center;
+      z-index: 1;
+    }
+    .c2 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 56px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .c2 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    /* C3: Coral Dark Text */
+    .c3 {
+      background: var(--coral-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c3 .content {
+      text-align: center;
+    }
+    .c3 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 58px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .c3 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--dark);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-top: 12px;
+    }
+
+    /* C4: Coral Gradient */
+    .c4 {
+      background: linear-gradient(135deg, #d4896d 0%, var(--coral) 50%, #b86a4a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c4 .content {
+      text-align: center;
+    }
+    .c4 .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .c4 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 58px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .c4 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 12px;
+    }
+
+    /* =============================================
+       CREAM EDITORIAL FAMILY
+       ============================================= */
+
+    /* E1: Cream Divider */
+    .e1 {
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e1 .content {
+      text-align: center;
+    }
+    .e1 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 64px;
+      font-weight: 500;
+      color: var(--text-dark);
+      letter-spacing: -1px;
+    }
+    .e1 .divider {
+      width: 48px;
+      height: 2px;
+      background: var(--coral);
+      margin: 18px auto;
+    }
+    .e1 .tagline {
+      font-family: 'Source Serif 4', serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* E2: Cream Left Bar */
+    .e2 {
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .e2 .accent {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: var(--coral);
+    }
+    .e2 .content {
+      padding-left: 72px;
+    }
+    .e2 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 60px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    .e2 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    /* E3: Cream Balanced */
+    .e3 {
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e3 .content {
+      text-align: center;
+    }
+    .e3 .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--coral);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .e3 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 68px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    .e3 .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery">
+    <div class="page-title">
+      <h1>Claude Code Banners</h1>
+      <p>15 Professional Variations</p>
+    </div>
+
+    <!-- TERRACOTTA -->
+    <div class="section-title">Terracotta (4)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">01 — Terracotta Refined</span>
+      <div class="banner t1">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="divider"></div>
+          <div class="tagline">AI-Powered Development</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">02 — Terracotta Framed</span>
+      <div class="banner t2">
+        <div class="frame"></div>
+        <div class="content">
+          <div class="eyebrow">Anthropic</div>
+          <h1>Claude Code</h1>
+          <div class="tagline">Best Practices</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">03 — Terracotta Split</span>
+      <div class="banner t3">
+        <div class="main">
+          <h1>Claude Code</h1>
+        </div>
+        <div class="footer">
+          <div class="tagline">Build with Intelligence</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">04 — Terracotta Left</span>
+      <div class="banner t4">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="tagline">The Developer's AI</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DARK EDITORIAL -->
+    <div class="section-title">Dark Editorial (4)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">05 — Dark Centered</span>
+      <div class="banner d1">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="divider"></div>
+          <div class="tagline">Code Smarter</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">06 — Dark Asymmetric</span>
+      <div class="banner d2">
+        <div class="content">
+          <div class="eyebrow">Anthropic</div>
+          <h1>Claude Code</h1>
+          <div class="tagline">Engineering Intelligence</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">07 — Dark Top Bar</span>
+      <div class="banner d3">
+        <div class="accent-bar"></div>
+        <div class="main">
+          <div class="content">
+            <h1>Claude Code</h1>
+            <div class="tagline">Intelligent by Design</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">08 — Dark Sophisticated</span>
+      <div class="banner d4">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="tagline">Developer Intelligence</div>
+        </div>
+        <div class="brand">ANTHROPIC</div>
+      </div>
+    </div>
+
+    <!-- CORAL -->
+    <div class="section-title">Coral (4)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">09 — Coral Minimal</span>
+      <div class="banner c1">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="tagline">Think. Code. Ship.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">10 — Coral Framed</span>
+      <div class="banner c2">
+        <div class="frame"></div>
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="tagline">Your Intelligent CLI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">11 — Coral Dark Text</span>
+      <div class="banner c3">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="tagline">The Future of CLI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">12 — Coral Gradient</span>
+      <div class="banner c4">
+        <div class="content">
+          <div class="eyebrow">Anthropic</div>
+          <h1>Claude Code</h1>
+          <div class="tagline">Powered by Claude</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREAM EDITORIAL -->
+    <div class="section-title">Cream Editorial (3)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">13 — Cream Divider</span>
+      <div class="banner e1">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="divider"></div>
+          <div class="tagline">Write Better Code</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">14 — Cream Left Bar</span>
+      <div class="banner e2">
+        <div class="accent"></div>
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="tagline">Code with Confidence</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">15 — Cream Balanced</span>
+      <div class="banner e3">
+        <div class="content">
+          <div class="eyebrow">Anthropic</div>
+          <h1>Claude Code</h1>
+          <div class="tagline">AI Meets CLI</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

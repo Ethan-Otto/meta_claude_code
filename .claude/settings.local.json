@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun create:*)",
+      "Bash(yes:*)",
+      "Bash(npm create:*)",
+      "Skill(frontend-design:frontend-design)"
+    ]
+  }
+}

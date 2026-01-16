@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 1200px;
+      height: 400px;
+      overflow: hidden;
+    }
+    .banner {
+      width: 1200px;
+      height: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      background: #c4704f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .frame {
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(26, 22, 18, 0.2);
+    }
+    .content {
+      text-align: center;
+      z-index: 1;
+    }
+    .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1612;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 72px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+    .tagline {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1612;
+      opacity: 0.7;
+      margin-top: 18px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="frame"></div>
+    <div class="content">
+      <div class="eyebrow">Anthropic</div>
+      <h1>Claude Code</h1>
+      <div class="tagline">Best Practices</div>
+    </div>
+  </div>
+</body>
+</html>

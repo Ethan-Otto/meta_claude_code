@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Banner Designs — 50 Variations</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Outfit:wght@400;500;600;800&family=Unbounded:wght@500;700;900&family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;600&family=Cormorant+Garamond:wght@500;600;700&family=Oswald:wght@500;700&family=Archivo+Black&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      padding: 40px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-top: 40px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #222;
+    }
+
+    .banner-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .banner-label {
+      color: #444;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .banner {
+      width: 100%;
+      height: 260px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .page-title h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .page-title p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       BRUTALIST VARIATIONS
+       ============================================= */
+
+    /* B1: Inverted */
+    .b1 {
+      background: #000;
+      border: 4px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .b1 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 110px;
+      color: #fff;
+      letter-spacing: -2px;
+    }
+    .b1 .sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: #fff;
+      letter-spacing: 6px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* B2: Stacked */
+    .b2 {
+      background: #fff;
+      border: 4px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .b2 .content {
+      text-align: center;
+      line-height: 0.8;
+    }
+    .b2 h1 {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 140px;
+      color: #000;
+      display: block;
+    }
+    .b2 h1 span {
+      display: block;
+      font-size: 100px;
+    }
+
+    /* B3: Diagonal */
+    .b3 {
+      background: #f5f5f5;
+      border: 4px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .b3 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 100px;
+      color: #000;
+      transform: rotate(-8deg);
+      letter-spacing: 8px;
+    }
+    .b3::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: #ff0000;
+    }
+
+    /* B4: Split */
+    .b4 {
+      display: flex;
+    }
+    .b4 .left {
+      flex: 1;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+    }
+    .b4 .right {
+      flex: 1;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 8px;
+    }
+    .b4 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 90px;
+      letter-spacing: 4px;
+    }
+    .b4 .left h1 { color: #fff; }
+    .b4 .right h1 { color: #000; }
+
+    /* B5: Redline */
+    .b5 {
+      background: #fff;
+      border: 4px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .b5::before, .b5::after {
+      content: '';
+      position: absolute;
+      left: 40px;
+      right: 40px;
+      height: 3px;
+      background: #ff0000;
+    }
+    .b5::before { top: 40px; }
+    .b5::after { bottom: 40px; }
+    .b5 h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 88px;
+      color: #000;
+      font-weight: 700;
+      letter-spacing: 12px;
+    }
+
+    /* B6: Boxed */
+    .b6 {
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .b6 .box {
+      border: 3px solid #fff;
+      padding: 20px 32px;
+    }
+    .b6 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      color: #fff;
+      letter-spacing: 4px;
+    }
+
+    /* B7: Offset */
+    .b7 {
+      background: #fff;
+      border: 4px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .b7 h1 {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 80px;
+      color: #000;
+      position: relative;
+    }
+    .b7 h1::before {
+      content: 'CLAUDE CODE';
+      position: absolute;
+      left: -4px;
+      top: -4px;
+      color: #ccc;
+      z-index: -1;
+    }
+    .b7 h1::after {
+      content: 'CLAUDE CODE';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      color: #888;
+      z-index: -2;
+    }
+
+    /* B8: Minimal */
+    .b8 {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .b8 h1 {
+      font-family: 'Space Mono', monospace;
+      font-size: 64px;
+      color: #000;
+      font-weight: 700;
+      letter-spacing: -2px;
+    }
+
+    /* =============================================
+       TERMINAL VARIATIONS
+       ============================================= */
+
+    /* T1: Amber */
+    .t1 {
+      background: #1a1200;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+      position: relative;
+    }
+    .t1::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,176,0,0.03) 2px, rgba(255,176,0,0.03) 4px);
+    }
+    .t1 .content {
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffb000;
+      text-shadow: 0 0 10px rgba(255,176,0,0.5);
+      z-index: 1;
+    }
+    .t1 .prompt { font-size: 14px; opacity: 0.6; }
+    .t1 h1 { font-size: 64px; font-weight: 700; margin: 8px 0; }
+    .t1 .cursor { display: inline-block; width: 14px; height: 40px; background: #ffb000; margin-left: 8px; vertical-align: middle; }
+
+    /* T2: Blue IBM */
+    .t2 {
+      background: #000080;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+    }
+    .t2 .content {
+      font-family: 'IBM Plex Mono', monospace;
+      color: #fff;
+    }
+    .t2 .top-bar {
+      font-size: 11px;
+      margin-bottom: 12px;
+      opacity: 0.7;
+    }
+    .t2 h1 { font-size: 56px; font-weight: 600; }
+    .t2 .bottom-bar {
+      font-size: 11px;
+      margin-top: 12px;
+      opacity: 0.5;
+    }
+
+    /* T3: ASCII Art */
+    .t3 {
+      background: #0d0d0d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      color: #00ff41;
+      font-size: 11px;
+      line-height: 1.1;
+      white-space: pre;
+      text-shadow: 0 0 5px rgba(0,255,65,0.3);
+    }
+
+    /* T4: Boot Sequence */
+    .t4 {
+      background: #000;
+      padding: 30px 50px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #aaa;
+      font-size: 12px;
+    }
+    .t4 .line { margin-bottom: 4px; }
+    .t4 .highlight { color: #fff; }
+    .t4 .brand {
+      font-size: 32px;
+      color: #fff;
+      margin: 16px 0;
+      font-weight: 700;
+    }
+    .t4 .ok { color: #00ff41; }
+
+    /* T5: Vim Buffer */
+    .t5 {
+      background: #1e1e1e;
+      display: flex;
+      flex-direction: column;
+    }
+    .t5 .tab-bar {
+      background: #333;
+      padding: 8px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #888;
+    }
+    .t5 .tab-bar span { color: #fff; background: #1e1e1e; padding: 4px 12px; margin-right: 8px; }
+    .t5 .editor {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .t5 h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 56px;
+      color: #569cd6;
+      font-weight: 700;
+    }
+    .t5 .status-bar {
+      background: #007acc;
+      padding: 6px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #fff;
+    }
+
+    /* T6: SSH Banner */
+    .t6 {
+      background: #0d0d0d;
+      padding: 40px 60px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #00ff41;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .t6 .dim { opacity: 0.5; }
+    .t6 .brand {
+      font-size: 48px;
+      margin: 16px 0;
+      font-weight: 700;
+      text-shadow: 0 0 20px rgba(0,255,65,0.4);
+    }
+
+    /* T7: Matrix Style */
+    .t7 {
+      background: #0d0d0d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .t7 .rain {
+      position: absolute;
+      inset: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: rgba(0,255,65,0.15);
+      line-height: 1.2;
+      word-break: break-all;
+      overflow: hidden;
+    }
+    .t7 h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 72px;
+      color: #00ff41;
+      font-weight: 700;
+      z-index: 1;
+      text-shadow: 0 0 30px rgba(0,255,65,0.6);
+    }
+
+    /* T8: Command Output */
+    .t8 {
+      background: #1a1a1a;
+      padding: 30px 50px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #ddd;
+    }
+    .t8 .prompt { color: #00ff41; }
+    .t8 .cmd { color: #fff; }
+    .t8 .output { color: #888; margin: 4px 0 12px 0; }
+    .t8 .brand {
+      color: #fff;
+      font-size: 14px;
+      background: #333;
+      display: inline-block;
+      padding: 4px 12px;
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       ART DECO VARIATIONS
+       ============================================= */
+
+    /* D1: Noir */
+    .d1 {
+      background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d1::before, .d1::after {
+      content: '';
+      position: absolute;
+      left: 60px;
+      right: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #888, transparent);
+    }
+    .d1::before { top: 40px; }
+    .d1::after { bottom: 40px; }
+    .d1 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 88px;
+      color: #fff;
+      letter-spacing: 20px;
+    }
+    .d1 .sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: #666;
+      letter-spacing: 6px;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    /* D2: Chrome */
+    .d2 {
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d2 .corner {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 2px solid #c0c0c0;
+    }
+    .d2 .corner.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .d2 .corner.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .d2 .corner.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .d2 .corner.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+    .d2 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 84px;
+      color: #c0c0c0;
+      letter-spacing: 14px;
+    }
+
+    /* D3: Sunrise */
+    .d3 {
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .d3 .rays {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: repeating-conic-gradient(from 0deg, rgba(212,175,55,0.08) 0deg 5deg, transparent 5deg 10deg);
+    }
+    .d3 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 96px;
+      color: #d4af37;
+      letter-spacing: 16px;
+      z-index: 1;
+    }
+
+    /* D4: Vertical */
+    .d4 {
+      background: #0f0f1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+    }
+    .d4 .line {
+      width: 1px;
+      height: 180px;
+      background: linear-gradient(180deg, transparent, #d4af37, transparent);
+    }
+    .d4 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: #fff;
+      letter-spacing: 8px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    .d4 h1 span { color: #d4af37; }
+
+    /* D5: Gatsby */
+    .d5 {
+      background: linear-gradient(180deg, #1a1428 0%, #0f0a1a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d5 .star {
+      position: absolute;
+      color: #d4af37;
+      font-size: 20px;
+    }
+    .d5 .star:nth-child(1) { top: 30px; left: 20%; }
+    .d5 .star:nth-child(2) { top: 50px; right: 25%; }
+    .d5 .star:nth-child(3) { bottom: 40px; left: 30%; }
+    .d5 .star:nth-child(4) { bottom: 60px; right: 20%; }
+    .d5 h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      color: #d4af37;
+      font-weight: 600;
+      letter-spacing: 8px;
+    }
+    .d5 .sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: #d4af37;
+      letter-spacing: 8px;
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0.6;
+    }
+
+    /* D6: Streamline */
+    .d6 {
+      background: #f5f0e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d6 .curve {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border: 3px solid #8b7355;
+      border-radius: 50%;
+      opacity: 0.2;
+    }
+    .d6 .curve:nth-child(1) { left: -100px; }
+    .d6 .curve:nth-child(2) { right: -100px; }
+    .d6 h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 72px;
+      color: #2a2a2a;
+      letter-spacing: 4px;
+      z-index: 1;
+    }
+
+    /* D7: Architectural */
+    .d7 {
+      background: #0f0f1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d7 .vert-line {
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      background: rgba(212,175,55,0.3);
+    }
+    .d7 .vert-line:nth-child(1) { left: 15%; }
+    .d7 .vert-line:nth-child(2) { left: 25%; }
+    .d7 .vert-line:nth-child(3) { right: 25%; }
+    .d7 .vert-line:nth-child(4) { right: 15%; }
+    .d7 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 88px;
+      color: #fff;
+      letter-spacing: 24px;
+      z-index: 1;
+    }
+
+    /* D8: Frame Heavy */
+    .d8 {
+      background: #1a1428;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .d8 .frame {
+      position: absolute;
+      inset: 20px;
+      border: 2px solid #d4af37;
+    }
+    .d8 .frame::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(212,175,55,0.4);
+    }
+    .d8 h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      color: #d4af37;
+      font-weight: 700;
+      letter-spacing: 12px;
+      z-index: 1;
+    }
+
+    /* D9: Minimal Deco */
+    .d9 {
+      background: #faf8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .d9 .content { text-align: center; }
+    .d9 .diamond {
+      width: 8px;
+      height: 8px;
+      background: #1a1a1a;
+      transform: rotate(45deg);
+      margin: 0 auto 16px;
+    }
+    .d9 h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      color: #1a1a1a;
+      letter-spacing: 16px;
+    }
+    .d9 .line {
+      width: 80px;
+      height: 1px;
+      background: #1a1a1a;
+      margin: 16px auto 0;
+    }
+
+    /* =============================================
+       CYBERPUNK VARIATIONS
+       ============================================= */
+
+    /* C1: Neon Sign */
+    .c1 {
+      background: #0a0a12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c1 h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow:
+        0 0 10px #ff00ff,
+        0 0 20px #ff00ff,
+        0 0 40px #ff00ff,
+        0 0 80px #ff00ff;
+    }
+
+    /* C2: Heavy Glitch */
+    .c2 {
+      background: #0a0a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .c2 h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 76px;
+      font-weight: 900;
+      color: #fff;
+      position: relative;
+    }
+    .c2 h1::before {
+      content: 'CLAUDE CODE';
+      position: absolute;
+      left: 6px;
+      top: 0;
+      color: #ff0040;
+      clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+    }
+    .c2 h1::after {
+      content: 'CLAUDE CODE';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      color: #00ffff;
+      clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
+    }
+
+    /* C3: Scan Lines */
+    .c3 {
+      background: #0d0d0d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .c3::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);
+      pointer-events: none;
+    }
+    .c3 h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #00ffff;
+      text-shadow: 0 0 20px rgba(0,255,255,0.5);
+    }
+
+    /* C4: Holographic */
+    .c4 {
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 50%, #0a1a2a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c4 h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 68px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff, #00ffff);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* C5: Circuit */
+    .c5 {
+      background: #0a1a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .c5 .trace {
+      position: absolute;
+      background: #00ff4120;
+    }
+    .c5 .trace.h { height: 1px; left: 0; right: 0; }
+    .c5 .trace.v { width: 1px; top: 0; bottom: 0; }
+    .c5 .trace:nth-child(1) { top: 30%; }
+    .c5 .trace:nth-child(2) { top: 70%; }
+    .c5 .trace:nth-child(3) { left: 20%; }
+    .c5 .trace:nth-child(4) { right: 20%; }
+    .c5 h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 56px;
+      font-weight: 700;
+      color: #00ff41;
+      z-index: 1;
+      text-shadow: 0 0 20px rgba(0,255,65,0.4);
+    }
+
+    /* C6: Error Screen */
+    .c6 {
+      background: #0000aa;
+      padding: 40px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #fff;
+    }
+    .c6 .header {
+      background: #aaa;
+      color: #0000aa;
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .c6 h1 {
+      font-size: 48px;
+      margin: 20px 0;
+    }
+    .c6 .info {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    /* C7: VHS */
+    .c7 {
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .c7::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px);
+    }
+    .c7 h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+    }
+    .c7 h1::before {
+      content: 'CLAUDE CODE';
+      position: absolute;
+      left: 2px;
+      color: #ff0000;
+      opacity: 0.7;
+      clip-path: inset(40% 0 30% 0);
+    }
+
+    /* C8: Wireframe */
+    .c8 {
+      background: #0a0a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .c8 .grid {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .c8 h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 64px;
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 2px #00ffff;
+      z-index: 1;
+    }
+
+    /* C9: Data Stream */
+    .c9 {
+      background: #050510;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .c9 .data {
+      position: absolute;
+      inset: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(0,255,255,0.1);
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    .c9 h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 72px;
+      font-weight: 900;
+      color: #fff;
+      z-index: 1;
+      text-shadow: 0 0 40px rgba(0,255,255,0.3);
+    }
+
+    /* =============================================
+       ANTHROPIC WARM VARIATIONS
+       ============================================= */
+
+    /* A1: Terracotta */
+    .a1 {
+      background: #c4704f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .a1 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 64px;
+      font-weight: 600;
+      color: #1a1210;
+    }
+    .a1 .sub {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(26,18,16,0.6);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* A2: Sand Light */
+    .a2 {
+      background: #e8dfd4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .a2 .content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .a2 .mark {
+      width: 48px;
+      height: 48px;
+      background: #1a1612;
+      border-radius: 12px;
+    }
+    .a2 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 52px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+
+    /* A3: Rust */
+    .a3 {
+      background: linear-gradient(135deg, #d4a574 0%, #b8734a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .a3 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 60px;
+      font-weight: 600;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+
+    /* A4: Centered */
+    .a4 {
+      background: #d4a574;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .a4 .mark {
+      width: 56px;
+      height: 56px;
+      background: #1a1612;
+      border-radius: 14px;
+      margin-bottom: 16px;
+    }
+    .a4 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+    .a4 .sub {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      color: rgba(26,22,18,0.6);
+      margin-top: 8px;
+      letter-spacing: 2px;
+    }
+
+    /* A5: Badge */
+    .a5 {
+      background: #d4a574;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .a5 .badge {
+      border: 2px solid #1a1612;
+      padding: 32px 56px;
+      text-align: center;
+    }
+    .a5 .top-text {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      color: #1a1612;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+    .a5 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 44px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+    .a5 .bottom-text {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      color: rgba(26,22,18,0.6);
+      letter-spacing: 3px;
+      margin-top: 8px;
+    }
+
+    /* A6: Two-tone */
+    .a6 {
+      display: flex;
+    }
+    .a6 .left {
+      flex: 1;
+      background: #d4a574;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 24px;
+    }
+    .a6 .right {
+      flex: 1;
+      background: #1a1612;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 24px;
+    }
+    .a6 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+    }
+    .a6 .left h1 { color: #1a1612; }
+    .a6 .right h1 { color: #d4a574; }
+
+    /* A7: Gradient */
+    .a7 {
+      background: linear-gradient(135deg, #e8dfd4 0%, #d4a574 50%, #c4956a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .a7 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 60px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+
+    /* A8: Dark Warm */
+    .a8 {
+      background: #1a1612;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .a8::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: #d4a574;
+    }
+    .a8 h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 56px;
+      font-weight: 600;
+      color: #d4a574;
+    }
+
+    /* =============================================
+       ANTHROPIC EDITORIAL VARIATIONS
+       ============================================= */
+
+    /* E1: Dark Mode */
+    .e1 {
+      background: #1a1612;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e1 .content { text-align: center; }
+    .e1 .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: #cc785c;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+    .e1 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 64px;
+      font-weight: 400;
+      color: #faf7f2;
+    }
+    .e1 h1 span { color: #cc785c; font-weight: 600; }
+
+    /* E2: Coral Heavy */
+    .e2 {
+      background: #cc785c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e2 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 68px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* E3: Magazine */
+    .e3 {
+      background: #faf7f2;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      padding: 0 60px;
+    }
+    .e3 .left {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      color: #888;
+      writing-mode: vertical-rl;
+      letter-spacing: 2px;
+    }
+    .e3 .center {
+      text-align: center;
+    }
+    .e3 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 72px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+    .e3 .sub {
+      font-family: 'Source Serif 4', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: #666;
+      margin-top: 8px;
+    }
+    .e3 .right {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      color: #cc785c;
+      text-align: right;
+    }
+
+    /* E4: Minimal */
+    .e4 {
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e4 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 80px;
+      font-weight: 400;
+      color: #1a1612;
+      letter-spacing: -2px;
+    }
+
+    /* E5: Framed */
+    .e5 {
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .e5 .frame {
+      position: absolute;
+      inset: 24px;
+      border: 1px solid #1a1612;
+    }
+    .e5 .content { text-align: center; }
+    .e5 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 60px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+    .e5 .sub {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 2px;
+      margin-top: 12px;
+    }
+
+    /* E6: Asymmetric */
+    .e6 {
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+    }
+    .e6 .content {
+      max-width: 60%;
+    }
+    .e6 .eyebrow {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: #cc785c;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    .e6 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 72px;
+      font-weight: 600;
+      color: #1a1612;
+      line-height: 0.95;
+    }
+
+    /* E7: Vertical Accent */
+    .e7 {
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .e7 .accent {
+      position: absolute;
+      right: 60px;
+      top: 30px;
+      bottom: 30px;
+      width: 4px;
+      background: linear-gradient(180deg, #cc785c, #d4a574);
+    }
+    .e7 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 68px;
+      font-weight: 600;
+      color: #1a1612;
+    }
+
+    /* E8: Dual Serif */
+    .e8 {
+      background: #faf7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e8 h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 72px;
+      color: #1a1612;
+    }
+    .e8 h1 .light { font-weight: 400; }
+    .e8 h1 .bold { font-weight: 700; color: #cc785c; }
+  </style>
+</head>
+<body>
+  <div class="gallery">
+    <div class="page-title">
+      <h1>Claude Code Banners</h1>
+      <p>50 variations across 6 style families</p>
+    </div>
+
+    <!-- BRUTALIST -->
+    <div class="section-title">Brutalist (8)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">B1 — Inverted</span>
+      <div class="banner b1">
+        <div class="content">
+          <h1>CLAUDE CODE</h1>
+          <div class="sub">Command Line Interface</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B2 — Stacked</span>
+      <div class="banner b2">
+        <div class="content">
+          <h1>CLAUDE<span>CODE</span></h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B3 — Diagonal</span>
+      <div class="banner b3">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B4 — Split</span>
+      <div class="banner b4">
+        <div class="left"><h1>CLAUDE</h1></div>
+        <div class="right"><h1>CODE</h1></div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B5 — Redline</span>
+      <div class="banner b5">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B6 — Boxed</span>
+      <div class="banner b6">
+        <div class="box"><h1>CLAUDE</h1></div>
+        <div class="box"><h1>CODE</h1></div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B7 — Offset</span>
+      <div class="banner b7">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">B8 — Minimal</span>
+      <div class="banner b8">
+        <h1>claude code</h1>
+      </div>
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="section-title">Terminal (8)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">T1 — Amber CRT</span>
+      <div class="banner t1">
+        <div class="content">
+          <div class="prompt">C:\ANTHROPIC&gt;</div>
+          <h1>CLAUDE CODE<span class="cursor"></span></h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T2 — Blue IBM</span>
+      <div class="banner t2">
+        <div class="content">
+          <div class="top-bar">ANTHROPIC SYSTEMS</div>
+          <h1>CLAUDE CODE</h1>
+          <div class="bottom-bar">READY</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T3 — ASCII Art</span>
+      <div class="banner t3">
+ ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗     ██████╗ ██████╗ ██████╗ ███████╗
+██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝    ██╔════╝██╔═══██╗██╔══██╗██╔════╝
+██║     ██║     ███████║██║   ██║██║  ██║█████╗      ██║     ██║   ██║██║  ██║█████╗
+██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝      ██║     ██║   ██║██║  ██║██╔══╝
+╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗    ╚██████╗╚██████╔╝██████╔╝███████╗
+ ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝     ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝</div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T4 — Boot Sequence</span>
+      <div class="banner t4">
+        <div class="line">ANTHROPIC BIOS v2.4.1</div>
+        <div class="line">Detecting AI subsystems... <span class="ok">[OK]</span></div>
+        <div class="line">Loading language models... <span class="ok">[OK]</span></div>
+        <div class="brand">CLAUDE CODE</div>
+        <div class="line highlight">System ready. Press any key to continue_</div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T5 — Vim Buffer</span>
+      <div class="banner t5">
+        <div class="tab-bar"><span>claude.code</span> untitled-1</div>
+        <div class="editor"><h1>CLAUDE CODE</h1></div>
+        <div class="status-bar">NORMAL | UTF-8 | anthropic/claude-code</div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T6 — SSH Banner</span>
+      <div class="banner t6">
+        <div class="dim">Connection to anthropic.ai established.</div>
+        <div class="dim">Last login: Thu Jan 16 09:42:01 2025</div>
+        <div class="brand">CLAUDE CODE</div>
+        <div>Welcome to Anthropic. Type 'help' to get started.</div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T7 — Matrix Style</span>
+      <div class="banner t7">
+        <div class="rain">01001000110010101101100011011000110111100100000010101110110111101110010011011000110010000101110001000000100100100100111011011010010000001000011011011000110000101110101011001000110010100101110001000000100100100100000011000010110110100100000011010000110010101110010011001010010000001110100011011110010000001101000011001010110110001110000001011100010000001010111011010000110000101110100001000000110001101100001011011100010000001001001001000000110010001101111001000000110011001101111011100100010000001111001011011110111010100111111</div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">T8 — Command Output</span>
+      <div class="banner t8">
+        <div><span class="prompt">$</span> <span class="cmd">claude --version</span></div>
+        <div class="output">claude-code v1.0.0 (anthropic)</div>
+        <div><span class="prompt">$</span> <span class="cmd">claude init</span></div>
+        <div class="output">Initializing Claude Code environment...</div>
+        <div class="brand">CLAUDE CODE</div>
+      </div>
+    </div>
+
+    <!-- ART DECO -->
+    <div class="section-title">Art Deco (9)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">D1 — Noir</span>
+      <div class="banner d1">
+        <div class="content">
+          <h1>CLAUDE CODE</h1>
+          <div class="sub">ANTHROPIC • MMXXIV</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D2 — Chrome</span>
+      <div class="banner d2">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D3 — Sunrise</span>
+      <div class="banner d3">
+        <div class="rays"></div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D4 — Vertical</span>
+      <div class="banner d4">
+        <div class="line"></div>
+        <h1>CLAUDE <span>CODE</span></h1>
+        <div class="line"></div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D5 — Gatsby</span>
+      <div class="banner d5">
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="sub">THE ROARING TWENTIES</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D6 — Streamline</span>
+      <div class="banner d6">
+        <div class="curve"></div>
+        <div class="curve"></div>
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D7 — Architectural</span>
+      <div class="banner d7">
+        <div class="vert-line"></div>
+        <div class="vert-line"></div>
+        <div class="vert-line"></div>
+        <div class="vert-line"></div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D8 — Frame Heavy</span>
+      <div class="banner d8">
+        <div class="frame"></div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">D9 — Minimal Deco</span>
+      <div class="banner d9">
+        <div class="content">
+          <div class="diamond"></div>
+          <h1>CLAUDE CODE</h1>
+          <div class="line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CYBERPUNK -->
+    <div class="section-title">Cyberpunk (9)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">C1 — Neon Sign</span>
+      <div class="banner c1">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C2 — Heavy Glitch</span>
+      <div class="banner c2">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C3 — Scan Lines</span>
+      <div class="banner c3">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C4 — Holographic</span>
+      <div class="banner c4">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C5 — Circuit</span>
+      <div class="banner c5">
+        <div class="trace h"></div>
+        <div class="trace h"></div>
+        <div class="trace v"></div>
+        <div class="trace v"></div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C6 — Error Screen</span>
+      <div class="banner c6">
+        <div class="header">CLAUDE CODE</div>
+        <div class="info">A fatal exception has occurred. Just kidding.</div>
+        <h1>CLAUDE CODE</h1>
+        <div class="info">The system is working perfectly. Welcome.</div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C7 — VHS</span>
+      <div class="banner c7">
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C8 — Wireframe</span>
+      <div class="banner c8">
+        <div class="grid"></div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">C9 — Data Stream</span>
+      <div class="banner c9">
+        <div class="data">48656C6C6F20576F726C642E2049276D20436C617564652E204920616D206865726520746F2068656C702E205768617420636 16E204920646F20666F7220796F753F20436C6175646520436F6465206973206120706F77657266756C20746F6F6C20666F7220646576656C6F706572732E204275696C6420736F6D657468696E6720616D617A696E6720746F6461792E</div>
+        <h1>CLAUDE CODE</h1>
+      </div>
+    </div>
+
+    <!-- ANTHROPIC WARM -->
+    <div class="section-title">Anthropic Warm (8)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">A1 — Terracotta</span>
+      <div class="banner a1">
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="sub">by Anthropic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A2 — Sand Light</span>
+      <div class="banner a2">
+        <div class="content">
+          <div class="mark"></div>
+          <h1>Claude Code</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A3 — Rust</span>
+      <div class="banner a3">
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A4 — Centered</span>
+      <div class="banner a4">
+        <div class="mark"></div>
+        <h1>Claude Code</h1>
+        <div class="sub">ANTHROPIC</div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A5 — Badge</span>
+      <div class="banner a5">
+        <div class="badge">
+          <div class="top-text">ANTHROPIC</div>
+          <h1>Claude Code</h1>
+          <div class="bottom-text">EST. 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A6 — Two-tone</span>
+      <div class="banner a6">
+        <div class="left"><h1>Claude</h1></div>
+        <div class="right"><h1>Code</h1></div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A7 — Gradient</span>
+      <div class="banner a7">
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">A8 — Dark Warm</span>
+      <div class="banner a8">
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <!-- ANTHROPIC EDITORIAL -->
+    <div class="section-title">Anthropic Editorial (8)</div>
+
+    <div class="banner-container">
+      <span class="banner-label">E1 — Dark Mode</span>
+      <div class="banner e1">
+        <div class="content">
+          <div class="eyebrow">ANTHROPIC</div>
+          <h1>Claude <span>Code</span></h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E2 — Coral Heavy</span>
+      <div class="banner e2">
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E3 — Magazine</span>
+      <div class="banner e3">
+        <div class="left">ISSUE 001</div>
+        <div class="center">
+          <h1>Claude Code</h1>
+          <div class="sub">The intelligent command line</div>
+        </div>
+        <div class="right">ANTHROPIC<br>2024</div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E4 — Minimal</span>
+      <div class="banner e4">
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E5 — Framed</span>
+      <div class="banner e5">
+        <div class="frame"></div>
+        <div class="content">
+          <h1>Claude Code</h1>
+          <div class="sub">BY ANTHROPIC</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E6 — Asymmetric</span>
+      <div class="banner e6">
+        <div class="content">
+          <div class="eyebrow">ANTHROPIC</div>
+          <h1>Claude<br>Code</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E7 — Vertical Accent</span>
+      <div class="banner e7">
+        <div class="accent"></div>
+        <h1>Claude Code</h1>
+      </div>
+    </div>
+
+    <div class="banner-container">
+      <span class="banner-label">E8 — Dual Serif</span>
+      <div class="banner e8">
+        <h1><span class="light">Claude</span> <span class="bold">Code</span></h1>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
