@@ -530,7 +530,6 @@ Configure permissions and tool access. See [`examples/settings.json`](examples/s
 ]
 ```
 
-**Warning:** Deny rules have known reliability issues. Don't store secrets in project directories.
 
 ---
 
@@ -545,6 +544,7 @@ Built-in commands you can run during a session. Type `/` to see all available co
 | `/help` | List all commands (built-in + custom + MCP) |
 | `/init` | Scan project and generate CLAUDE.md |
 | `/compact` | Summarize conversation to free up context |
+| `/resume` | resume's a previously existed session, or takes the conversation back to previous point
 | `/clear` | Wipe conversation completely (fresh start) |
 | `/context` | Show token usage (like disk space for your session) |
 | `/rewind` | Roll back conversation and/or code to earlier state |
