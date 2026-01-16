@@ -319,62 +319,104 @@ git worktree remove ../project-bugfix`,
     }
   },
 
-  // 15. Plugins
+  // 15. Superpowers Workflow
   {
     id: 15,
-    title: 'Plugins',
+    title: 'Superpowers Workflow',
+    subtitle: 'The disciplined development process',
+    type: 'diagram',
+    content: {
+      kind: 'diagram',
+      ascii: `BRAINSTORM ──> DESIGN ──> PLAN ──> EXECUTE ──> REVIEW
+     │            │          │          │           │
+     ▼            ▼          ▼          ▼           ▼
+  Clarify     Architecture  Bite-sized  Subagent   Validate
+  one Q at    trade-offs    TDD tasks   per task   against
+  a time      in sections   2-5 min     + review   plan`,
+      caption: '/plugin install superpowers@superpowers-marketplace'
+    }
+  },
+
+  // 16. TDD Iron Law
+  {
+    id: 16,
+    title: 'TDD: The Iron Law',
+    subtitle: 'No production code without a failing test first',
+    type: 'list',
+    content: {
+      kind: 'numbered',
+      items: [
+        'RED: Write failing test',
+        'Verify it fails (for the right reason)',
+        'GREEN: Write minimal code to pass',
+        'Verify it passes',
+        'REFACTOR: Clean up, stay green',
+        'Repeat'
+      ]
+    }
+  },
+
+  // 17. TDD Rationalizations
+  {
+    id: 17,
+    title: 'TDD Excuses',
+    subtitle: 'If you wrote code first, delete it',
+    type: 'comparison',
+    content: {
+      kind: 'table',
+      headers: ['Excuse', 'Reality'],
+      rows: [
+        ['"Too simple to test"', 'Simple code breaks. 30 seconds.'],
+        ['"I\'ll test after"', 'Proves nothing if it passes immediately.'],
+        ['"Already manual tested"', 'Ad-hoc ≠ systematic. Can\'t re-run.'],
+        ['"TDD slows me down"', 'Faster than debugging in production.']
+      ]
+    }
+  },
+
+  // 18. Plan Task Structure
+  {
+    id: 18,
+    title: 'Plan Task Structure',
+    subtitle: 'Every task is 2-5 minutes with exact details',
+    type: 'code',
+    content: {
+      kind: 'code',
+      language: 'markdown',
+      code: `### Task N: [Component]
+
+**Files:**
+- Create: \`exact/path/to/file.py\`
+- Test: \`tests/exact/path/to/test.py\`
+
+**Step 1:** Write failing test [code]
+**Step 2:** Run, verify FAIL
+**Step 3:** Write minimal impl [code]
+**Step 4:** Run, verify PASS
+**Step 5:** Commit`,
+      caption: 'Complete code, exact commands, expected output'
+    }
+  },
+
+  // 19. Other Plugins
+  {
+    id: 19,
+    title: 'Other Plugins',
     subtitle: 'Extend Claude Code capabilities',
     type: 'list',
     content: {
       kind: 'bullets',
       items: [
-        { text: 'Superpowers', detail: 'Structured workflows: brainstorm → plan → execute → review' },
         { text: 'Frontend Design', detail: 'Generate distinctive, non-generic UIs' },
-        { text: 'Ralph Loop', detail: 'Run Claude autonomously until task completion' },
+        { text: 'Ralph Loop', detail: 'Run Claude autonomously until completion' },
         { text: 'Document Skills', detail: 'Create/edit Excel, Word, PowerPoint, PDF' }
       ]
     }
   },
 
-  // 16. IDE Integration
+  // 20. Resources
   {
-    id: 16,
-    title: 'IDE Integration',
-    subtitle: 'VS Code Extension & Claude Desktop',
-    type: 'comparison',
-    content: {
-      kind: 'table',
-      headers: ['Feature', 'VS Code Extension', 'Claude Desktop'],
-      rows: [
-        ['Interface', 'IDE panel', 'Standalone app'],
-        ['Code editing', 'Full integration', 'Basic'],
-        ['MCP support', 'Yes (.mcp.json)', 'Yes (extensions)'],
-        ['Best for', 'Development', 'General tasks']
-      ]
-    }
-  },
-
-  // 17. Workflow
-  {
-    id: 17,
-    title: 'The Workflow',
-    subtitle: 'Plan → Implement → Test',
-    type: 'list',
-    content: {
-      kind: 'numbered',
-      items: [
-        'Describe what you want, ask Claude to plan first',
-        'Review and approve the plan',
-        'Let Claude implement (bypass mode for autonomy)',
-        'Run tests and fix failures',
-        'Commit with descriptive message'
-      ]
-    }
-  },
-
-  // 18. Resources
-  {
-    id: 18,
+    id: 20,
     title: 'Resources',
     subtitle: 'Learn more',
     type: 'list',
@@ -382,8 +424,8 @@ git worktree remove ../project-bugfix`,
       kind: 'bullets',
       items: [
         { text: 'anthropic.com/engineering/claude-code-best-practices', detail: 'Official guide' },
-        { text: 'code.claude.com/docs', detail: 'Documentation' },
         { text: 'github.com/obra/superpowers', detail: 'Superpowers plugin' },
+        { text: 'blog.fsck.com/2025/10/09/superpowers', detail: 'Why Superpowers works' },
         { text: 'ui.shadcn.com', detail: 'Recommended UI library' }
       ]
     }

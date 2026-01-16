@@ -1203,22 +1203,56 @@ git branch -d feature/bugfix-123
 You: "I want to add user authentication. Before writing code,
      ask me questions about the requirements and create a plan."
 
-Claude: [Asks clarifying questions]
-Claude: [Creates implementation plan]
+Claude: [Asks clarifying questions one at a time]
+Claude: [Creates detailed implementation plan with TDD steps]
+Claude: [Saves plan to docs/plans/YYYY-MM-DD-auth.md]
 ```
 
-### 2. Implementation (Bypass Mode)
+### 2. Implementation (Subagent-Driven)
 
-Once plan is approved:
+Once plan is approved, use subagents for autonomous execution with review checkpoints:
+
 ```
-You: "Implement the plan. Use bypass mode for autonomous work."
+You: "Execute the plan using subagent-driven development."
+
+Claude: [Dispatches fresh subagent per task]
+Claude: [Reviews each task: spec compliance, then code quality]
+Claude: [Continues through plan with built-in review gates]
 ```
+
+**Why subagents over bypass:**
+- Fresh context per task (no accumulated confusion)
+- Built-in two-stage review between tasks
+- Automatic checkpoints for human oversight
+- Stays on plan (subagents follow spec, not whims)
+
+**Enable sandbox for fewer prompts:**
+```
+/sandbox
+```
+
+Sandbox auto-approves operations within project boundaries. Reduces permission prompts by ~84%.
 
 ### 3. Test & Commit
 
 ```
-You: "Run all tests and fix any failures. Then commit with
-     a descriptive message."
+You: "Run all tests and fix any failures. Then commit."
+
+Claude: [Runs test suite]
+Claude: [Fixes failures using TDD - test first, then fix]
+Claude: [Commits with descriptive message]
+```
+
+### Alternative: Batch Execution
+
+For longer autonomous work, use `/superpowers:execute-plan` in a separate session:
+
+```
+You: [Opens new terminal in worktree]
+You: "Execute docs/plans/YYYY-MM-DD-auth.md"
+
+Claude: [Executes in batches with checkpoints]
+Claude: [Pauses for human review between batches]
 ```
 
 ---
@@ -1444,7 +1478,7 @@ Use `/clear` between unrelated tasks to reset context and improve performance.
 
 ### Superpowers
 
-[Superpowers](https://github.com/obra/superpowers) enforces structured development workflows: brainstorm → plan → execute → review.
+[Superpowers](https://github.com/obra/superpowers) enforces structured development workflows. Instead of jumping straight to code, it forces a disciplined process: understand → design → plan → execute → review.
 
 **Install:**
 ```bash
@@ -1452,14 +1486,130 @@ Use `/clear` between unrelated tasks to reset context and improve performance.
 /plugin install superpowers@superpowers-marketplace
 ```
 
-| Phase | Command | Purpose |
-|-------|---------|---------|
-| 1. Brainstorm | `/superpowers:brainstorm` | Clarify requirements, explore alternatives |
-| 2. Plan | `/superpowers:write-plan` | Create detailed task breakdown |
-| 3. Execute | `/superpowers:execute-plan` | Implement via subagents with review |
-| 4. Review | `/superpowers:code-review` | Validate against plan |
+#### The Full Workflow
 
-Key principles: TDD enforced, evidence-based completion, subagent review.
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ BRAINSTORM  │ -> │   DESIGN    │ -> │    PLAN     │ -> │   EXECUTE   │ -> │   REVIEW    │
+│             │    │             │    │             │    │             │    │             │
+│ Clarify     │    │ Architecture│    │ Bite-sized  │    │ Subagent    │    │ Validate    │
+│ requirements│    │ Trade-offs  │    │ TDD tasks   │    │ per task    │    │ against     │
+│ one at a    │    │ presented   │    │ 2-5 min     │    │ with review │    │ plan        │
+│ time        │    │ in sections │    │ each        │    │             │    │             │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+```
+
+#### Phase 1: Brainstorming (`/superpowers:brainstorm`)
+
+Claude doesn't jump into code. It asks questions **one at a time** to understand what you're building:
+
+- Checks project context (files, docs, commits)
+- Asks clarifying questions (multiple choice preferred)
+- Proposes 2-3 approaches with trade-offs
+- Presents design in **200-300 word sections** for validation
+- Saves approved design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+
+**Key principle:** One question per message. No overwhelming lists.
+
+#### Phase 2: Writing Plans (`/superpowers:write-plan`)
+
+Plans are written for "an enthusiastic junior engineer with poor taste, no judgement, and no project context." Every task is **2-5 minutes** and includes:
+
+```markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+**Step 1: Write the failing test**
+[Complete test code]
+
+**Step 2: Run test to verify it fails**
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+**Step 3: Write minimal implementation**
+[Complete implementation code]
+
+**Step 4: Run test to verify it passes**
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+**Step 5: Commit**
+```
+
+**Requirements:**
+- Exact file paths always
+- Complete code (not "add validation here")
+- Exact commands with expected output
+- DRY, YAGNI, TDD, frequent commits
+
+#### Phase 3: Execution (Two Options)
+
+**Option A: Subagent-Driven** (`/superpowers:subagent-driven-development`)
+- Fresh subagent dispatched per task
+- Two-stage review: spec compliance, then code quality
+- Fast iteration, stays in current session
+
+**Option B: Batch Execution** (`/superpowers:execute-plan`)
+- Open separate session in worktree
+- Execute in batches with human checkpoints
+- Better for longer autonomous work
+
+#### Phase 4: Test-Driven Development (Enforced)
+
+**The Iron Law:** No production code without a failing test first.
+
+```
+RED          →    GREEN         →    REFACTOR
+Write test        Minimal code       Clean up
+Watch fail        Watch pass         Stay green
+```
+
+**If you wrote code before the test:** Delete it. Start over.
+
+| Rationalization | Reality |
+|-----------------|---------|
+| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
+| "I'll test after" | Tests passing immediately prove nothing. |
+| "Already manually tested" | Ad-hoc ≠ systematic. Can't re-run. |
+| "TDD will slow me down" | TDD faster than debugging in production. |
+
+**Verification checklist:**
+- [ ] Every function has a test
+- [ ] Watched each test fail before implementing
+- [ ] Wrote minimal code to pass
+- [ ] All tests pass
+- [ ] Output pristine (no warnings)
+
+#### Phase 5: Code Review (`/superpowers:requesting-code-review`)
+
+After each task:
+- Reviews against plan
+- Reports issues by severity
+- Critical issues block progress
+- Validates evidence of completion
+
+#### Supporting Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `using-git-worktrees` | Create isolated workspace on new branch |
+| `systematic-debugging` | 4-phase root cause process |
+| `verification-before-completion` | Ensure it's actually fixed |
+| `receiving-code-review` | Respond to feedback without blind agreement |
+| `finishing-a-development-branch` | Merge/PR decision workflow |
+
+#### Philosophy
+
+- **Test-Driven Development** - Write tests first, always
+- **Systematic over ad-hoc** - Process over guessing
+- **YAGNI** - You Aren't Gonna Need It
+- **Evidence over claims** - Verify before declaring success
+
+Read more: [Superpowers for Claude Code](https://blog.fsck.com/2025/10/09/superpowers/)
 
 ### Frontend Design
 
