@@ -99,7 +99,7 @@ Never use emojis.
 
 ### Documentation Style
 
-- Never create `.md` files unless explicitly instructed
+- Never create `.md` files unless explicitly instructed or tool calls for it.
 - Be extremely concise - engineers scan, they don't read novels
 - Only include essential information
 - Prefer examples over prose - show the pattern, not the theory
