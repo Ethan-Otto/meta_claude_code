@@ -1,11 +1,11 @@
 # Claude Code Setup Guide
 
-This guide covers the complete setup of Claude Code on Windows, including plugins, LSPs, and recommended settings.
+This guide covers the complete setup of Claude Code on Windows, including plugins and recommended settings.
 
 ## Prerequisites
 
 - Windows 10/11
-- PowerShell 5.1+ (included with Windows)
+- Terminal/PowerShell (included with Windows)
 - Git ([Download](https://git-scm.com/download/win))
 - A Claude account with API access
 
@@ -13,7 +13,7 @@ This guide covers the complete setup of Claude Code on Windows, including plugin
 
 ## 1. Install Claude Code
 
-Open PowerShell and run:
+Open Terminal/PowerShell and run:
 
 ```powershell
 irm https://claude.ai/install.ps1 | iex
@@ -33,9 +33,44 @@ claude
 
 On first launch, you'll be prompted to authenticate with your Anthropic account.
 
+> If you encounter issues during installation, see the [Claude Code Quickstart Guide](https://code.claude.com/docs/en/quickstart).
+
 ---
 
-## 2. Install uv (Python Package Manager)
+## 2. Verify Claude Code Setup
+
+Run the following to verify your installation:
+
+```powershell
+claude --version
+```
+
+To verify the installation is working:
+- Type `/plugin` to see available plugins and LSPs
+
+---
+
+## 3. Disable Training Data Collection
+
+To prevent your conversations from being used for model training:
+
+### If Using API Access (Anthropic Console)
+
+1. Go to [console.anthropic.com](https://console.anthropic.com)
+2. Navigate to **Settings** > **Privacy**
+3. Toggle **OFF** the option: "Allow Anthropic to use my data for training"
+
+### If Using a Personal Account (claude.ai)
+
+1. Go to [claude.ai/settings](https://claude.ai/settings)
+2. Click **Privacy**
+3. Toggle **OFF** the option: "Improve Claude for everyone"
+
+> **Note:** Disabling this setting ensures your code and conversations remain private and are not used to improve future models.
+
+---
+
+## 4. Install uv (Python Package Manager)
 
 [uv](https://github.com/astral-sh/uv) is a fast Python package manager that Claude Code can use for Python projects.
 
@@ -51,148 +86,81 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 uv --version
 ```
 
-### Configure uv for Projects
-
-Create a virtual environment:
-
-```powershell
-uv venv
-```
-
-Activate it:
-
-```powershell
-.venv\Scripts\activate
-```
-
-Install packages:
-
-```powershell
-uv pip install <package-name>
-```
-
 ---
 
-## 3. Install Plugins
+## 5. Install Plugins
 
-Plugins extend Claude Code's capabilities. Install them through the Settings UI.
+Plugins extend Claude Code's capabilities, including LSP (Language Server Protocol) support for intelligent code completion.
 
-### Opening Plugins
+### Step 1: Open the Plugin Manager
 
-1. In Claude Code, type `/plugins` and press Enter
+1. In Claude Code, type `/plugin` and press **Enter**
+2. The plugin manager opens with multiple tabs
 
 ![Opening Plugins](./images/plugins-open.png)
 
-### Recommended Plugins
+### Step 2: Navigate the Plugin Manager
 
-Install the following plugins:
+Use the **Tab** key to cycle through tabs:
+- **Discover** — Browse available plugins from all marketplaces
+- **Installed** — View and manage installed plugins
+- **Marketplaces** — Manage added marketplaces
 
-#### Frontend Design
-Enables high-quality frontend/UI generation with distinctive aesthetics.
+### Step 3: Install a Plugin
 
-![Frontend Design Plugin](./images/plugin-frontend-design.png)
-
-#### Superpowers
-Adds enhanced workflows for debugging, TDD, code review, brainstorming, and more.
-
-![Superpowers Plugin](./images/plugin-superpowers.png)
-
-#### MS Office Suite (Excel, PowerPoint, Word)
-Enables Claude to read and manipulate Microsoft Office documents.
-
-![MS Office Plugin](./images/plugin-ms-office.png)
-
-This adds MCP servers for:
-- Excel spreadsheet analysis and creation
-- PowerPoint presentation generation
-- Word document processing
-
-### Installing a Plugin
-
-1. Find the plugin in the list
-2. Click **Install**
-3. Restart Claude Code if prompted
+1. Go to the **Discover** tab
+2. Use arrow keys to select a plugin
+3. Press **Enter** to view details
+4. Choose installation scope:
+   - **User scope** — Install for yourself across all projects (default)
+   - **Project scope** — Install for all collaborators
+5. Press **Enter** to confirm installation
 
 ![Plugin Install](./images/plugin-install.png)
 
----
+Alternatively, install directly via command:
+```
+/plugin install plugin-name@marketplace-name
+```
 
-## 4. Configure LSPs (Language Server Protocol)
+### Recommended Plugins
 
+#### Frontend Design
+Enables high-quality frontend/UI generation with distinctive aesthetics.
+```
+/plugin install frontend-design@claude-plugins-official
+```
+
+#### Superpowers
+Adds enhanced workflows for debugging, TDD, code review, brainstorming, and more.
+```
+/plugin install superpowers@claude-plugins-official
+```
+
+#### LSP Plugins (Language Server Protocol)
 LSPs provide intelligent code completion, diagnostics, and refactoring support.
 
-### Opening LSP Settings
+| Language | Plugin | Install Command |
+|----------|--------|-----------------|
+| Python | pyright-lsp | `/plugin install pyright-lsp@claude-plugins-official` |
+| JavaScript (optional) | typescript-lsp | `/plugin install typescript-lsp@claude-plugins-official` |
 
-1. In Claude Code, type `/lsp` and press Enter
+### Managing Plugins
 
-![LSP Settings](./images/lsp-open.png)
-
-### Enable LSP Integration
-
-1. Toggle **Enable LSP** to ON
-2. Claude Code will auto-detect installed language servers
-
-![Enable LSP](./images/lsp-enable.png)
-
-### Adding Language Servers
-
-Click **Add Server** and configure for your languages:
-
-![Add LSP Server](./images/lsp-add-server.png)
-
-#### Recommended Language Servers
-
-| Language | Server | How to Install |
-|----------|--------|----------------|
-| TypeScript/JavaScript | typescript-language-server | `npm install -g typescript-language-server typescript` |
-| Python | pylsp | `uv pip install python-lsp-server` |
-| Rust | rust-analyzer | `rustup component add rust-analyzer` |
-
-### Verifying LSP Connection
-
-Once configured, you'll see a green indicator next to each active language server.
-
-![LSP Status](./images/lsp-status.png)
-
----
-
-## 5. Disable Training Data Collection
-
-To prevent your conversations from being used for model training:
-
-1. Go to [console.anthropic.com](https://console.anthropic.com)
-2. Navigate to **Settings** > **Privacy**
-3. Toggle **OFF** the option: "Allow Anthropic to use my data for training"
-
-Alternatively, in Claude Code settings:
-
-```json
-{
-  "privacy": {
-    "allowTrainingData": false
-  }
-}
+**Disable a plugin:**
+```
+/plugin disable plugin-name@marketplace-name
 ```
 
-> **Note:** Disabling this setting ensures your code and conversations remain private and are not used to improve future models.
-
----
-
-## 6. Verify Setup
-
-Run the following to verify your setup:
-
-```powershell
-# Check Claude Code
-claude --version
-
-# Check uv
-uv --version
+**Re-enable a plugin:**
+```
+/plugin enable plugin-name@marketplace-name
 ```
 
-To verify plugins and LSPs:
-- Type `/plugins` to see installed plugins
-- Type `/lsp` to check language server status
+**Uninstall a plugin:**
+```
+/plugin uninstall plugin-name@marketplace-name
+```
 
 ---
 
@@ -203,14 +171,14 @@ To verify plugins and LSPs:
 - Check that your PATH includes the Claude Code installation directory
 
 ### Plugins not loading
-- Run `/plugins` and verify the plugin shows as installed
+- Run `/plugin` and check the **Installed** tab
 - Restart Claude Code after installing plugins
-- Check for plugin updates
+- Clear plugin cache: `rm -rf ~/.claude/plugins/cache` and reinstall
 
 ### LSP not working
-- Verify the LSP server is installed and in your PATH
-- Run `/lsp` and check the server status indicator
-- Restart Claude Code after adding new language servers
+- Verify the required language server binary is installed on your system
+- Run `/plugin` and check the **Installed** tab for LSP plugins
+- Restart Claude Code after installing LSP plugins
 
 ---
 
@@ -219,8 +187,7 @@ To verify plugins and LSPs:
 | Task | How To |
 |------|--------|
 | Start Claude Code | Run `claude` in terminal |
-| Install plugins | `/plugins` |
-| Configure LSPs | `/lsp` |
+| Install plugins & LSPs | `/plugin` |
 | Update Claude Code | `irm https://claude.ai/install.ps1 \| iex` |
 
 ---
