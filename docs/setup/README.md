@@ -75,44 +75,46 @@ uv pip install <package-name>
 
 ## 3. Install Plugins
 
-Plugins extend Claude Code's capabilities. Install them via the CLI or by editing your settings.
+Plugins extend Claude Code's capabilities. Install them through the Settings UI.
 
-### Frontend Design Plugin
+### Opening Plugin Settings
 
+1. In Claude Code, press `Ctrl + ,` (or click the gear icon) to open **Settings**
+2. Navigate to the **Plugins** tab
+
+![Opening Settings](./images/settings-open.png)
+
+### Recommended Plugins
+
+Install the following plugins:
+
+#### Frontend Design
 Enables high-quality frontend/UI generation with distinctive aesthetics.
 
-```powershell
-claude plugins:install frontend-design
-```
+![Frontend Design Plugin](./images/plugin-frontend-design.png)
 
-Or add to your settings (`%APPDATA%\Claude\settings.json`):
-
-```json
-{
-  "plugins": ["frontend-design"]
-}
-```
-
-### Superpowers Plugin
-
+#### Superpowers
 Adds enhanced workflows for debugging, TDD, code review, brainstorming, and more.
 
-```powershell
-claude plugins:install superpowers
-```
+![Superpowers Plugin](./images/plugin-superpowers.png)
 
-### MS Office Suite (Excel, PowerPoint, Word)
-
+#### MS Office Suite (Excel, PowerPoint, Word)
 Enables Claude to read and manipulate Microsoft Office documents.
 
-```powershell
-claude mcp:install ms-office-suite
-```
+![MS Office Plugin](./images/plugin-ms-office.png)
 
 This adds MCP servers for:
 - Excel spreadsheet analysis and creation
 - PowerPoint presentation generation
 - Word document processing
+
+### Installing a Plugin
+
+1. Find the plugin in the list
+2. Click **Install**
+3. Restart Claude Code if prompted
+
+![Plugin Install](./images/plugin-install.png)
 
 ---
 
@@ -120,48 +122,39 @@ This adds MCP servers for:
 
 LSPs provide intelligent code completion, diagnostics, and refactoring support.
 
+### Opening LSP Settings
+
+1. In Claude Code, press `Ctrl + ,` (or click the gear icon) to open **Settings**
+2. Navigate to the **LSP** tab
+
+![LSP Settings](./images/lsp-settings.png)
+
 ### Enable LSP Integration
 
-Add to your settings file (`%APPDATA%\Claude\settings.json`):
+1. Toggle **Enable LSP** to ON
+2. Claude Code will auto-detect installed language servers
 
-```json
-{
-  "lsp": {
-    "enabled": true,
-    "servers": {
-      "typescript": {
-        "command": "typescript-language-server",
-        "args": ["--stdio"]
-      },
-      "python": {
-        "command": "pylsp",
-        "args": []
-      },
-      "rust": {
-        "command": "rust-analyzer",
-        "args": []
-      }
-    }
-  }
-}
-```
+![Enable LSP](./images/lsp-enable.png)
 
-### Install LSP Servers
+### Adding Language Servers
 
-**TypeScript/JavaScript:**
-```powershell
-npm install -g typescript-language-server typescript
-```
+Click **Add Server** and configure for your languages:
 
-**Python:**
-```powershell
-uv pip install python-lsp-server
-```
+![Add LSP Server](./images/lsp-add-server.png)
 
-**Rust:**
-```powershell
-rustup component add rust-analyzer
-```
+#### Recommended Language Servers
+
+| Language | Server | How to Install |
+|----------|--------|----------------|
+| TypeScript/JavaScript | typescript-language-server | `npm install -g typescript-language-server typescript` |
+| Python | pylsp | `uv pip install python-lsp-server` |
+| Rust | rust-analyzer | `rustup component add rust-analyzer` |
+
+### Verifying LSP Connection
+
+Once configured, you'll see a green indicator next to each active language server.
+
+![LSP Status](./images/lsp-status.png)
 
 ---
 
@@ -195,43 +188,42 @@ Run the following to verify your setup:
 # Check Claude Code
 claude --version
 
-# Check plugins
-claude plugins:list
-
-# Check MCP servers
-claude mcp:list
-
 # Check uv
 uv --version
 ```
+
+To verify plugins and LSPs, open Settings (`Ctrl + ,`) and check:
+- **Plugins tab**: Installed plugins show a checkmark
+- **LSP tab**: Connected servers show a green status indicator
 
 ---
 
 ## Troubleshooting
 
 ### Claude Code won't start
-- Ensure Node.js 18+ is installed
-- Try running `npm cache clean --force` and reinstalling
+- Re-run the installer: `irm https://claude.ai/install.ps1 | iex`
+- Check that your PATH includes the Claude Code installation directory
 
 ### Plugins not loading
-- Check your settings.json syntax (use a JSON validator)
+- Open Settings → Plugins and verify the plugin shows as installed
 - Restart Claude Code after installing plugins
+- Check for plugin updates
 
 ### LSP not working
 - Verify the LSP server is installed and in your PATH
-- Check the LSP server logs in Claude Code's output
+- Open Settings → LSP and check the server status indicator
+- Restart Claude Code after adding new language servers
 
 ---
 
 ## Quick Reference
 
-| Task | Command |
-|------|---------|
-| Start Claude Code | `claude` |
-| Install plugin | `claude plugins:install <name>` |
-| List plugins | `claude plugins:list` |
-| Install MCP server | `claude mcp:install <name>` |
-| List MCP servers | `claude mcp:list` |
+| Task | How To |
+|------|--------|
+| Start Claude Code | Run `claude` in terminal |
+| Open Settings | `Ctrl + ,` or click gear icon |
+| Install plugins | Settings → Plugins → Install |
+| Configure LSPs | Settings → LSP → Add Server |
 | Update Claude Code | `irm https://claude.ai/install.ps1 \| iex` |
 
 ---
