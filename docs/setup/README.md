@@ -5,7 +5,7 @@ This guide covers the complete setup of Claude Code on Windows, including plugin
 ## Prerequisites
 
 - Windows 10/11
-- Node.js 18+ ([Download](https://nodejs.org/))
+- PowerShell 5.1+ (included with Windows)
 - Git ([Download](https://git-scm.com/download/win))
 - A Claude account with API access
 
@@ -13,10 +13,10 @@ This guide covers the complete setup of Claude Code on Windows, including plugin
 
 ## 1. Install Claude Code
 
-Open PowerShell or Command Prompt and run:
+Open PowerShell and run:
 
 ```powershell
-npm install -g @anthropic-ai/claude-code
+irm https://claude.ai/install.ps1 | iex
 ```
 
 Verify installation:
@@ -232,7 +232,7 @@ uv --version
 | List plugins | `claude plugins:list` |
 | Install MCP server | `claude mcp:install <name>` |
 | List MCP servers | `claude mcp:list` |
-| Update Claude Code | `npm update -g @anthropic-ai/claude-code` |
+| Update Claude Code | `irm https://claude.ai/install.ps1 \| iex` |
 
 ---
 
