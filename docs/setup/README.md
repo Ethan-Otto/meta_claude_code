@@ -238,6 +238,7 @@ uv --version
 
 ## Additional Resources
 
+- [Claude Code Quickstart](https://docs.anthropic.com/en/docs/claude-code/quickstart)
 - [Claude Code Documentation](https://docs.anthropic.com/claude-code)
 - [Anthropic Console](https://console.anthropic.com)
 - [uv Documentation](https://github.com/astral-sh/uv)
