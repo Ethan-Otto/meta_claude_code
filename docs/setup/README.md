@@ -77,12 +77,11 @@ uv pip install <package-name>
 
 Plugins extend Claude Code's capabilities. Install them through the Settings UI.
 
-### Opening Plugin Settings
+### Opening Plugins
 
-1. In Claude Code, press `Ctrl + ,` (or click the gear icon) to open **Settings**
-2. Navigate to the **Plugins** tab
+1. In Claude Code, type `/plugins` and press Enter
 
-![Opening Settings](./images/settings-open.png)
+![Opening Plugins](./images/plugins-open.png)
 
 ### Recommended Plugins
 
@@ -124,10 +123,9 @@ LSPs provide intelligent code completion, diagnostics, and refactoring support.
 
 ### Opening LSP Settings
 
-1. In Claude Code, press `Ctrl + ,` (or click the gear icon) to open **Settings**
-2. Navigate to the **LSP** tab
+1. In Claude Code, type `/lsp` and press Enter
 
-![LSP Settings](./images/lsp-settings.png)
+![LSP Settings](./images/lsp-open.png)
 
 ### Enable LSP Integration
 
@@ -192,9 +190,9 @@ claude --version
 uv --version
 ```
 
-To verify plugins and LSPs, open Settings (`Ctrl + ,`) and check:
-- **Plugins tab**: Installed plugins show a checkmark
-- **LSP tab**: Connected servers show a green status indicator
+To verify plugins and LSPs:
+- Type `/plugins` to see installed plugins
+- Type `/lsp` to check language server status
 
 ---
 
@@ -205,13 +203,13 @@ To verify plugins and LSPs, open Settings (`Ctrl + ,`) and check:
 - Check that your PATH includes the Claude Code installation directory
 
 ### Plugins not loading
-- Open Settings → Plugins and verify the plugin shows as installed
+- Run `/plugins` and verify the plugin shows as installed
 - Restart Claude Code after installing plugins
 - Check for plugin updates
 
 ### LSP not working
 - Verify the LSP server is installed and in your PATH
-- Open Settings → LSP and check the server status indicator
+- Run `/lsp` and check the server status indicator
 - Restart Claude Code after adding new language servers
 
 ---
@@ -221,9 +219,8 @@ To verify plugins and LSPs, open Settings (`Ctrl + ,`) and check:
 | Task | How To |
 |------|--------|
 | Start Claude Code | Run `claude` in terminal |
-| Open Settings | `Ctrl + ,` or click gear icon |
-| Install plugins | Settings → Plugins → Install |
-| Configure LSPs | Settings → LSP → Add Server |
+| Install plugins | `/plugins` |
+| Configure LSPs | `/lsp` |
 | Update Claude Code | `irm https://claude.ai/install.ps1 \| iex` |
 
 ---
