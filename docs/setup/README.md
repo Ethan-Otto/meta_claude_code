@@ -125,25 +125,43 @@ Alternatively, install directly via command:
 
 ### Recommended Plugins
 
-#### Frontend Design
-Enables high-quality frontend/UI generation with distinctive aesthetics.
-```
-/plugin install frontend-design@claude-plugins-official
-```
-
 #### Superpowers
 Adds enhanced workflows for debugging, TDD, code review, brainstorming, and more.
 ```
-/plugin install superpowers@claude-plugins-official
+/plugin marketplace add obra/superpowers-marketplace
+/plugin install superpowers@superpowers-marketplace
+```
+
+#### Document Skills (Excel, Word, PowerPoint, PDF)
+Create, edit, and analyze Office documents and PDFs.
+```
+/plugin marketplace add anthropics/skills
+/plugin install document-skills@anthropic-agent-skills
+```
+
+#### Frontend Design
+Enables high-quality frontend/UI generation with distinctive aesthetics.
+```
+/plugin marketplace add anthropics/claude-code
+/plugin install frontend-design@claude-code-plugins
 ```
 
 #### LSP Plugins (Language Server Protocol)
 LSPs provide intelligent code completion, diagnostics, and refactoring support.
 
-| Language | Plugin | Install Command |
-|----------|--------|-----------------|
-| Python | pyright-lsp | `/plugin install pyright-lsp@claude-plugins-official` |
-| JavaScript (optional) | typescript-lsp | `/plugin install typescript-lsp@claude-plugins-official` |
+First, add the LSP marketplace:
+```
+/plugin marketplace add Piebald-AI/claude-code-lsps
+```
+
+Then install the language servers you need:
+
+| Language | Install Command |
+|----------|-----------------|
+| Python | `/plugin install pyright@claude-code-lsps` |
+| JavaScript (optional) | `/plugin install vtsls@claude-code-lsps` |
+
+> **Note:** For JavaScript/TypeScript, you also need to install the language server globally: `npm install -g @vtsls/language-server typescript`
 
 ### Managing Plugins
 
