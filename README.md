@@ -352,7 +352,7 @@ Create a `CLAUDE.md` file at your repository root. Claude automatically reads th
 
 ### Template Structure
 
-```markdown
+~~~markdown
 # Project: [Name]
 
 ## Overview
@@ -365,28 +365,26 @@ Create a `CLAUDE.md` file at your repository root. Claude automatically reads th
 - Testing: [e.g., pytest, vitest]
 
 ## Project Structure
-```
-src/
-├── api/          # API routes and handlers
-├── components/   # React components
-├── services/     # Business logic
-├── models/       # Data models
-└── utils/        # Shared utilities
-```
+
+    src/
+    ├── api/          # API routes and handlers
+    ├── components/   # React components
+    ├── services/     # Business logic
+    ├── models/       # Data models
+    └── utils/        # Shared utilities
 
 ## Development Commands
-```bash
-# Start development servers (run in tmux)
-npm run dev          # Frontend on :3000
-uvicorn main:app     # Backend on :8000
 
-# Run tests
-pytest               # Backend tests
-npm test             # Frontend tests
+    # Start development servers (run in tmux)
+    npm run dev          # Frontend on :3000
+    uvicorn main:app     # Backend on :8000
 
-# Build
-npm run build
-```
+    # Run tests
+    pytest               # Backend tests
+    npm test             # Frontend tests
+
+    # Build
+    npm run build
 
 ## Code Conventions
 - Add a comment at the top of every new file explaining its purpose
@@ -401,18 +399,17 @@ npm run build
 
 ## File Header Convention
 Every new file should start with:
-```python
-"""
-[filename].py
-Purpose: [What this file does]
-"""
-```
+
+    """
+    [filename].py
+    Purpose: [What this file does]
+    """
 
 ## Important Notes
 - [Any project-specific quirks or warnings]
 - [Database access patterns]
 - [Authentication flow notes]
-```
+~~~
 
 ### Placement Options
 
@@ -711,7 +708,7 @@ Skills are reusable instruction sets for common patterns. Store them in `.claude
 ### Example: API Route Skill
 
 `.claude/skills/api-route.md`:
-```markdown
+~~~markdown
 # Creating API Routes
 
 When creating a new API route:
@@ -722,65 +719,61 @@ When creating a new API route:
 4. Write tests in `tests/api/`
 
 ## File Structure
-```
-src/api/routes/[resource].py    # Route handlers
-src/models/[resource].py        # Pydantic models
-tests/api/test_[resource].py    # Route tests
-```
+
+    src/api/routes/[resource].py    # Route handlers
+    src/models/[resource].py        # Pydantic models
+    tests/api/test_[resource].py    # Route tests
 
 ## Template
-```python
-"""
-[resource].py
-Purpose: API endpoints for [resource] operations
-"""
-from fastapi import APIRouter, Depends
-from src.models.[resource] import [Resource]Request, [Resource]Response
 
-router = APIRouter(prefix="/[resource]", tags=["[resource]"])
+    """
+    [resource].py
+    Purpose: API endpoints for [resource] operations
+    """
+    from fastapi import APIRouter, Depends
+    from src.models.[resource] import [Resource]Request, [Resource]Response
 
-@router.get("/")
-async def list_[resources]() -> list[[Resource]Response]:
-    pass
+    router = APIRouter(prefix="/[resource]", tags=["[resource]"])
 
-@router.post("/")
-async def create_[resource](data: [Resource]Request) -> [Resource]Response:
-    pass
-```
-```
+    @router.get("/")
+    async def list_[resources]() -> list[[Resource]Response]:
+        pass
+
+    @router.post("/")
+    async def create_[resource](data: [Resource]Request) -> [Resource]Response:
+        pass
+~~~
 
 ### Example: React Component Skill
 
 `.claude/skills/react-component.md`:
-```markdown
+~~~markdown
 # Creating React Components
 
 ## Structure
-```
-src/components/[ComponentName]/
-├── index.tsx           # Main component
-├── [ComponentName].test.tsx  # Tests
-└── types.ts            # TypeScript interfaces
-```
+
+    src/components/[ComponentName]/
+    ├── index.tsx           # Main component
+    ├── [ComponentName].test.tsx  # Tests
+    └── types.ts            # TypeScript interfaces
 
 ## Template
-```tsx
-/**
- * [ComponentName].tsx
- * Purpose: [What this component renders]
- */
-import { FC } from 'react';
-import { [ComponentName]Props } from './types';
 
-export const [ComponentName]: FC<[ComponentName]Props> = ({ ...props }) => {
-  return (
-    <div>
-      {/* Component content */}
-    </div>
-  );
-};
-```
-```
+    /**
+     * [ComponentName].tsx
+     * Purpose: [What this component renders]
+     */
+    import { FC } from 'react';
+    import { [ComponentName]Props } from './types';
+
+    export const [ComponentName]: FC<[ComponentName]Props> = ({ ...props }) => {
+      return (
+        <div>
+          {/* Component content */}
+        </div>
+      );
+    };
+~~~
 
 ---
 
@@ -931,29 +924,27 @@ jobs:
 
 Add to your `CLAUDE.md`:
 
-```markdown
+~~~markdown
 ## Development Environment
 
 Run services in tmux for log access:
 
-```bash
-# Start tmux session
-tmux new-session -d -s dev
+    # Start tmux session
+    tmux new-session -d -s dev
 
-# Window 0: Frontend
-tmux send-keys -t dev:0 'npm run dev' C-m
+    # Window 0: Frontend
+    tmux send-keys -t dev:0 'npm run dev' C-m
 
-# Window 1: Backend
-tmux new-window -t dev:1
-tmux send-keys -t dev:1 'uvicorn main:app --reload' C-m
+    # Window 1: Backend
+    tmux new-window -t dev:1
+    tmux send-keys -t dev:1 'uvicorn main:app --reload' C-m
 
-# Window 2: Tests (watch mode)
-tmux new-window -t dev:2
-tmux send-keys -t dev:2 'pytest --watch' C-m
-```
+    # Window 2: Tests (watch mode)
+    tmux new-window -t dev:2
+    tmux send-keys -t dev:2 'pytest --watch' C-m
 
 To check logs: `tmux capture-pane -t dev:[window] -p | tail -50`
-```
+~~~
 
 ---
 
@@ -1192,6 +1183,50 @@ cd ../project-new-api && claude
 git worktree remove ../project-bugfix-123
 git branch -d feature/bugfix-123
 ```
+
+---
+
+## RPI Pattern: Research → Plan → Implement
+
+A lightweight alternative to complex agent frameworks. Uses **extensive skills for planning** and **generic Haiku subagents for implementation**.
+
+### Why RPI?
+
+When >40% of context window fills up, model performance degrades ("Dumb Zone"). RPI prevents this through **Frequent Intentional Compaction** - fresh context for each phase.
+
+### The Three Phases
+
+| Phase | Model | Output | Purpose |
+|-------|-------|--------|---------|
+| **Research** | Sonnet + Haiku searchers | `research.md` (~200 lines) | Understand codebase without writing code |
+| **Plan** | Sonnet/Opus + skills | `implementation_plan.md` | Convert research into atomic tasks |
+| **Implement** | Haiku workers | Working code | Execute plan mechanically |
+
+### Architecture
+
+```
+Research Phase:
+  Sonnet orchestrator → 3 parallel Haiku searchers → compacted research.md
+
+Plan Phase:
+  Fresh context + research.md + skills → implementation_plan.md
+
+Implement Phase:
+  Haiku workers (one per task) → Sonnet verifier → next task
+```
+
+### Key Principles
+
+1. **Skills for planning** - Load rich context (project conventions, patterns, examples) during research/planning
+2. **Generic agents for implementation** - Haiku workers follow explicit instructions; don't need extensive context
+3. **Compact between phases** - Each phase starts fresh with only the previous phase's artifact
+4. **Human review at high leverage** - Review research.md (~200 lines) prevents 1000s of bad code lines
+
+### Cost Efficiency
+
+Haiku delivers 90% of Sonnet's agentic coding performance at 3x cost savings. Use Sonnet/Opus for thinking, Haiku for doing.
+
+**Reference:** [12-Factor Agents](https://github.com/humanlayer/12-factor-agents) by Dex Horthy
 
 ---
 
