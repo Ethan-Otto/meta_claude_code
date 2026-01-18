@@ -851,6 +851,23 @@ When creating a new API route:
 | `PreToolUse` | Before tool execution |
 | `PostToolUse` | After tool execution |
 
+### Matchers
+
+Filter which tools trigger hooks using the `matcher` field:
+
+**Matcher syntax:**
+- Empty string `""` or `"*"` - Matches all tools
+- Tool name - Exact match: `"Bash"`, `"Write"`, `"Task"`
+- Regex - Pattern match: `"Edit|Write"`, `"mcp__memory__.*"`
+
+**Common matchers:**
+- `"Bash"` - Shell commands
+- `"Task"` - All subagent invocations
+- `"Task(agent-name)"` - Specific agent (use in permissions, not matchers)
+- `"Write"`, `"Edit"`, `"Read"` - File operations
+
+**Matcher applies only to:** `PreToolUse`, `PostToolUse`, `PermissionRequest`. For `Stop` and `Notification` events, use empty string.
+
 ### Notifications + Sound (macOS)
 
 Install: `brew install terminal-notifier`
