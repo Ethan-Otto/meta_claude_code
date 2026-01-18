@@ -615,6 +615,7 @@ Built-in commands you can run during a session. Type `/` to see all available co
 | `/permissions` | Pre-allow bash commands to reduce prompts |
 | `/sandbox` | Enable OS-level sandboxing for auto-approved operations |
 | `/config` | View and modify Claude Code settings |
+| `/statusline` | Configure terminal status line (project, branch, context %) |
 | `/login` | Authenticate with Anthropic |
 | `/logout` | Sign out of current session |
 
