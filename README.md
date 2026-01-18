@@ -26,6 +26,7 @@ A collection of best practices, templates, and configuration patterns for gettin
 - [LSP Integration](#lsp-integration)
 
 **Development Workflows**
+- [Workflow Patterns](#workflow-patterns)
 - [RPI Pattern: Research → Plan → Implement](#rpi-pattern-research--plan--implement)
 - [Workflow: Plan → Implement → Test](#workflow-plan--implement--test)
 - [Testing](#testing)
@@ -1286,6 +1287,141 @@ Ensure your project has proper config files for LSP to work:
 | TypeScript | `tsconfig.json` |
 | Rust | `Cargo.toml` |
 | Go | `go.mod` |
+
+---
+
+## Workflow Patterns
+
+Generic patterns for orchestrating agents. All patterns improve through: (1) more agents in parallel, (2) fewer human iterations, (3) more power per agent, (4) longer agent runtime.
+
+### 1. Parallel Agents
+
+Duplicate the same prompt across multiple agents running simultaneously.
+
+```
+                    ┌─────────┐
+                ┌──▶│ Agent 1 │──┐
+                │   └─────────┘  │
+┌────────┐      │   ┌─────────┐  │      ┌─────────┐
+│ Prompt │──────┼──▶│ Agent 2 │──┼─────▶│ Results │
+└────────┘      │   └─────────┘  │      └─────────┘
+                │   ┌─────────┐  │
+                └──▶│ Agent 3 │──┘
+                    └─────────┘
+```
+
+**Use when:** Task can be split into independent chunks, or you want multiple solutions to compare.
+
+**Examples:**
+- Search 3 different parts of codebase simultaneously
+- Generate 3 implementations, pick the best
+- Run tests across multiple environments
+
+### 2. Human-Agent Iteration
+
+Human prompts, agent works, human reviews and iterates until approval.
+
+```
+┌───────────────────────────────────────────────────┐
+│                                                   │
+│   ┌───────┐      ┌───────┐      ┌──────────┐     │
+└──▶│ Human │─────▶│ Agent │─────▶│ Review   │─────┘
+    │Prompt │      │ Work  │      │ Approve? │
+    └───────┘      └───────┘      └────┬─────┘
+                                       │ Yes
+                                       ▼
+                                 ┌──────────┐
+                                 │ Complete │
+                                 └──────────┘
+```
+
+**Use when:** Task requires judgment, creativity, or human domain knowledge.
+
+**Examples:**
+- Iterating on a design until it meets requirements
+- Refining a PR until it passes code review
+- Debugging with human guidance
+
+### 3. Parallel + Fusion
+
+Parallel agents execute, results are fused by a review agent, human decides next step.
+
+```
+                    ┌─────────┐
+                ┌──▶│ Agent 1 │──┐
+                │   └─────────┘  │
+┌────────┐      │   ┌─────────┐  │      ┌────────┐      ┌───────┐
+│ Human  │──────┼──▶│ Agent 2 │──┼─────▶│ Fusion │─────▶│ Human │───▶ Next
+│ Prompt │      │   └─────────┘  │      │ Agent  │      │Review │
+└────────┘      │   ┌─────────┐  │      └────────┘      └───────┘
+                └──▶│ Agent 3 │──┘
+                    └─────────┘
+```
+
+**Use when:** Multiple perspectives needed, then synthesis and human judgment.
+
+**Examples:**
+- 3 agents research different approaches, fusion agent summarizes trade-offs
+- Parallel code reviews merged into single report
+- Multiple implementations compared and ranked
+
+### 4. Orchestrator
+
+A master agent that kicks off and coordinates other patterns.
+
+```
+                              ┌─────────────┐
+                         ┌───▶│ Pattern 1   │
+                         │    │ (Parallel)  │
+┌────────┐    ┌──────────┴┐   └─────────────┘
+│ Human  │───▶│Orchestrator│
+│ Prompt │    │   Agent    │   ┌─────────────┐
+└────────┘    └──────────┬┘   │ Pattern 2   │
+                         └───▶│ (Iteration) │
+                              └─────────────┘
+```
+
+**Use when:** Complex multi-phase work requiring different strategies per phase.
+
+**Examples:**
+- Research phase (parallel) → Planning phase (iteration) → Implementation (parallel)
+- Orchestrator decides which pattern based on task type
+- Multi-repo changes coordinated across teams
+
+### 5. Ralph Loop
+
+Agent works toward PRD, self-verifies, continues if incomplete (up to X iterations).
+
+```
+┌─────────────────────────────────────────────┐
+│                                             │
+│   ┌───────┐      ┌───────┐      ┌───────┐  │
+└──▶│ Agent │─────▶│Verify │─────▶│ Pass? │──┘ No (up to X times)
+    │ Work  │      │vs PRD │      └───┬───┘
+    └───────┘      └───────┘          │ Yes
+                                      ▼
+                                ┌──────────┐
+                                │ Complete │
+                                └──────────┘
+```
+
+**Use when:** Clear acceptance criteria, mechanical work, agent can self-evaluate.
+
+**Examples:**
+- "All tests must pass" - agent keeps fixing until green
+- "Implement all items in spec" - agent checks off each item
+- "Build compiles with no warnings" - agent iterates until clean
+
+See [Ralph Loop plugin](#ralph-loop) for implementation.
+
+### Improving Any Pattern
+
+| Lever | How It Helps |
+|-------|--------------|
+| More parallel agents | Faster completion, broader exploration |
+| Fewer human iterations | Less waiting, more autonomy |
+| More power per agent | Each agent accomplishes more per turn |
+| Longer runtime | Agents can tackle bigger chunks |
 
 ---
 
