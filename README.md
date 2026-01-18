@@ -1326,7 +1326,7 @@ Human and agent go back and forth until either decides work is done.
         │                  │
         ▼                  │
     ┌───────┐      ┌───────┐
-    │ Human │◀────▶│ Agent │
+    │ Human │─────▶│ Agent │
     └───┬───┘      └───────┘
         │ Done
         ▼
