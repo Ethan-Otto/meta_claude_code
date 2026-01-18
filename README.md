@@ -591,13 +591,42 @@ Built-in commands you can run during a session. Type `/` to see all available co
 | `/help` | List all commands (built-in + custom + MCP) |
 | `/init` | Scan project and generate CLAUDE.md |
 | `/compact` | Summarize conversation to free up context |
-| `/resume` | resume's a previously existed session, or takes the conversation back to previous point
+| `/resume` | Resume a previous session or restore conversation state |
 | `/clear` | Wipe conversation completely (fresh start) |
 | `/context` | Show token usage (like disk space for your session) |
 | `/rewind` | Roll back conversation and/or code to earlier state |
 | `/hooks` | Configure hooks interactively |
 | `/vim` | Toggle vim keybindings |
 | `/theme` | Change appearance |
+
+### Extension Commands
+
+| Command | What It Does |
+|---------|--------------|
+| `/plugins` | List, install, uninstall, and manage plugins |
+| `/skills` | List available skills and their descriptions |
+| `/mcp` | Manage MCP servers (list, add, remove, restart) |
+| `/model` | Switch between models (Opus, Sonnet, Haiku) |
+
+### Configuration Commands
+
+| Command | What It Does |
+|---------|--------------|
+| `/permissions` | Pre-allow bash commands to reduce prompts |
+| `/sandbox` | Enable OS-level sandboxing for auto-approved operations |
+| `/config` | View and modify Claude Code settings |
+| `/login` | Authenticate with Anthropic |
+| `/logout` | Sign out of current session |
+
+### Diagnostic Commands
+
+| Command | What It Does |
+|---------|--------------|
+| `/doctor` | Diagnose common issues and check configuration |
+| `/cost` | Show token/cost usage for current session |
+| `/memory` | Show what Claude remembers (CLAUDE.md, rules, etc.) |
+| `/bug` | Report a bug to the Claude Code team |
+| `/status` | Show current session status and settings |
 
 ### /compact vs /clear
 
