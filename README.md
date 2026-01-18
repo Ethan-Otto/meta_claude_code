@@ -2,6 +2,57 @@
 
 A collection of best practices, templates, and configuration patterns for getting the most out of Claude Code.
 
+## Table of Contents
+
+**Getting Started**
+- [Quick Start Principles](#quick-start-principles)
+- [Recommended Tooling](#recommended-tooling)
+- [Common Project Structures](#common-project-structures)
+- [Style](#style)
+- [Security](#security)
+
+**Configuration**
+- [CLAUDE.md Configuration](#claudemd-configuration)
+- [Settings.json Configuration](#settingsjson-configuration)
+
+**Commands & Customization**
+- [Slash Commands](#slash-commands)
+- [Custom Slash Commands](#custom-slash-commands)
+- [Skills System](#skills-system)
+- [Hooks](#hooks)
+- [Status Line](#status-line)
+- [Plugins](#plugins)
+- [LSP Integration](#lsp-integration)
+
+**Development Workflows**
+- [RPI Pattern: Research → Plan → Implement](#rpi-pattern-research--plan--implement)
+- [Workflow: Plan → Implement → Test](#workflow-plan--implement--test)
+- [Testing](#testing)
+- [Test-Driven Development Setup](#test-driven-development-setup)
+- [Context Management](#context-management)
+
+**Version Control**
+- [Git Basics](#git-basics)
+- [GitHub CLI (gh)](#github-cli-gh)
+- [GitLab CLI (glab)](#gitlab-cli-glab)
+- [Git Worktrees for Parallel Work](#git-worktrees-for-parallel-work)
+
+**UI Development**
+- [shadcn/ui](#shadcnui)
+
+**Environment & Integrations**
+- [Tmux Development Setup](#tmux-development-setup)
+- [MCP Database Configuration](#mcp-database-configuration)
+
+**Interfaces**
+- [VS Code Extension](#vs-code-extension)
+- [Claude Desktop](#claude-desktop)
+
+**Reference**
+- [Sources](#sources)
+
+---
+
 ## Quick Start Principles
 
 1. **Use mature tech stacks** - LLMs perform better with code patterns they've seen extensively in training data (React, FastAPI, Python, Express, etc.)
@@ -83,6 +134,108 @@ bunx biome check --write .
 | Node/TS | Bun | Biome | 20-30x faster, all-in-one |
 | Rust | cargo | rustfmt + clippy | Built-in |
 | Go | go mod | gofmt + golangci-lint | Built-in |
+
+---
+
+## Common Project Structures
+
+### Frontend/Backend Web App
+
+```
+project/
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # React/Vue components
+│   │   ├── pages/         # Page components
+│   │   ├── hooks/         # Custom hooks
+│   │   ├── services/      # API clients
+│   │   ├── types/         # TypeScript types
+│   │   └── utils/         # Helper functions
+│   ├── public/
+│   ├── package.json
+│   └── tsconfig.json
+├── backend/
+│   ├── src/
+│   │   ├── api/           # Route handlers
+│   │   ├── models/        # Database models
+│   │   ├── services/      # Business logic
+│   │   ├── schemas/       # Pydantic/validation
+│   │   └── utils/         # Helpers
+│   ├── tests/
+│   ├── requirements.txt
+│   └── main.py
+├── .claude/
+│   ├── CLAUDE.md
+│   └── rules/
+├── docker-compose.yml
+└── README.md
+```
+
+### Statistical Analysis Workflow
+
+```
+project/
+├── data/
+│   ├── raw/               # Original, immutable
+│   ├── processed/         # Cleaned, transformed
+│   └── external/          # Third-party sources
+├── src/
+│   ├── data/              # Data handling
+│   │   ├── loaders.py     # Read from sources
+│   │   ├── cleaners.py    # Validation, cleaning
+│   │   └── transforms.py  # Feature engineering
+│   ├── experiments/       # Analysis code
+│   │   ├── models.py      # Statistical models
+│   │   ├── runners.py     # Experiment execution
+│   │   └── metrics.py     # Evaluation functions
+│   └── graphics/          # Visualization
+│       ├── plots.py       # Plot generators
+│       ├── themes.py      # Style configs
+│       └── export.py      # Save to file
+├── experiments/
+│   └── 2025-01-15_analysis/
+│       ├── config.yml
+│       ├── results/
+│       └── figures/
+├── tests/
+│   ├── data/
+│   ├── experiments/
+│   └── graphics/
+├── .claude/
+│   ├── CLAUDE.md
+│   └── rules/
+├── pyproject.toml
+└── README.md
+```
+
+### Data Pipeline / ETL
+
+```
+project/
+├── pipelines/
+│   ├── extract/           # Source connectors
+│   ├── transform/         # Data transformations
+│   └── load/              # Destination loaders
+├── dags/                  # Airflow/orchestration DAGs
+├── schemas/
+│   ├── source/            # Source schemas
+│   └── target/            # Target schemas
+├── sql/
+│   ├── staging/           # Staging table DDL
+│   ├── transforms/        # SQL transformations
+│   └── marts/             # Data mart definitions
+├── tests/
+│   ├── unit/              # Unit tests
+│   └── integration/       # Pipeline integration tests
+├── config/
+│   ├── connections.yml    # Connection configs (no secrets)
+│   └── pipelines.yml      # Pipeline definitions
+├── .claude/
+│   ├── CLAUDE.md
+│   └── rules/
+├── docker-compose.yml
+└── README.md
+```
 
 ---
 
@@ -240,108 +393,6 @@ variables:
 test:
   script:
     - python app.py  # No op run needed
-```
-
----
-
-## Common Project Structures
-
-### Frontend/Backend Web App
-
-```
-project/
-├── frontend/
-│   ├── src/
-│   │   ├── components/    # React/Vue components
-│   │   ├── pages/         # Page components
-│   │   ├── hooks/         # Custom hooks
-│   │   ├── services/      # API clients
-│   │   ├── types/         # TypeScript types
-│   │   └── utils/         # Helper functions
-│   ├── public/
-│   ├── package.json
-│   └── tsconfig.json
-├── backend/
-│   ├── src/
-│   │   ├── api/           # Route handlers
-│   │   ├── models/        # Database models
-│   │   ├── services/      # Business logic
-│   │   ├── schemas/       # Pydantic/validation
-│   │   └── utils/         # Helpers
-│   ├── tests/
-│   ├── requirements.txt
-│   └── main.py
-├── .claude/
-│   ├── CLAUDE.md
-│   └── rules/
-├── docker-compose.yml
-└── README.md
-```
-
-### Statistical Analysis Workflow
-
-```
-project/
-├── data/
-│   ├── raw/               # Original, immutable
-│   ├── processed/         # Cleaned, transformed
-│   └── external/          # Third-party sources
-├── src/
-│   ├── data/              # Data handling
-│   │   ├── loaders.py     # Read from sources
-│   │   ├── cleaners.py    # Validation, cleaning
-│   │   └── transforms.py  # Feature engineering
-│   ├── experiments/       # Analysis code
-│   │   ├── models.py      # Statistical models
-│   │   ├── runners.py     # Experiment execution
-│   │   └── metrics.py     # Evaluation functions
-│   └── graphics/          # Visualization
-│       ├── plots.py       # Plot generators
-│       ├── themes.py      # Style configs
-│       └── export.py      # Save to file
-├── experiments/
-│   └── 2025-01-15_analysis/
-│       ├── config.yml
-│       ├── results/
-│       └── figures/
-├── tests/
-│   ├── data/
-│   ├── experiments/
-│   └── graphics/
-├── .claude/
-│   ├── CLAUDE.md
-│   └── rules/
-├── pyproject.toml
-└── README.md
-```
-
-### Data Pipeline / ETL
-
-```
-project/
-├── pipelines/
-│   ├── extract/           # Source connectors
-│   ├── transform/         # Data transformations
-│   └── load/              # Destination loaders
-├── dags/                  # Airflow/orchestration DAGs
-├── schemas/
-│   ├── source/            # Source schemas
-│   └── target/            # Target schemas
-├── sql/
-│   ├── staging/           # Staging table DDL
-│   ├── transforms/        # SQL transformations
-│   └── marts/             # Data mart definitions
-├── tests/
-│   ├── unit/              # Unit tests
-│   └── integration/       # Pipeline integration tests
-├── config/
-│   ├── connections.yml    # Connection configs (no secrets)
-│   └── pipelines.yml      # Pipeline definitions
-├── .claude/
-│   ├── CLAUDE.md
-│   └── rules/
-├── docker-compose.yml
-└── README.md
 ```
 
 ---
@@ -527,7 +578,6 @@ Configure permissions and tool access. See [`examples/settings.json`](examples/s
 ]
 ```
 
-
 ---
 
 ## Slash Commands
@@ -623,6 +673,598 @@ Use pytest with descriptive test names.
 | `/explain` | Explain code to a junior dev |
 
 Community commands: [wshobson/commands](https://github.com/wshobson/commands) (1.7k stars)
+
+---
+
+## Skills System
+
+Skills are reusable instruction sets for common patterns. Store them in `.claude/skills/`.
+
+### Example: API Route Skill
+
+`.claude/skills/api-route.md`:
+~~~markdown
+# Creating API Routes
+
+When creating a new API route:
+
+1. Create handler in `src/api/routes/`
+2. Add request/response models in `src/models/`
+3. Register route in `src/api/router.py`
+4. Write tests in `tests/api/`
+
+## File Structure
+
+    src/api/routes/[resource].py    # Route handlers
+    src/models/[resource].py        # Pydantic models
+    tests/api/test_[resource].py    # Route tests
+
+## Template
+
+    """
+    [resource].py
+    Purpose: API endpoints for [resource] operations
+    """
+    from fastapi import APIRouter, Depends
+    from src.models.[resource] import [Resource]Request, [Resource]Response
+
+    router = APIRouter(prefix="/[resource]", tags=["[resource]"])
+
+    @router.get("/")
+    async def list_[resources]() -> list[[Resource]Response]:
+        pass
+
+    @router.post("/")
+    async def create_[resource](data: [Resource]Request) -> [Resource]Response:
+        pass
+~~~
+
+### Example: React Component Skill
+
+`.claude/skills/react-component.md`:
+~~~markdown
+# Creating React Components
+
+## Structure
+
+    src/components/[ComponentName]/
+    ├── index.tsx           # Main component
+    ├── [ComponentName].test.tsx  # Tests
+    └── types.ts            # TypeScript interfaces
+
+## Template
+
+    /**
+     * [ComponentName].tsx
+     * Purpose: [What this component renders]
+     */
+    import { FC } from 'react';
+    import { [ComponentName]Props } from './types';
+
+    export const [ComponentName]: FC<[ComponentName]Props> = ({ ...props }) => {
+      return (
+        <div>
+          {/* Component content */}
+        </div>
+      );
+    };
+~~~
+
+---
+
+## Hooks
+
+### Hook Events
+
+| Event | When It Fires |
+|-------|---------------|
+| `Stop` | Claude finishes responding |
+| `Notification` | Claude needs user input |
+| `PreToolUse` | Before tool execution |
+| `PostToolUse` | After tool execution |
+
+### Notifications + Sound (macOS)
+
+Install: `brew install terminal-notifier`
+
+Add to `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -message 'Claude finished' -sound default"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -message 'Claude needs input' -sound Basso"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Sound Only (macOS)
+
+Add to `~/.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Other macOS sounds: `Ping.aiff`, `Pop.aiff`, `Purr.aiff`, `Submarine.aiff`
+
+### Notifications + Sound (Windows)
+
+Add to `~/.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -c \"[Windows.UI.Notifications.ToastNotificationManager,Windows.UI.Notifications,ContentType=WindowsRuntime]|Out-Null;$x='<toast><visual><binding template=\\\"ToastGeneric\\\"><text>Claude finished</text></binding></visual><audio src=\\\"ms-winsoundevent:Notification.Default\\\"/></toast>';$d=[Windows.Data.Xml.Dom.XmlDocument]::New();$d.LoadXml($x);[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Claude').Show($d)\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -c \"[Windows.UI.Notifications.ToastNotificationManager,Windows.UI.Notifications,ContentType=WindowsRuntime]|Out-Null;$x='<toast><visual><binding template=\\\"ToastGeneric\\\"><text>Claude needs input</text></binding></visual><audio src=\\\"ms-winsoundevent:Notification.IM\\\"/></toast>';$d=[Windows.Data.Xml.Dom.XmlDocument]::New();$d.LoadXml($x);[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Claude').Show($d)\""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Works on default Windows PowerShell. No extra installs needed.
+
+### Sound Only (Windows)
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -c \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\notify.wav').PlaySync()\""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Other sounds: `chimes.wav`, `ding.wav`, `tada.wav`
+
+### Sound Only (Linux)
+
+Add to `~/.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "paplay /usr/share/sounds/freedesktop/stereo/complete.oga"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Quality Enforcement Hook
+
+`.claude/hooks/post-tool.sh`:
+```bash
+#!/bin/bash
+# Run after Claude modifies files
+
+if git diff --name-only | grep -q "\.py$"; then
+  echo "Running Python checks..."
+  python -m py_compile $(git diff --name-only | grep "\.py$")
+fi
+
+if git diff --name-only | grep -q "\.tsx\?$"; then
+  echo "Running TypeScript checks..."
+  npx tsc --noEmit
+fi
+```
+
+**Note:** `Stop` fires every time Claude pauses, not just on task completion. Occasional extra notifications are normal.
+
+---
+
+## Status Line
+
+Display project, git branch, and context usage: `claude_meta (main) [65%]`
+
+```
+/statusline show project name, git branch, and context percentage
+```
+
+Claude Code generates the script and config automatically.
+
+---
+
+## Plugins
+
+### Superpowers
+
+[Superpowers](https://github.com/obra/superpowers) enforces structured development workflows. Instead of jumping straight to code, it forces a disciplined process: understand → design → plan → execute → review.
+
+**Install:**
+```bash
+/plugin marketplace add obra/superpowers-marketplace
+/plugin install superpowers@superpowers-marketplace
+```
+
+#### The Full Workflow
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ BRAINSTORM  │ -> │   DESIGN    │ -> │    PLAN     │ -> │   EXECUTE   │ -> │   REVIEW    │
+│             │    │             │    │             │    │             │    │             │
+│ Clarify     │    │ Architecture│    │ Bite-sized  │    │ Subagent    │    │ Validate    │
+│ requirements│    │ Trade-offs  │    │ TDD tasks   │    │ per task    │    │ against     │
+│ one at a    │    │ presented   │    │ 2-5 min     │    │ with review │    │ plan        │
+│ time        │    │ in sections │    │ each        │    │             │    │             │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+```
+
+#### Phase 1: Brainstorming (`/superpowers:brainstorm`)
+
+Claude doesn't jump into code. It asks questions **one at a time** to understand what you're building:
+
+- Checks project context (files, docs, commits)
+- Asks clarifying questions (multiple choice preferred)
+- Proposes 2-3 approaches with trade-offs
+- Presents design in **200-300 word sections** for validation
+- Saves approved design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+
+**Key principle:** One question per message. No overwhelming lists.
+
+#### Phase 2: Writing Plans (`/superpowers:write-plan`)
+
+Plans are written for "an enthusiastic junior engineer with poor taste, no judgement, and no project context." Every task is **2-5 minutes** and includes:
+
+```markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+**Step 1: Write the failing test**
+[Complete test code]
+
+**Step 2: Run test to verify it fails**
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+**Step 3: Write minimal implementation**
+[Complete implementation code]
+
+**Step 4: Run test to verify it passes**
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+**Step 5: Commit**
+```
+
+**Requirements:**
+- Exact file paths always
+- Complete code (not "add validation here")
+- Exact commands with expected output
+- DRY, YAGNI, TDD, frequent commits
+
+#### Phase 3: Execution (Two Options)
+
+**Option A: Subagent-Driven** (`/superpowers:subagent-driven-development`)
+- Fresh subagent dispatched per task
+- Two-stage review: spec compliance, then code quality
+- Fast iteration, stays in current session
+
+**Option B: Batch Execution** (`/superpowers:execute-plan`)
+- Open separate session in worktree
+- Execute in batches with human checkpoints
+- Better for longer autonomous work
+
+#### Phase 4: Test-Driven Development (Enforced)
+
+**The Iron Law:** No production code without a failing test first.
+
+```
+RED          →    GREEN         →    REFACTOR
+Write test        Minimal code       Clean up
+Watch fail        Watch pass         Stay green
+```
+
+**If you wrote code before the test:** Delete it. Start over.
+
+| Rationalization | Reality |
+|-----------------|---------|
+| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
+| "I'll test after" | Tests passing immediately prove nothing. |
+| "Already manually tested" | Ad-hoc ≠ systematic. Can't re-run. |
+| "TDD will slow me down" | TDD faster than debugging in production. |
+
+**Verification checklist:**
+- [ ] Every function has a test
+- [ ] Watched each test fail before implementing
+- [ ] Wrote minimal code to pass
+- [ ] All tests pass
+- [ ] Output pristine (no warnings)
+
+#### Phase 5: Code Review (`/superpowers:requesting-code-review`)
+
+After each task:
+- Reviews against plan
+- Reports issues by severity
+- Critical issues block progress
+- Validates evidence of completion
+
+#### Supporting Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `using-git-worktrees` | Create isolated workspace on new branch |
+| `systematic-debugging` | 4-phase root cause process |
+| `verification-before-completion` | Ensure it's actually fixed |
+| `receiving-code-review` | Respond to feedback without blind agreement |
+| `finishing-a-development-branch` | Merge/PR decision workflow |
+
+#### Philosophy
+
+- **Test-Driven Development** - Write tests first, always
+- **Systematic over ad-hoc** - Process over guessing
+- **YAGNI** - You Aren't Gonna Need It
+- **Evidence over claims** - Verify before declaring success
+
+Read more: [Superpowers for Claude Code](https://blog.fsck.com/2025/10/09/superpowers/)
+
+### Frontend Design
+
+[Frontend Design](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design) generates distinctive, production-grade UIs that avoid generic AI aesthetics.
+
+**Install:**
+```bash
+/plugin marketplace add anthropics/claude-code
+/plugin install frontend-design@claude-code-plugins
+```
+
+Auto-activates for frontend work. Guides Claude toward bold, intentional design choices instead of cookie-cutter layouts with overused fonts and purple gradients.
+
+Design tones: brutally minimal, maximalist chaos, retro-futuristic, luxury/refined, playful, editorial, brutalist, art deco, soft/pastel, industrial.
+
+### Ralph Loop
+
+[Ralph Loop](https://github.com/frankbria/ralph-claude-code) runs Claude autonomously in a continuous loop until task completion. Named after Ralph Wiggum - perpetually confused, always making mistakes, but never stopping.
+
+**Install:**
+```bash
+/plugin marketplace add anthropics/claude-code
+/plugin install ralph-wiggum@claude-code-plugins
+```
+
+**Usage:**
+```bash
+/ralph-loop "<prompt>" --max-iterations 10
+/ralph-loop "<prompt>" --max-iterations 5 --completion-promise "All tests pass"
+/cancel-ralph  # Kill active loop
+```
+
+When Claude attempts to exit, Ralph re-invokes the prompt preserving context and file changes. Best for batch mechanical work with clear completion criteria. For judgment-heavy work, use normal conversational mode.
+
+**Windows note:** Requires `jq` installed first, or use WSL.
+
+### Document Skills (Office Files)
+
+Create and edit Excel, Word, PowerPoint, and PDF files. From [Anthropic's skills repo](https://github.com/anthropics/skills).
+
+**Install:**
+```bash
+/plugin marketplace add anthropics/skills
+/plugin install document-skills@anthropic-agent-skills
+```
+
+**Capabilities:**
+- **xlsx** - Create/edit spreadsheets with formulas, formatting, charts, pivot tables
+- **docx** - Create/edit Word docs with tracked changes, comments, formatting
+- **pptx** - Create/edit PowerPoint presentations
+- **pdf** - PDF manipulation, text extraction, merging
+
+Claude generates Python scripts at runtime to manipulate these files. You can also drag-and-drop xlsx/pptx files into Claude Code for analysis.
+
+---
+
+## LSP Integration
+
+Language Server Protocol provides Claude with code intelligence: diagnostics, type info, go-to-definition.
+
+### Enable in Claude Code
+
+```bash
+claude config set lsp.enabled true
+```
+
+### Common LSPs
+
+| Language | LSP | Install |
+|----------|-----|---------|
+| Python | Pyright | `npm i -g pyright` |
+| TypeScript | tsserver | Bundled with `typescript` |
+| Rust | rust-analyzer | `rustup component add rust-analyzer` |
+| Go | gopls | `go install golang.org/x/tools/gopls@latest` |
+
+### Benefits
+
+- Real-time error detection before running code
+- Type information without reading entire files
+- Faster navigation in large codebases
+
+### Project Setup
+
+Ensure your project has proper config files for LSP to work:
+
+| Language | Config File |
+|----------|-------------|
+| Python | `pyproject.toml` or `pyrightconfig.json` |
+| TypeScript | `tsconfig.json` |
+| Rust | `Cargo.toml` |
+| Go | `go.mod` |
+
+---
+
+## RPI Pattern: Research → Plan → Implement
+
+A lightweight alternative to complex agent frameworks. Uses **extensive skills for planning** and **generic Haiku subagents for implementation**.
+
+### Why RPI?
+
+When >40% of context window fills up, model performance degrades ("Dumb Zone"). RPI prevents this through **Frequent Intentional Compaction** - fresh context for each phase.
+
+### The Three Phases
+
+| Phase | Model | Output | Purpose |
+|-------|-------|--------|---------|
+| **Research** | Sonnet + Haiku searchers | `research.md` (~200 lines) | Understand codebase without writing code |
+| **Plan** | Sonnet/Opus + skills | `implementation_plan.md` | Convert research into atomic tasks |
+| **Implement** | Haiku workers | Working code | Execute plan mechanically |
+
+### Architecture
+
+```
+Research Phase:
+  Sonnet orchestrator → 3 parallel Haiku searchers → compacted research.md
+
+Plan Phase:
+  Fresh context + research.md + skills → implementation_plan.md
+
+Implement Phase:
+  Haiku workers (one per task) → Sonnet verifier → next task
+```
+
+### Key Principles
+
+1. **Skills for planning** - Load rich context (project conventions, patterns, examples) during research/planning
+2. **Generic agents for implementation** - Haiku workers follow explicit instructions; don't need extensive context
+3. **Compact between phases** - Each phase starts fresh with only the previous phase's artifact
+4. **Human review at high leverage** - Review research.md (~200 lines) prevents 1000s of bad code lines
+
+### Cost Efficiency
+
+Haiku delivers 90% of Sonnet's agentic coding performance at 3x cost savings. Use Sonnet/Opus for thinking, Haiku for doing.
+
+**Reference:** [12-Factor Agents](https://github.com/humanlayer/12-factor-agents) by Dex Horthy
+
+---
+
+## Workflow: Plan → Implement → Test
+
+### 1. Planning Phase
+
+```
+You: "I want to add user authentication. Before writing code,
+     ask me questions about the requirements and create a plan."
+
+Claude: [Asks clarifying questions one at a time]
+Claude: [Creates detailed implementation plan with TDD steps]
+Claude: [Saves plan to docs/plans/YYYY-MM-DD-auth.md]
+```
+
+### 2. Implementation (Subagent-Driven)
+
+Once plan is approved, use subagents for autonomous execution with review checkpoints:
+
+```
+You: "Execute the plan using subagent-driven development."
+
+Claude: [Dispatches fresh subagent per task]
+Claude: [Reviews each task: spec compliance, then code quality]
+Claude: [Continues through plan with built-in review gates]
+```
+
+**Why subagents over bypass:**
+- Fresh context per task (no accumulated confusion)
+- Built-in two-stage review between tasks
+- Automatic checkpoints for human oversight
+- Stays on plan (subagents follow spec, not whims)
+
+**Enable sandbox for fewer prompts:**
+```
+/sandbox
+```
+
+Sandbox auto-approves operations within project boundaries. Reduces permission prompts by ~84%.
+
+### 3. Test & Commit
+
+```
+You: "Run all tests and fix any failures. Then commit."
+
+Claude: [Runs test suite]
+Claude: [Fixes failures using TDD - test first, then fix]
+Claude: [Commits with descriptive message]
+```
+
+### Alternative: Batch Execution
+
+For longer autonomous work, use `/superpowers:execute-plan` in a separate session:
+
+```
+You: [Opens new terminal in worktree]
+You: "Execute docs/plans/YYYY-MM-DD-auth.md"
+
+Claude: [Executes in batches with checkpoints]
+Claude: [Pauses for human review between batches]
+```
 
 ---
 
@@ -1142,181 +1784,6 @@ def test_uppercase(input, expected):
 
 ---
 
-## Skills System
-
-Skills are reusable instruction sets for common patterns. Store them in `.claude/skills/`.
-
-### Example: API Route Skill
-
-`.claude/skills/api-route.md`:
-~~~markdown
-# Creating API Routes
-
-When creating a new API route:
-
-1. Create handler in `src/api/routes/`
-2. Add request/response models in `src/models/`
-3. Register route in `src/api/router.py`
-4. Write tests in `tests/api/`
-
-## File Structure
-
-    src/api/routes/[resource].py    # Route handlers
-    src/models/[resource].py        # Pydantic models
-    tests/api/test_[resource].py    # Route tests
-
-## Template
-
-    """
-    [resource].py
-    Purpose: API endpoints for [resource] operations
-    """
-    from fastapi import APIRouter, Depends
-    from src.models.[resource] import [Resource]Request, [Resource]Response
-
-    router = APIRouter(prefix="/[resource]", tags=["[resource]"])
-
-    @router.get("/")
-    async def list_[resources]() -> list[[Resource]Response]:
-        pass
-
-    @router.post("/")
-    async def create_[resource](data: [Resource]Request) -> [Resource]Response:
-        pass
-~~~
-
-### Example: React Component Skill
-
-`.claude/skills/react-component.md`:
-~~~markdown
-# Creating React Components
-
-## Structure
-
-    src/components/[ComponentName]/
-    ├── index.tsx           # Main component
-    ├── [ComponentName].test.tsx  # Tests
-    └── types.ts            # TypeScript interfaces
-
-## Template
-
-    /**
-     * [ComponentName].tsx
-     * Purpose: [What this component renders]
-     */
-    import { FC } from 'react';
-    import { [ComponentName]Props } from './types';
-
-    export const [ComponentName]: FC<[ComponentName]Props> = ({ ...props }) => {
-      return (
-        <div>
-          {/* Component content */}
-        </div>
-      );
-    };
-~~~
-
----
-
-## shadcn/ui
-
-Copy-paste component library for React + Tailwind. The default UI library for AI coding.
-
-**Docs:** https://ui.shadcn.com/docs/components
-
-### Setup
-
-```bash
-npx shadcn@latest init
-```
-
-### Components
-
-```bash
-npx shadcn@latest add button card dialog dropdown-menu input
-npx shadcn@latest add table tabs toast tooltip
-```
-
-Full list: https://ui.shadcn.com/docs/components
-
-### Icons (Lucide)
-
-Bundled with shadcn. 1500+ icons.
-
-```tsx
-import { Search, Settings, User, ChevronRight, X } from "lucide-react"
-
-<Button><Search className="h-4 w-4 mr-2" /> Search</Button>
-```
-
-Browse: https://lucide.dev/icons
-
-### Charts (Recharts)
-
-```bash
-npx shadcn@latest add chart
-```
-
-Built on Recharts. Types: area, bar, line, pie, radar, radial.
-
-Docs: https://ui.shadcn.com/docs/components/chart
-
-### Blocks
-
-Pre-built page sections (auth, dashboard, settings, etc.):
-
-```bash
-npx shadcn@latest add login-01
-npx shadcn@latest add dashboard-01
-npx shadcn@latest add sidebar-01
-```
-
-Browse: https://ui.shadcn.com/blocks
-
-### Themes
-
-5 built-in styles: default, new-york, vega, nova, maia
-
-```bash
-npx shadcn@latest init --style new-york
-```
-
-Theme generator: https://ui.shadcn.com/themes
-
----
-
-## MCP Database Configuration
-
-Give Claude read-only database access for autonomous debugging.
-
-### Setup `.mcp.json`
-
-```json
-{
-  "mcpServers": {
-    "postgres-readonly": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
-      "env": {
-        "POSTGRES_CONNECTION_STRING": "postgresql://readonly_user:password@localhost:5432/mydb"
-      }
-    }
-  }
-}
-```
-
-### Create Read-Only Database User
-
-```sql
-CREATE USER readonly_user WITH PASSWORD 'password';
-GRANT CONNECT ON DATABASE mydb TO readonly_user;
-GRANT USAGE ON SCHEMA public TO readonly_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly_user;
-```
-
----
-
 ## Test-Driven Development Setup
 
 ### pytest with testcontainers
@@ -1361,31 +1828,40 @@ jobs:
 
 ---
 
-## Tmux Development Setup
+## Context Management
 
-Add to your `CLAUDE.md`:
+### Handoff Documents
 
-~~~markdown
-## Development Environment
+For long-running tasks, create handoff docs to preserve context:
 
-Run services in tmux for log access:
+```markdown
+# Handoff: [Feature Name]
 
-    # Start tmux session
-    tmux new-session -d -s dev
+## Goal
+[What we're trying to accomplish]
 
-    # Window 0: Frontend
-    tmux send-keys -t dev:0 'npm run dev' C-m
+## Completed
+- [x] Task 1
+- [x] Task 2
 
-    # Window 1: Backend
-    tmux new-window -t dev:1
-    tmux send-keys -t dev:1 'uvicorn main:app --reload' C-m
+## Current State
+[Where things stand now]
 
-    # Window 2: Tests (watch mode)
-    tmux new-window -t dev:2
-    tmux send-keys -t dev:2 'pytest --watch' C-m
+## Blockers
+[Any issues encountered]
 
-To check logs: `tmux capture-pane -t dev:[window] -p | tail -50`
-~~~
+## Next Steps
+1. [Next task]
+2. [Following task]
+
+## Key Decisions Made
+- Decision 1: [rationale]
+- Decision 2: [rationale]
+```
+
+### Fresh Sessions
+
+Use `/clear` between unrelated tasks to reset context and improve performance.
 
 ---
 
@@ -1627,518 +2103,218 @@ git branch -d feature/bugfix-123
 
 ---
 
-## RPI Pattern: Research → Plan → Implement
+## shadcn/ui
 
-A lightweight alternative to complex agent frameworks. Uses **extensive skills for planning** and **generic Haiku subagents for implementation**.
+Copy-paste component library for React + Tailwind. The default UI library for AI coding.
 
-### Why RPI?
+**Docs:** https://ui.shadcn.com/docs/components
 
-When >40% of context window fills up, model performance degrades ("Dumb Zone"). RPI prevents this through **Frequent Intentional Compaction** - fresh context for each phase.
+### Setup
 
-### The Three Phases
-
-| Phase | Model | Output | Purpose |
-|-------|-------|--------|---------|
-| **Research** | Sonnet + Haiku searchers | `research.md` (~200 lines) | Understand codebase without writing code |
-| **Plan** | Sonnet/Opus + skills | `implementation_plan.md` | Convert research into atomic tasks |
-| **Implement** | Haiku workers | Working code | Execute plan mechanically |
-
-### Architecture
-
-```
-Research Phase:
-  Sonnet orchestrator → 3 parallel Haiku searchers → compacted research.md
-
-Plan Phase:
-  Fresh context + research.md + skills → implementation_plan.md
-
-Implement Phase:
-  Haiku workers (one per task) → Sonnet verifier → next task
+```bash
+npx shadcn@latest init
 ```
 
-### Key Principles
+### Components
 
-1. **Skills for planning** - Load rich context (project conventions, patterns, examples) during research/planning
-2. **Generic agents for implementation** - Haiku workers follow explicit instructions; don't need extensive context
-3. **Compact between phases** - Each phase starts fresh with only the previous phase's artifact
-4. **Human review at high leverage** - Review research.md (~200 lines) prevents 1000s of bad code lines
+```bash
+npx shadcn@latest add button card dialog dropdown-menu input
+npx shadcn@latest add table tabs toast tooltip
+```
 
-### Cost Efficiency
+Full list: https://ui.shadcn.com/docs/components
 
-Haiku delivers 90% of Sonnet's agentic coding performance at 3x cost savings. Use Sonnet/Opus for thinking, Haiku for doing.
+### Icons (Lucide)
 
-**Reference:** [12-Factor Agents](https://github.com/humanlayer/12-factor-agents) by Dex Horthy
+Bundled with shadcn. 1500+ icons.
+
+```tsx
+import { Search, Settings, User, ChevronRight, X } from "lucide-react"
+
+<Button><Search className="h-4 w-4 mr-2" /> Search</Button>
+```
+
+Browse: https://lucide.dev/icons
+
+### Charts (Recharts)
+
+```bash
+npx shadcn@latest add chart
+```
+
+Built on Recharts. Types: area, bar, line, pie, radar, radial.
+
+Docs: https://ui.shadcn.com/docs/components/chart
+
+### Blocks
+
+Pre-built page sections (auth, dashboard, settings, etc.):
+
+```bash
+npx shadcn@latest add login-01
+npx shadcn@latest add dashboard-01
+npx shadcn@latest add sidebar-01
+```
+
+Browse: https://ui.shadcn.com/blocks
+
+### Themes
+
+5 built-in styles: default, new-york, vega, nova, maia
+
+```bash
+npx shadcn@latest init --style new-york
+```
+
+Theme generator: https://ui.shadcn.com/themes
 
 ---
 
-## Workflow: Plan → Implement → Test
+## Tmux Development Setup
 
-### 1. Planning Phase
+### When Does Claude Code Need tmux?
 
-```
-You: "I want to add user authentication. Before writing code,
-     ask me questions about the requirements and create a plan."
+**The problem:** Claude can only read output from processes it can access. If your Flask server is running in a different terminal tab, Claude can't see the error logs.
 
-Claude: [Asks clarifying questions one at a time]
-Claude: [Creates detailed implementation plan with TDD steps]
-Claude: [Saves plan to docs/plans/YYYY-MM-DD-auth.md]
-```
+**Two solutions:**
 
-### 2. Implementation (Subagent-Driven)
+| Approach | How it works | Best for |
+|----------|--------------|----------|
+| Claude's background tasks | Claude runs `python app.py` with `run_in_background`, reads output later | Single session, Claude starts everything |
+| tmux | Processes run in tmux, Claude reads with `tmux capture-pane` | Persistent setup, you or scripts start processes |
 
-Once plan is approved, use subagents for autonomous execution with review checkpoints:
+**Use tmux when:**
+- You start your server *before* opening Claude (tmux was already running)
+- You want the server to survive `/clear` or starting a new Claude session
+- You SSH into a remote machine (tmux survives disconnects)
+- You have a startup script that launches multiple services
 
-```
-You: "Execute the plan using subagent-driven development."
+**Skip tmux when:**
+- Claude starts the server itself (just use background tasks)
+- You only need one process running
+- You're doing a quick debugging session
 
-Claude: [Dispatches fresh subagent per task]
-Claude: [Reviews each task: spec compliance, then code quality]
-Claude: [Continues through plan with built-in review gates]
-```
+### What is tmux?
 
-**Why subagents over bypass:**
-- Fresh context per task (no accumulated confusion)
-- Built-in two-stage review between tasks
-- Automatic checkpoints for human oversight
-- Stays on plan (subagents follow spec, not whims)
-
-**Enable sandbox for fewer prompts:**
-```
-/sandbox
-```
-
-Sandbox auto-approves operations within project boundaries. Reduces permission prompts by ~84%.
-
-### 3. Test & Commit
+**tmux** is a terminal multiplexer—terminal windows that Claude can read. The key command: `tmux capture-pane -t dev:0 -p` lets Claude see the output from window 0.
 
 ```
-You: "Run all tests and fix any failures. Then commit."
-
-Claude: [Runs test suite]
-Claude: [Fixes failures using TDD - test first, then fix]
-Claude: [Commits with descriptive message]
+┌─────────────────────────────────────────────────────┐
+│  Your Terminal                                      │
+│  ┌───────────────────────────────────────────────┐  │
+│  │  tmux session "dev"                           │  │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐          │  │
+│  │  │Window 0 │ │Window 1 │ │Window 2 │          │  │
+│  │  │ Server  │ │ Worker  │ │ Tests   │          │  │
+│  │  │ logs... │ │ logs... │ │ logs... │          │  │
+│  │  └─────────┘ └─────────┘ └─────────┘          │  │
+│  └───────────────────────────────────────────────┘  │
+│                                                     │
+│  Claude can read any of these windows!              │
+└─────────────────────────────────────────────────────┘
 ```
 
-### Alternative: Batch Execution
+### Python Example
 
-For longer autonomous work, use `/superpowers:execute-plan` in a separate session:
-
+**Step 1: Start a tmux session**
+```bash
+tmux new-session -d -s dev
 ```
-You: [Opens new terminal in worktree]
-You: "Execute docs/plans/YYYY-MM-DD-auth.md"
+This creates a session named "dev" running in the background (`-d` = detached).
 
-Claude: [Executes in batches with checkpoints]
-Claude: [Pauses for human review between batches]
+**Step 2: Run your Flask server in window 0**
+```bash
+tmux send-keys -t dev:0 'python app.py' C-m
 ```
+- `-t dev:0` = target session "dev", window 0
+- `C-m` = press Enter (C-m is tmux for "Ctrl+M" which equals Enter)
+
+**Step 3: Create window 1 and run Celery worker**
+```bash
+tmux new-window -t dev:1
+tmux send-keys -t dev:1 'celery -A tasks worker --loglevel=info' C-m
+```
+
+**Step 4: Create window 2 for tests**
+```bash
+tmux new-window -t dev:2
+tmux send-keys -t dev:2 'pytest --watch' C-m
+```
+
+### How Claude Reads the Logs
+
+When your server crashes, Claude can check what happened:
+
+```bash
+# See last 50 lines from server (window 0)
+tmux capture-pane -t dev:0 -p | tail -50
+
+# See last 50 lines from worker (window 1)
+tmux capture-pane -t dev:1 -p | tail -50
+```
+
+This is why tmux matters: Claude can actually see "TypeError: 'NoneType' object is not subscriptable" from your server logs and fix the bug.
+
+### Quick Reference
+
+| Command | What it does |
+|---------|--------------|
+| `tmux new-session -d -s dev` | Create background session named "dev" |
+| `tmux new-window -t dev:1` | Add window 1 to session "dev" |
+| `tmux send-keys -t dev:0 'cmd' C-m` | Run "cmd" in window 0 |
+| `tmux capture-pane -t dev:0 -p` | Get all text from window 0 |
+| `tmux attach -t dev` | Jump into the session (see it yourself) |
+| `tmux kill-session -t dev` | Stop everything and close session |
+
+### Add to CLAUDE.md
+
+Tell Claude how to start your dev environment:
+
+~~~markdown
+## Development Environment
+
+Start all services:
+```bash
+tmux new-session -d -s dev
+tmux send-keys -t dev:0 'python app.py' C-m
+tmux new-window -t dev:1
+tmux send-keys -t dev:1 'celery -A tasks worker --loglevel=info' C-m
+```
+
+Check logs: `tmux capture-pane -t dev:[0 or 1] -p | tail -50`
+~~~
 
 ---
 
-## Hooks
+## MCP Database Configuration
 
-### Hook Events
+Give Claude read-only database access for autonomous debugging.
 
-| Event | When It Fires |
-|-------|---------------|
-| `Stop` | Claude finishes responding |
-| `Notification` | Claude needs user input |
-| `PreToolUse` | Before tool execution |
-| `PostToolUse` | After tool execution |
-
-### Notifications + Sound (macOS)
-
-Install: `brew install terminal-notifier`
-
-Add to `~/.claude/settings.json`:
+### Setup `.mcp.json`
 
 ```json
 {
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "terminal-notifier -message 'Claude finished' -sound default"
-          }
-        ]
+  "mcpServers": {
+    "postgres-readonly": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://readonly_user:password@localhost:5432/mydb"
       }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "terminal-notifier -message 'Claude needs input' -sound Basso"
-          }
-        ]
-      }
-    ]
+    }
   }
 }
 ```
 
-### Sound Only (macOS)
+### Create Read-Only Database User
 
-Add to `~/.claude/settings.json`:
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "afplay /System/Library/Sounds/Glass.aiff"
-          }
-        ]
-      }
-    ]
-  }
-}
+```sql
+CREATE USER readonly_user WITH PASSWORD 'password';
+GRANT CONNECT ON DATABASE mydb TO readonly_user;
+GRANT USAGE ON SCHEMA public TO readonly_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly_user;
 ```
-
-Other macOS sounds: `Ping.aiff`, `Pop.aiff`, `Purr.aiff`, `Submarine.aiff`
-
-### Notifications + Sound (Windows)
-
-Add to `~/.claude/settings.json`:
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -c \"[Windows.UI.Notifications.ToastNotificationManager,Windows.UI.Notifications,ContentType=WindowsRuntime]|Out-Null;$x='<toast><visual><binding template=\\\"ToastGeneric\\\"><text>Claude finished</text></binding></visual><audio src=\\\"ms-winsoundevent:Notification.Default\\\"/></toast>';$d=[Windows.Data.Xml.Dom.XmlDocument]::New();$d.LoadXml($x);[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Claude').Show($d)\""
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -c \"[Windows.UI.Notifications.ToastNotificationManager,Windows.UI.Notifications,ContentType=WindowsRuntime]|Out-Null;$x='<toast><visual><binding template=\\\"ToastGeneric\\\"><text>Claude needs input</text></binding></visual><audio src=\\\"ms-winsoundevent:Notification.IM\\\"/></toast>';$d=[Windows.Data.Xml.Dom.XmlDocument]::New();$d.LoadXml($x);[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Claude').Show($d)\""
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-Works on default Windows PowerShell. No extra installs needed.
-
-### Sound Only (Windows)
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -c \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\notify.wav').PlaySync()\""
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-Other sounds: `chimes.wav`, `ding.wav`, `tada.wav`
-
-### Sound Only (Linux)
-
-Add to `~/.claude/settings.json`:
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "paplay /usr/share/sounds/freedesktop/stereo/complete.oga"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### Quality Enforcement Hook
-
-`.claude/hooks/post-tool.sh`:
-```bash
-#!/bin/bash
-# Run after Claude modifies files
-
-if git diff --name-only | grep -q "\.py$"; then
-  echo "Running Python checks..."
-  python -m py_compile $(git diff --name-only | grep "\.py$")
-fi
-
-if git diff --name-only | grep -q "\.tsx\?$"; then
-  echo "Running TypeScript checks..."
-  npx tsc --noEmit
-fi
-```
-
-**Note:** `Stop` fires every time Claude pauses, not just on task completion. Occasional extra notifications are normal.
-
----
-
-## Status Line
-
-Display project, git branch, and context usage: `claude_meta (main) [65%]`
-
-```
-/statusline show project name, git branch, and context percentage
-```
-
-Claude Code generates the script and config automatically.
-
----
-
-## Context Management
-
-### Handoff Documents
-
-For long-running tasks, create handoff docs to preserve context:
-
-```markdown
-# Handoff: [Feature Name]
-
-## Goal
-[What we're trying to accomplish]
-
-## Completed
-- [x] Task 1
-- [x] Task 2
-
-## Current State
-[Where things stand now]
-
-## Blockers
-[Any issues encountered]
-
-## Next Steps
-1. [Next task]
-2. [Following task]
-
-## Key Decisions Made
-- Decision 1: [rationale]
-- Decision 2: [rationale]
-```
-
-### Fresh Sessions
-
-Use `/clear` between unrelated tasks to reset context and improve performance.
-
----
-
-## Plugins
-
-### Superpowers
-
-[Superpowers](https://github.com/obra/superpowers) enforces structured development workflows. Instead of jumping straight to code, it forces a disciplined process: understand → design → plan → execute → review.
-
-**Install:**
-```bash
-/plugin marketplace add obra/superpowers-marketplace
-/plugin install superpowers@superpowers-marketplace
-```
-
-#### The Full Workflow
-
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ BRAINSTORM  │ -> │   DESIGN    │ -> │    PLAN     │ -> │   EXECUTE   │ -> │   REVIEW    │
-│             │    │             │    │             │    │             │    │             │
-│ Clarify     │    │ Architecture│    │ Bite-sized  │    │ Subagent    │    │ Validate    │
-│ requirements│    │ Trade-offs  │    │ TDD tasks   │    │ per task    │    │ against     │
-│ one at a    │    │ presented   │    │ 2-5 min     │    │ with review │    │ plan        │
-│ time        │    │ in sections │    │ each        │    │             │    │             │
-└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
-```
-
-#### Phase 1: Brainstorming (`/superpowers:brainstorm`)
-
-Claude doesn't jump into code. It asks questions **one at a time** to understand what you're building:
-
-- Checks project context (files, docs, commits)
-- Asks clarifying questions (multiple choice preferred)
-- Proposes 2-3 approaches with trade-offs
-- Presents design in **200-300 word sections** for validation
-- Saves approved design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-
-**Key principle:** One question per message. No overwhelming lists.
-
-#### Phase 2: Writing Plans (`/superpowers:write-plan`)
-
-Plans are written for "an enthusiastic junior engineer with poor taste, no judgement, and no project context." Every task is **2-5 minutes** and includes:
-
-```markdown
-### Task N: [Component Name]
-
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
-
-**Step 1: Write the failing test**
-[Complete test code]
-
-**Step 2: Run test to verify it fails**
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
-
-**Step 3: Write minimal implementation**
-[Complete implementation code]
-
-**Step 4: Run test to verify it passes**
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
-
-**Step 5: Commit**
-```
-
-**Requirements:**
-- Exact file paths always
-- Complete code (not "add validation here")
-- Exact commands with expected output
-- DRY, YAGNI, TDD, frequent commits
-
-#### Phase 3: Execution (Two Options)
-
-**Option A: Subagent-Driven** (`/superpowers:subagent-driven-development`)
-- Fresh subagent dispatched per task
-- Two-stage review: spec compliance, then code quality
-- Fast iteration, stays in current session
-
-**Option B: Batch Execution** (`/superpowers:execute-plan`)
-- Open separate session in worktree
-- Execute in batches with human checkpoints
-- Better for longer autonomous work
-
-#### Phase 4: Test-Driven Development (Enforced)
-
-**The Iron Law:** No production code without a failing test first.
-
-```
-RED          →    GREEN         →    REFACTOR
-Write test        Minimal code       Clean up
-Watch fail        Watch pass         Stay green
-```
-
-**If you wrote code before the test:** Delete it. Start over.
-
-| Rationalization | Reality |
-|-----------------|---------|
-| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
-| "I'll test after" | Tests passing immediately prove nothing. |
-| "Already manually tested" | Ad-hoc ≠ systematic. Can't re-run. |
-| "TDD will slow me down" | TDD faster than debugging in production. |
-
-**Verification checklist:**
-- [ ] Every function has a test
-- [ ] Watched each test fail before implementing
-- [ ] Wrote minimal code to pass
-- [ ] All tests pass
-- [ ] Output pristine (no warnings)
-
-#### Phase 5: Code Review (`/superpowers:requesting-code-review`)
-
-After each task:
-- Reviews against plan
-- Reports issues by severity
-- Critical issues block progress
-- Validates evidence of completion
-
-#### Supporting Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `using-git-worktrees` | Create isolated workspace on new branch |
-| `systematic-debugging` | 4-phase root cause process |
-| `verification-before-completion` | Ensure it's actually fixed |
-| `receiving-code-review` | Respond to feedback without blind agreement |
-| `finishing-a-development-branch` | Merge/PR decision workflow |
-
-#### Philosophy
-
-- **Test-Driven Development** - Write tests first, always
-- **Systematic over ad-hoc** - Process over guessing
-- **YAGNI** - You Aren't Gonna Need It
-- **Evidence over claims** - Verify before declaring success
-
-Read more: [Superpowers for Claude Code](https://blog.fsck.com/2025/10/09/superpowers/)
-
-### Frontend Design
-
-[Frontend Design](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design) generates distinctive, production-grade UIs that avoid generic AI aesthetics.
-
-**Install:**
-```bash
-/plugin marketplace add anthropics/claude-code
-/plugin install frontend-design@claude-code-plugins
-```
-
-Auto-activates for frontend work. Guides Claude toward bold, intentional design choices instead of cookie-cutter layouts with overused fonts and purple gradients.
-
-Design tones: brutally minimal, maximalist chaos, retro-futuristic, luxury/refined, playful, editorial, brutalist, art deco, soft/pastel, industrial.
-
-### Ralph Loop
-
-[Ralph Loop](https://github.com/frankbria/ralph-claude-code) runs Claude autonomously in a continuous loop until task completion. Named after Ralph Wiggum - perpetually confused, always making mistakes, but never stopping.
-
-**Install:**
-```bash
-/plugin marketplace add anthropics/claude-code
-/plugin install ralph-wiggum@claude-code-plugins
-```
-
-**Usage:**
-```bash
-/ralph-loop "<prompt>" --max-iterations 10
-/ralph-loop "<prompt>" --max-iterations 5 --completion-promise "All tests pass"
-/cancel-ralph  # Kill active loop
-```
-
-When Claude attempts to exit, Ralph re-invokes the prompt preserving context and file changes. Best for batch mechanical work with clear completion criteria. For judgment-heavy work, use normal conversational mode.
-
-**Windows note:** Requires `jq` installed first, or use WSL.
-
-### Document Skills (Office Files)
-
-Create and edit Excel, Word, PowerPoint, and PDF files. From [Anthropic's skills repo](https://github.com/anthropics/skills).
-
-**Install:**
-```bash
-/plugin marketplace add anthropics/skills
-/plugin install document-skills@anthropic-agent-skills
-```
-
-**Capabilities:**
-- **xlsx** - Create/edit spreadsheets with formulas, formatting, charts, pivot tables
-- **docx** - Create/edit Word docs with tracked changes, comments, formatting
-- **pptx** - Create/edit PowerPoint presentations
-- **pdf** - PDF manipulation, text extraction, merging
-
-Claude generates Python scripts at runtime to manipulate these files. You can also drag-and-drop xlsx/pptx files into Claude Code for analysis.
 
 ---
 
@@ -2217,44 +2393,6 @@ For custom servers, edit `claude_desktop_config.json`:
 | MCP support | Yes (desktop extensions) | Yes (.mcp.json) |
 | Code editing | Basic | Full IDE integration |
 | Best for | General tasks, file access | Software development |
-
----
-
-## LSP Integration
-
-Language Server Protocol provides Claude with code intelligence: diagnostics, type info, go-to-definition.
-
-### Enable in Claude Code
-
-```bash
-claude config set lsp.enabled true
-```
-
-### Common LSPs
-
-| Language | LSP | Install |
-|----------|-----|---------|
-| Python | Pyright | `npm i -g pyright` |
-| TypeScript | tsserver | Bundled with `typescript` |
-| Rust | rust-analyzer | `rustup component add rust-analyzer` |
-| Go | gopls | `go install golang.org/x/tools/gopls@latest` |
-
-### Benefits
-
-- Real-time error detection before running code
-- Type information without reading entire files
-- Faster navigation in large codebases
-
-### Project Setup
-
-Ensure your project has proper config files for LSP to work:
-
-| Language | Config File |
-|----------|-------------|
-| Python | `pyproject.toml` or `pyrightconfig.json` |
-| TypeScript | `tsconfig.json` |
-| Rust | `Cargo.toml` |
-| Go | `go.mod` |
 
 ---
 
