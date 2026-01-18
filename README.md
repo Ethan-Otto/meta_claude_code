@@ -1156,28 +1156,68 @@ Claude generates Python scripts at runtime to manipulate these files. You can al
 
 ## LSP Integration
 
-Language Server Protocol provides Claude with code intelligence: diagnostics, type info, go-to-definition.
+Language Server Protocol provides Claude with code intelligence: diagnostics, type info, go-to-definition. Finding call sites takes ~50ms with LSP vs ~45s with text search.
 
-### Enable in Claude Code
+### Enable LSP
 
+**Option A: Environment variable (temporary)**
 ```bash
-claude config set lsp.enabled true
+ENABLE_LSP_TOOL=1 claude
 ```
 
-### Common LSPs
+**Option B: Environment variable (permanent)**
+```bash
+# Add to ~/.zshrc or ~/.bashrc
+export ENABLE_LSP_TOOL=1
+```
 
-| Language | LSP | Install |
-|----------|-----|---------|
-| Python | Pyright | `npm i -g pyright` |
-| TypeScript | tsserver | Bundled with `typescript` |
-| Rust | rust-analyzer | `rustup component add rust-analyzer` |
-| Go | gopls | `go install golang.org/x/tools/gopls@latest` |
+**Option C: Install LSP plugins**
+
+First add the marketplace:
+```bash
+/plugin marketplace add Piebald-AI/claude-code-lsps
+```
+
+Then install language-specific plugins:
+```bash
+/plugin install pyright@claude-code-lsps      # Python
+/plugin install vtsls@claude-code-lsps        # TypeScript/JavaScript
+/plugin install gopls@claude-code-lsps        # Go
+/plugin install rust-analyzer@claude-code-lsps # Rust
+```
+
+### Available LSP Plugins
+
+| Language | Plugin |
+|----------|--------|
+| Python | `pyright@claude-code-lsps` |
+| TypeScript/JS | `vtsls@claude-code-lsps` |
+| Go | `gopls@claude-code-lsps` |
+| Rust | `rust-analyzer@claude-code-lsps` |
+| Java | `jdtls@claude-code-lsps` |
+| C/C++ | `clangd@claude-code-lsps` |
+| C# | `omnisharp@claude-code-lsps` |
+| PHP | `intelephense@claude-code-lsps` |
+| Ruby | `solargraph@claude-code-lsps` |
+| Kotlin | `kotlin-language-server@claude-code-lsps` |
+
+Full list: [claude-code-lsps](https://github.com/Piebald-AI/claude-code-lsps)
+
+### Alternative: cclsp MCP Server
+
+For IDE-independent LSP integration:
+```bash
+npx cclsp@latest setup        # One-time setup
+npx cclsp@latest setup --user # User-wide config
+```
+
+More info: [cclsp](https://github.com/ktnyt/cclsp)
 
 ### Benefits
 
 - Real-time error detection before running code
 - Type information without reading entire files
-- Faster navigation in large codebases
+- ~900x faster navigation in large codebases
 
 ### Project Setup
 
