@@ -1331,7 +1331,7 @@ Human and agent go back and forth until either decides work is done.
         │ Done
         ▼
     ┌────────┐
-    │Complete│
+    │ Result │
     └────────┘
 ```
 
