@@ -5,6 +5,7 @@ A collection of best practices, templates, and configuration patterns for gettin
 ## Table of Contents
 
 **Getting Started**
+- [Core Claude Code](#core-claude-code)
 - [Quick Start Principles](#quick-start-principles)
 - [Recommended Tooling](#recommended-tooling)
 - [Common Project Structures](#common-project-structures)
@@ -50,6 +51,61 @@ A collection of best practices, templates, and configuration patterns for gettin
 
 **Reference**
 - [Sources](#sources)
+
+---
+
+## Core Claude Code
+
+### Input Symbols
+
+| Symbol | Usage | Description | Example |
+|--------|-------|-------------|---------|
+| `/` | `/command` | Triggers slash commands | `/help`, `/compact`, `/plan` |
+| `!` | `!command` | Runs bash directly without Claude interpretation | `!git status`, `!npm test` |
+| `@` | `@filename` | Triggers file path autocomplete | `@src/app.ts`, `@README.md` |
+| `&` | `command &` | Runs commands in the background | `npm run dev &` |
+| `\` | `\ + Enter` | Quick escape for multiline input | Type `\` then press Enter |
+
+### General Controls
+
+| Windows | Mac | Description |
+|---------|-----|-------------|
+| `Ctrl+C` | `Ctrl+C` | Cancel current input or generation |
+| `Ctrl+D` | `Ctrl+D` | Exit Claude Code session |
+| `Ctrl+L` | `Ctrl+L` | Clear terminal screen |
+| `Ctrl+O` | `Ctrl+O` | Toggle verbose output |
+| `Ctrl+B` | `Ctrl+B` | Background running tasks |
+| `Alt+M` or `Shift+Tab` | `Shift+Tab` or `Alt+M` | Toggle permission modes (Auto-Accept, Plan, Normal) |
+| `Alt+P` | `Option+P` | Switch model |
+| `Alt+T` | `Option+T` | Toggle extended thinking |
+| `Esc + Esc` | `Esc + Esc` | Rewind code/conversation |
+| `Up/Down` | `Up/Down` | Navigate command history |
+| `Left/Right` | `Left/Right` | Cycle through dialog tabs |
+| `Ctrl+V` | `Cmd+V` | Paste image from clipboard |
+
+### Text Editing
+
+| Windows | Mac | Description |
+|---------|-----|-------------|
+| `Ctrl+A` | `Ctrl+A` | Move to start of line |
+| `Ctrl+E` | `Ctrl+E` | Move to end of line |
+| `Ctrl+K` | `Ctrl+K` | Delete to end of line |
+| `Ctrl+U` | `Ctrl+U` | Delete entire line |
+| `Ctrl+W` | `Ctrl+W` | Delete previous word |
+| `Ctrl+Y` | `Ctrl+Y` | Paste deleted text |
+| `Alt+B` | `Option+B` | Move back one word |
+| `Alt+F` | `Option+F` | Move forward one word |
+
+### Multiline Input
+
+| Method | How | Compatibility |
+|--------|-----|---------------|
+| Quick escape | `\ + Enter` | All terminals |
+| macOS default | `Option+Enter` | Native macOS |
+| Shift+Enter | `Shift+Enter` | iTerm2, WezTerm, Ghostty, Kitty |
+| Control sequence | `Ctrl+J` | All terminals |
+
+Run `/terminal-setup` to enable Shift+Enter in other terminals (VS Code, Alacritty, Zed, Warp).
 
 ---
 
