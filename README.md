@@ -709,33 +709,6 @@ Roll back mistakes. Press `Esc` twice or type `/rewind`.
 
 **Note:** Only tracks edits via Claude's tools. Bash commands (`rm`, `mv`), manual edits, and other sessions aren't tracked.
 
-### /teleport
-
-Move sessions between web and terminal. Also available as `/tp`.
-
-**Usage:**
-```bash
-/teleport              # Interactive picker of web sessions
-/tp                    # Short alias
-claude --teleport      # From command line
-claude --teleport <id> # Resume specific session
-```
-
-**What happens:**
-1. Verifies you're in the correct repository
-2. Fetches and checks out the branch from web session
-3. Loads full conversation history
-4. Continues exactly where the web session left off
-
-**Requirements:**
-
-| Requirement | Details |
-|-------------|---------|
-| Clean git state | No uncommitted changes (will prompt to stash) |
-| Correct repo | Must be same repository, not a fork |
-| Branch available | Web session branch must be pushed to remote |
-| Same account | Must be authenticated to same Claude.ai account |
-
 ---
 
 ## Custom Slash Commands
