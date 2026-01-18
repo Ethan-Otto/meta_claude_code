@@ -1319,25 +1319,20 @@ Duplicate the same prompt across multiple agents running simultaneously.
 
 ### 2. Human-Agent Iteration
 
-Human and agent go back and forth until either thinks the work is done.
+Human and agent go back and forth until either decides work is done.
 
 ```
-┌────────────────────────────────────┐
-│                                    │
-│   ┌───────┐      ┌───────┐        │
-└──▶│ Human │◀────▶│ Agent │        │
-    │       │      │       │        │
-    └───┬───┘      └───┬───┘        │
-        │              │            │
-        ▼              ▼            │
-    ┌───────┐      ┌───────┐        │
-    │ Done? │──No──│ Done? │──No────┘
-    └───┬───┘      └───┬───┘
-        │Yes           │Yes
-        ▼              ▼
-    ┌──────────────────────┐
-    │      Complete        │
-    └──────────────────────┘
+        ┌──────────────────┐
+        │                  │
+        ▼                  │
+    ┌───────┐      ┌───────┐
+    │ Human │◀────▶│ Agent │
+    └───┬───┘      └───────┘
+        │ Done
+        ▼
+    ┌────────┐
+    │Complete│
+    └────────┘
 ```
 
 **Use when:** Task requires judgment, creativity, or human domain knowledge.
