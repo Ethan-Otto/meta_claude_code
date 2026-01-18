@@ -1824,3 +1824,4 @@ Ensure your project has proper config files for LSP to work:
 - [Claude Code Tips (GitHub)](https://github.com/ykdojo/claude-code-tips)
 - [Claude Code Tips from 6 Months Use (DEV)](https://dev.to/diet-code103/claude-code-is-a-beast-tips-from-6-months-of-hardcore-use-572n)
 - [Superpowers Plugin (GitHub)](https://github.com/obra/superpowers)
+- [Agentic AI Handbook]( https://www.nibzard.com/agentic-handbook/)
