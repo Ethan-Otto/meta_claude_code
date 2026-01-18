@@ -630,16 +630,178 @@ Community commands: [wshobson/commands](https://github.com/wshobson/commands) (1
 
 ### Test-Driven Development (TDD)
 
-Always write tests first:
+Write tests **before** implementation code. Not after. Not "when you have time."
 
-1. Write a failing test
-2. Write minimal code to pass
-3. Refactor
+#### The Cycle
+
+```
+RED          →    GREEN         →    REFACTOR
+Write test        Minimal code       Clean up
+Watch fail        Watch pass         Stay green
+```
+
+1. **Red** - Write a test that fails (proves test actually checks something)
+2. **Green** - Write the minimum code to make it pass
+3. **Refactor** - Clean up while keeping tests green
 4. Repeat
 
-### Mirror Folder Structure
+#### Example TDD Flow
 
-Tests must mirror source structure exactly:
+```python
+# Step 1: RED - Write failing test
+def test_calculate_total_with_tax():
+    result = calculate_total(100, tax_rate=0.08)
+    assert result == 108.0
+
+# Run: pytest -v
+# FAIL: NameError: name 'calculate_total' is not defined
+
+# Step 2: GREEN - Minimal implementation
+def calculate_total(subtotal, tax_rate):
+    return subtotal + (subtotal * tax_rate)
+
+# Run: pytest -v
+# PASS
+
+# Step 3: REFACTOR - Clean up if needed (none here)
+```
+
+#### Why TDD Works
+
+| Without TDD | With TDD |
+|-------------|----------|
+| Write code, then retrofit tests | Tests define requirements first |
+| Tests pass immediately (prove nothing) | Tests fail first (prove they catch bugs) |
+| "It works on my machine" | Automated proof it works |
+| Debug in production | Catch bugs before commit |
+
+#### Common Rationalizations (Don't Fall For These)
+
+| Excuse | Reality |
+|--------|---------|
+| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
+| "I'll test after" | Tests passing immediately prove nothing. |
+| "Already tested manually" | Manual tests can't be re-run automatically. |
+| "TDD slows me down" | Debugging in production is slower. |
+| "Just a quick fix" | Quick fixes cause regressions. |
+
+#### TDD Checklist
+
+- [ ] Wrote test before implementation
+- [ ] Watched test fail first
+- [ ] Wrote minimal code to pass
+- [ ] All tests still pass after refactor
+
+---
+
+### Test Pyramid
+
+```
+        /\
+       /  \     E2E Tests (few, >1 min, full flows)
+      /----\
+     /      \   Integration Tests (moderate, 10s-1 min)
+    /--------\
+   /          \ Unit Tests (many, ~1s, isolated)
+  /------------\
+```
+
+### Test Types
+
+#### Unit Tests (~1 second)
+- Test a single function/class in isolation
+- Mock external dependencies
+- Should be the majority of your tests
+
+```python
+def test_add_returns_sum():
+    assert add(2, 3) == 5
+
+def test_add_handles_negative():
+    assert add(-1, 5) == 4
+```
+
+#### Integration Tests (~10 seconds - 1 minute)
+- Test multiple components working together
+- May use real databases, APIs, file systems
+- Verify contracts between modules
+
+```python
+def test_user_creation_persists_to_database(db_session):
+    service = UserService(db_session)
+    user = service.create_user("test@example.com")
+
+    assert db_session.query(User).filter_by(email="test@example.com").first()
+```
+
+#### Smoke Tests (~10 seconds - 1 minute)
+- Broad, shallow coverage across **many modules**
+- "Where there's smoke, there's fire"
+- When one fails, you know which area to investigate
+- Run instead of full suite to **localize failures quickly**
+
+```python
+# tests/smoke/test_smoke_users.py
+@pytest.mark.smoke
+def test_user_crud_works(client):
+    """Quick check that user module isn't broken."""
+    user = client.post("/users", json={"email": "test@example.com"})
+    assert user.status_code == 201
+
+# tests/smoke/test_smoke_orders.py
+@pytest.mark.smoke
+def test_order_flow_works(client, sample_user):
+    """Quick check that orders module isn't broken."""
+    order = client.post("/orders", json={"user_id": sample_user.id})
+    assert order.status_code == 201
+```
+
+**Workflow:** Smoke fails in `orders/` → run full tests only for `orders/` → save time.
+
+#### E2E (End-to-End) Tests (>1 minute)
+- Test complete user flows
+- Use real infrastructure
+- Slowest, most brittle
+- Catch issues other tests miss
+
+```python
+def test_user_can_complete_purchase(browser, live_server):
+    browser.visit(live_server.url)
+    browser.find_by_id("add-to-cart").click()
+    browser.find_by_id("checkout").click()
+    assert "Order confirmed" in browser.html
+```
+
+### When to Use What
+
+| Scenario | Test Type |
+|----------|-----------|
+| Pure function logic | Unit |
+| Class with no dependencies | Unit |
+| Database queries | Integration |
+| API endpoint behavior | Integration |
+| Something broke, where? | Smoke |
+| Full user workflows | E2E |
+| Critical business paths | All levels |
+
+### Typical Workflow
+
+```bash
+# Something broke. Run smoke tests to localize.
+pytest -m smoke                    # 1 minute, covers all modules
+
+# Smoke failed in orders module. Run full tests there.
+pytest tests/unit/orders/ tests/integration/orders/  # Targeted
+
+# Before merge, run everything
+pytest                             # Full suite
+```
+
+---
+
+### Directory Structure
+
+#### Option 1: Mirror Source Structure
 
 ```
 src/                          tests/
@@ -655,6 +817,50 @@ src/                          tests/
     └── helpers.py                └── test_helpers.py
 ```
 
+**Pros:** Easy to find tests for a module, scales well
+**Cons:** Deep nesting, can be rigid
+
+#### Option 2: Organize by Test Type
+
+```
+tests/
+  unit/
+    test_user_service.py
+    test_order_service.py
+  integration/
+    test_user_repository.py
+  smoke/
+    test_smoke_users.py
+    test_smoke_orders.py
+  e2e/
+    test_checkout_flow.py
+```
+
+**Pros:** Clear separation, easy to run by type
+**Cons:** Harder to find all tests for a specific module
+
+#### Option 3: Hybrid (Recommended)
+
+```
+tests/
+  unit/
+    users/
+      test_service.py
+    orders/
+      test_service.py
+  integration/
+    users/
+      test_repository.py
+  smoke/
+    test_smoke_users.py
+    test_smoke_orders.py
+  e2e/
+    test_checkout.py
+  conftest.py
+```
+
+**Pros:** Best of both—organized by type AND mirrors source
+
 ### Naming Convention
 
 | Source File | Test File |
@@ -663,7 +869,227 @@ src/                          tests/
 | `UserService.ts` | `UserService.test.ts` |
 | `helpers.go` | `helpers_test.go` |
 
-### Test File Template
+---
+
+### Pytest Practices
+
+#### Markers
+
+```python
+# pyproject.toml
+[tool.pytest.ini_options]
+markers = [
+    "unit: Unit tests (~1s, isolated)",
+    "integration: Integration tests (10s-1min, real dependencies)",
+    "smoke: Smoke tests (broad coverage, localize failures)",
+    "e2e: End-to-end tests (>1min, full system)",
+]
+```
+
+```python
+import pytest
+
+@pytest.mark.unit
+def test_add():
+    assert add(1, 2) == 3
+
+@pytest.mark.smoke
+def test_orders_module_works(client):
+    # ...
+```
+
+Run specific types:
+```bash
+pytest -m unit              # Only unit tests
+pytest -m smoke             # Diagnose which module is broken
+pytest -m "not e2e"         # Everything except e2e
+pytest tests/unit/orders/   # Full tests for specific module
+```
+
+#### conftest.py
+
+**What it is:** A special file pytest automatically discovers. Fixtures defined here are available to all tests in that directory and subdirectories—no imports needed.
+
+**How discovery works:**
+```
+tests/
+  conftest.py          ← Available to ALL tests
+  unit/
+    conftest.py        ← Available to unit/ tests only
+    test_users.py
+  integration/
+    conftest.py        ← Available to integration/ tests only
+    test_db.py
+```
+
+Tests inherit fixtures from parent conftest files. A test in `integration/` can use fixtures from both `tests/conftest.py` and `tests/integration/conftest.py`.
+
+#### Fixture Scopes
+
+Control how often a fixture is created/destroyed:
+
+```python
+@pytest.fixture(scope="function")  # Default - new instance per test
+def user():
+    return User(name="test")
+
+@pytest.fixture(scope="class")     # Once per test class
+def api_client():
+    return APIClient()
+
+@pytest.fixture(scope="module")    # Once per test file
+def config():
+    return load_config()
+
+@pytest.fixture(scope="session")   # Once per entire test run
+def database():
+    db = create_database()
+    yield db
+    db.drop_all()
+```
+
+| Scope | Created | Use Case |
+|-------|---------|----------|
+| `function` | Every test | Isolated test data |
+| `class` | Once per class | Shared setup for related tests |
+| `module` | Once per file | Expensive setup shared in file |
+| `session` | Once per run | Database, Docker containers |
+
+#### Fixture Dependencies
+
+Fixtures can use other fixtures:
+
+```python
+@pytest.fixture
+def app():
+    return create_app(testing=True)
+
+@pytest.fixture
+def client(app):  # Receives app fixture automatically
+    return app.test_client()
+
+@pytest.fixture
+def auth_client(client, test_user):  # Multiple dependencies
+    client.login(test_user)
+    return client
+```
+
+#### Setup and Teardown with yield
+
+Code after `yield` runs as teardown:
+
+```python
+@pytest.fixture
+def db_session():
+    # SETUP
+    session = create_session()
+    session.begin()
+
+    yield session  # Test runs here
+
+    # TEARDOWN (always runs, even if test fails)
+    session.rollback()
+    session.close()
+```
+
+#### autouse Fixtures
+
+Run automatically without being requested:
+
+```python
+@pytest.fixture(autouse=True)
+def reset_environment():
+    """Runs before EVERY test automatically."""
+    os.environ.clear()
+    os.environ.update(DEFAULT_ENV)
+    yield
+    os.environ.clear()
+
+@pytest.fixture(autouse=True, scope="module")
+def setup_logging():
+    """Runs once per module automatically."""
+    logging.disable(logging.CRITICAL)
+    yield
+    logging.disable(logging.NOTSET)
+```
+
+#### Parametrized Fixtures
+
+Run tests with multiple fixture values:
+
+```python
+@pytest.fixture(params=["sqlite", "postgres", "mysql"])
+def database(request):
+    """Test runs 3 times, once per database."""
+    db = create_database(request.param)
+    yield db
+    db.close()
+
+@pytest.fixture(params=[
+    {"role": "admin", "can_delete": True},
+    {"role": "user", "can_delete": False},
+])
+def user_with_permissions(request):
+    return User(**request.param)
+```
+
+#### Useful Hooks in conftest.py
+
+```python
+def pytest_configure(config):
+    """Run once at startup. Register markers, setup."""
+    config.addinivalue_line("markers", "slow: marks tests as slow")
+
+def pytest_collection_modifyitems(config, items):
+    """Modify tests after collection. Add markers, reorder, skip."""
+    for item in items:
+        if "slow" in item.nodeid:
+            item.add_marker(pytest.mark.slow)
+
+def pytest_runtest_setup(item):
+    """Run before each test. Custom skip logic."""
+    if "integration" in item.keywords and not has_database():
+        pytest.skip("Database not available")
+```
+
+#### Example conftest.py
+
+```python
+# tests/conftest.py
+import pytest
+
+@pytest.fixture(scope="session")
+def app():
+    """Create application once for all tests."""
+    return create_app(testing=True)
+
+@pytest.fixture
+def client(app):
+    """Test client for HTTP requests."""
+    return app.test_client()
+
+@pytest.fixture
+def db_session(app):
+    """Database session with automatic rollback."""
+    with app.app_context():
+        connection = db.engine.connect()
+        transaction = connection.begin()
+
+        yield db.session
+
+        transaction.rollback()
+        connection.close()
+
+@pytest.fixture
+def test_user(db_session):
+    """Create a test user, auto-cleaned by session rollback."""
+    user = User(email="test@example.com")
+    db_session.add(user)
+    db_session.commit()
+    return user
+```
+
+#### Test File Template
 
 ```python
 """
@@ -678,19 +1104,34 @@ class TestFunctionName:
     """Tests for function_name."""
 
     def test_returns_expected_output(self):
-        """It returns expected output for valid input."""
-        result = function_name(valid_input)
+        # Arrange
+        input_val = valid_input
+
+        # Act
+        result = function_name(input_val)
+
+        # Assert
         assert result == expected_output
 
     def test_handles_edge_case(self):
-        """It handles edge case correctly."""
         result = function_name(edge_case_input)
         assert result == edge_case_output
 
     def test_raises_on_invalid_input(self):
-        """It raises ValueError for invalid input."""
         with pytest.raises(ValueError):
             function_name(invalid_input)
+```
+
+#### Parametrize for Multiple Cases
+
+```python
+@pytest.mark.parametrize("input,expected", [
+    ("hello", "HELLO"),
+    ("World", "WORLD"),
+    ("", ""),
+])
+def test_uppercase(input, expected):
+    assert uppercase(input) == expected
 ```
 
 ### CI Requirements
