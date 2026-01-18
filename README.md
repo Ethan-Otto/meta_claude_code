@@ -1351,11 +1351,12 @@ Parallel agents execute, results are fused by a review agent, human decides next
                 ┌──▶│ Agent 1 │──┐
                 │   └─────────┘  │
 ┌────────┐      │   ┌─────────┐  │      ┌────────┐      ┌───────┐
-│ Human  │──────┼──▶│ Agent 2 │──┼─────▶│ Fusion │─────▶│ Human │───▶ Next
-│ Prompt │      │   └─────────┘  │      │ Agent  │      │Review │
-└────────┘      │   ┌─────────┐  │      └────────┘      └───────┘
-                └──▶│ Agent 3 │──┘
-                    └─────────┘
+│ Human  │──────┼──▶│ Agent 2 │──┼─────▶│ Fusion │◀─┐   │ Human │───▶ Next
+│ Prompt │      │   └─────────┘  │      │ Agent  │──┼──▶│Review │
+└────────┘      │   ┌─────────┐  │      └────────┘  │   └───┬───┘
+                └──▶│ Agent 3 │──┘                  │       │
+                    └─────────┘                     └───────┘
+                                                    (optional)
 ```
 
 **Use when:** Multiple perspectives needed, then synthesis and human judgment.
