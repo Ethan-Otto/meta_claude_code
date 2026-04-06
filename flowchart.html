@@ -422,9 +422,6 @@
       // ====== Architect → down to Scoping ======
       connect("architect", "scoping-box", ["Bottom", "Top"]);
 
-      // ====== Concept Context → down to Scoping ======
-      connect("concept-context", "scoping-box", [[0.3, 1, 0, 1], [0.9, 0, 0, -1]]);
-
       // ====== Scoping self-loop (Refine Scoping Process) ======
       connect("scoping-box", "scoping-box", ["Bottom", "Left"], {
         Connector: ["Flowchart", { cornerRadius: 8, stub: 35, gap: 4 }],
