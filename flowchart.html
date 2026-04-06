@@ -118,13 +118,13 @@
       width: 280px;
     }
 
-    .refine-loop {
-      background: #ffecb3;
-      border: 2px dashed #bf360c;
-      width: 120px;
-      text-align: center;
+    .refine-label {
+      font-size: 11px;
       font-style: italic;
-      font-size: 12px;
+      color: #bf360c;
+      background: #fef9e7;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
     .obj-def-box {
@@ -272,9 +272,6 @@
       </ul>
     </div>
 
-    <div id="refine-loop" class="node refine-loop" style="left:40px; top:440px;">
-      Refine<br>Scoping<br>Process
-    </div>
 
     <div id="definition-header" class="node section-header" style="left:340px; top:210px;">
       Definition
@@ -428,12 +425,14 @@
       // ====== Concept Context → down to Scoping ======
       connect("concept-context", "scoping-box", [[0.3, 1, 0, 1], [0.9, 0, 0, -1]]);
 
-      // ====== Scoping → Refine loop ======
-      connect("scoping-box", "refine-loop", ["Bottom", "Top"]);
-      // Refine loop back up (dashed, left side)
-      connect("refine-loop", "scoping-box", ["Left", "Left"], {
-        Connector: ["Flowchart", { cornerRadius: 8, stub: 25, gap: 4 }],
-        PaintStyle: { stroke: "#bf360c", strokeWidth: 2, dashstyle: "4 3" }
+      // ====== Scoping self-loop (Refine Scoping Process) ======
+      connect("scoping-box", "scoping-box", ["Bottom", "Left"], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 35, gap: 4 }],
+        PaintStyle: { stroke: "#bf360c", strokeWidth: 2, dashstyle: "4 3" },
+        ConnectionOverlays: [
+          ["Arrow", { location: 1, width: 10, length: 10, foldback: 0.8 }],
+          ["Label", { label: "Refine Scoping Process", location: 0.5, cssClass: "refine-label" }]
+        ]
       });
 
       // ====== Scoping → Definition ======
@@ -464,13 +463,14 @@
       });
 
       // ====== Manual Check → Objective Definitions ======
-      connect("manual-check", "obj-def-box", ["Top", "Bottom"], {
+      connect("manual-check", "obj-def-box", [[0.7, 0, 0, -1], [0.3, 1, 0, 1]], {
         PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
       });
 
       // ====== Manual Check → Scoping ======
-      connect("manual-check", "scoping-box", ["Top", "Bottom"], {
-        PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
+      connect("manual-check", "scoping-box", [[0.2, 0, 0, -1], [0.2, 1, 0, 1]], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 20, gap: 4 }],
+        PaintStyle: { stroke: "#9c27b0", strokeWidth: 2, dashstyle: "6 3" }
       });
 
       // ====== Obj Def → Implementation (down) ======
