@@ -11,12 +11,13 @@ const browser = await puppeteer.launch({
   headless: 'new'
 });
 const page = await browser.newPage();
-await page.setViewport({ width: 1850, height: 1750 });
+await page.setViewport({ width: 1850, height: 1750, deviceScaleFactor: 3 });
 await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0', timeout: 30000 });
 await new Promise(r => setTimeout(r, 2000));
 await page.screenshot({
-  path: path.join(__dirname, 'flowchart_screenshot.png'),
-  fullPage: true
+  path: path.join(__dirname, 'flowchart_full_res.png'),
+  fullPage: true,
+  type: 'png'
 });
 await browser.close();
-console.log('Screenshot saved to flowchart_screenshot.png');
+console.log('Screenshot saved to flowchart_full_res.png');
