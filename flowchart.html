@@ -156,8 +156,8 @@
     }
 
     .impl-box {
-      background: #e0f2f1;
-      border: 3px solid #00695c;
+      background: #fff;
+      border: 3px solid #555;
       border-radius: 10px;
       width: 290px;
       padding: 12px 16px;
@@ -339,6 +339,14 @@
         <li>Full Citations</li>
         <li>Drawing Highlights</li>
         <li>Tool needed?<br>Custom / General / Category</li>
+        <li>Sub Criteria Type:
+          <ul>
+            <li>Single page</li>
+            <li>Single page+</li>
+            <li>Multi page drawing</li>
+            <li>Multi page drawing+</li>
+          </ul>
+        </li>
       </ul>
     </div>
 
@@ -474,15 +482,19 @@
       // ====== Obj Def → Implementation (down) ======
       connect("obj-def-box", "impl-box", ["Bottom", "Top"]);
 
-      // ====== Implementation ↔ Consistency Rate (bidirectional) ======
-      connect("impl-box", "consistency-rate", [[1, 0.3, 1, 0], [0, 0.3, -1, 0]]);
-      connect("consistency-rate", "impl-box", [[0, 0.7, -1, 0], [1, 0.7, 1, 0]], {
+      // ====== Implementation → Consistency Rate ======
+      connect("impl-box", "consistency-rate", [[1, 0.3, 1, 0], [0, 0.5, -1, 0]]);
+
+      // ====== Consistency Rate → Objective Definitions (feeds back) ======
+      connect("consistency-rate", "obj-def-box", [[0.5, 0, 0, -1], [1, 0.8, 1, 0]], {
         PaintStyle: { stroke: "#00695c", strokeWidth: 2, dashstyle: "4 3" }
       });
 
-      // ====== Implementation ↔ Labeled Evals (bidirectional) ======
-      connect("impl-box", "labeled-evals", [[1, 0.8, 1, 0], [0, 0.3, -1, 0]]);
-      connect("labeled-evals", "impl-box", [[0, 0.7, -1, 0], [1, 0.95, 1, 0]], {
+      // ====== Implementation → Labeled Evals ======
+      connect("impl-box", "labeled-evals", [[1, 0.8, 1, 0], [0, 0.5, -1, 0]]);
+
+      // ====== Labeled Evals → Augmentation (feeds back) ======
+      connect("labeled-evals", "augmentation-box", [[0.5, 0, 0, -1], [1, 0.8, 1, 0]], {
         PaintStyle: { stroke: "#2e7d32", strokeWidth: 2, dashstyle: "4 3" }
       });
 
