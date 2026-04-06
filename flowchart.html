@@ -463,6 +463,16 @@
         PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
       });
 
+      // ====== Manual Check → Objective Definitions ======
+      connect("manual-check", "obj-def-box", ["Top", "Bottom"], {
+        PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
+      });
+
+      // ====== Manual Check → Scoping ======
+      connect("manual-check", "scoping-box", ["Top", "Bottom"], {
+        PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
+      });
+
       // ====== Obj Def → Implementation (down) ======
       connect("obj-def-box", "impl-box", ["Bottom", "Top"]);
 
