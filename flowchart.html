@@ -178,14 +178,6 @@
       padding: 14px;
     }
 
-    .check-asks {
-      background: #ffecb3;
-      border: 2px dashed #bf360c;
-      width: 100px;
-      text-align: center;
-      font-size: 12px;
-    }
-
     .labeled-evals {
       background: #e8f5e9;
       border: 2px solid #2e7d32;
@@ -226,6 +218,15 @@
     .node b { display: block; margin-bottom: 3px; }
     .node ul { margin: 3px 0 0 14px; font-size: 12px; }
     .node ul li { margin-bottom: 2px; }
+
+    .conn-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #c62828;
+      background: #fef9e7;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
 
     h1 {
       text-align: center;
@@ -287,15 +288,10 @@
       Scoping
     </div>
 
-    <div id="scoping-what" class="node scoping-box" style="left:30px; top:240px;">
+    <div id="scoping-box" class="node scoping-box" style="left:30px; top:240px;">
       <ul>
         <li>What are we working with?</li>
         <li>What do they want?</li>
-      </ul>
-    </div>
-
-    <div id="scoping-questions" class="node scoping-box" style="left:30px; top:330px;">
-      <ul>
         <li>What questions do we need to answer?</li>
         <li>Are we missing docs, definitions? Drawings?</li>
       </ul>
@@ -412,9 +408,6 @@
       Labeled Evals
     </div>
 
-    <div id="check-asks" class="node check-asks" style="left:810px; top:790px;">
-      &darr; &uarr; Check<br>Asks
-    </div>
 
     <!-- ===== ROW 5: Results / Tool Registry ===== -->
     <div id="results-report" class="node results-report" style="left:560px; top:1100px;">
@@ -456,20 +449,21 @@
       connect("concept-context", "hr-review", ["Right", "Left"]);
 
       // ====== Architect → down to Scoping ======
-      connect("architect", "scoping-what", ["Bottom", "Top"]);
+      connect("architect", "scoping-box", ["Bottom", "Top"]);
 
-      // ====== Scoping internal flow ======
-      connect("scoping-what", "scoping-questions", ["Bottom", "Top"]);
-      connect("scoping-questions", "refine-loop", ["Bottom", "Top"]);
+      // ====== Concept Context → down to Scoping ======
+      connect("concept-context", "scoping-box", [[0.3, 1, 0, 1], [0.9, 0, 0, -1]]);
+
+      // ====== Scoping → Refine loop ======
+      connect("scoping-box", "refine-loop", ["Bottom", "Top"]);
       // Refine loop back up (dashed, left side)
-      connect("refine-loop", "scoping-what", ["Left", "Left"], {
+      connect("refine-loop", "scoping-box", ["Left", "Left"], {
         Connector: ["Flowchart", { cornerRadius: 8, stub: 25, gap: 4 }],
         PaintStyle: { stroke: "#bf360c", strokeWidth: 2, dashstyle: "4 3" }
       });
 
       // ====== Scoping → Definition ======
-      connect("scoping-what", "definition-box", ["Right", "Left"]);
-      connect("scoping-questions", "definition-box", ["Right", "Left"]);
+      connect("scoping-box", "definition-box", ["Right", "Left"]);
 
       // ====== Definition → Objectivification ======
       connect("definition-box", "objectivification-box", ["Right", "Left"]);
@@ -513,22 +507,20 @@
         PaintStyle: { stroke: "#2e7d32", strokeWidth: 2, dashstyle: "4 3" }
       });
 
-      // ====== Consistency Rate ↔ Check Asks (bidirectional) ======
-      connect("consistency-rate", "check-asks", [[1, 0.35, 1, 0], [0, 0.35, -1, 0]]);
-      connect("check-asks", "consistency-rate", [[0, 0.7, -1, 0], [1, 0.7, 1, 0]], {
-        PaintStyle: { stroke: "#bf360c", strokeWidth: 2, dashstyle: "4 3" }
+      // ====== Consistency Rate ↔ HR Review (bidirectional, labeled "Check Asks") ======
+      connect("consistency-rate", "hr-review", [[0.5, 0, 0, -1], [0.5, 1, 0, 1]], {
+        PaintStyle: { stroke: "#c62828", strokeWidth: 2 },
+        ConnectionOverlays: [
+          ["Arrow", { location: 1, width: 10, length: 10, foldback: 0.8 }],
+          ["Label", { label: "↓↑ Check Asks", location: 0.5, cssClass: "conn-label" }]
+        ]
       });
-
-      // ====== Check Asks ↔ HR Review (bidirectional up) ======
-      connect("check-asks", "hr-review", [[0.5, 0, 0, -1], [0.5, 1, 0, 1]], {
-        PaintStyle: { stroke: "#c62828", strokeWidth: 2 }
-      });
-      connect("hr-review", "check-asks", [[0.7, 1, 0, 1], [0.7, 0, 0, -1]], {
+      connect("hr-review", "consistency-rate", [[0.7, 1, 0, 1], [0.7, 0, 0, -1]], {
         PaintStyle: { stroke: "#c62828", strokeWidth: 2, dashstyle: "4 3" }
       });
 
-      // ====== Augmentation → Consistency Rate (down) ======
-      connect("augmentation-box", "consistency-rate", ["Bottom", "Top"]);
+      // ====== Augmentation → Implementation (down) ======
+      connect("augmentation-box", "impl-box", ["Bottom", "Top"]);
 
       // ====== Labeled Evals → Results Report (down) ======
       connect("labeled-evals", "results-report", ["Bottom", "Top"]);
