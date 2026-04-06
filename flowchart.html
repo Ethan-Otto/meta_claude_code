@@ -88,15 +88,6 @@
       padding: 16px 14px;
     }
 
-    .hr-review {
-      background: #fce4ec;
-      border: 2px solid #c62828;
-      width: 120px;
-      text-align: center;
-      font-weight: 700;
-      padding: 14px;
-    }
-
     .section-header {
       font-weight: 700;
       font-size: 16px;
@@ -140,6 +131,9 @@
       background: #fff;
       border: 2px solid #555;
       width: 220px;
+      border-radius: 50% / 30%;
+      text-align: center;
+      padding: 14px;
     }
 
     .augmentation-box {
@@ -219,15 +213,6 @@
     .node ul { margin: 3px 0 0 14px; font-size: 12px; }
     .node ul li { margin-bottom: 2px; }
 
-    .conn-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #c62828;
-      background: #fef9e7;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
     h1 {
       text-align: center;
       padding: 12px;
@@ -278,10 +263,6 @@
       </ul>
     </div>
 
-    <div id="hr-review" class="node hr-review" style="left:730px; top:15px;">
-      <b>HR</b>
-      Human<br>Review
-    </div>
 
     <!-- ===== ROW 2: Scoping / Definition / Objectivification ===== -->
     <div id="scoping-header" class="node section-header" style="left:30px; top:210px;">
@@ -445,8 +426,6 @@
       // ====== ROW 1: Architect → Meta-Research → Concept Context ======
       connect("architect", "meta-research", ["Right", "Left"]);
       connect("meta-research", "concept-context", ["Right", "Left"]);
-      // Concept Context → HR Review (right)
-      connect("concept-context", "hr-review", ["Right", "Left"]);
 
       // ====== Architect → down to Scoping ======
       connect("architect", "scoping-box", ["Bottom", "Top"]);
@@ -484,8 +463,8 @@
       // ====== Obj Definitions → Augmentation ======
       connect("obj-def-box", "augmentation-box", ["Right", "Left"]);
 
-      // ====== Manual check → Obj Definitions (up arrow) ======
-      connect("manual-check", "obj-def-box", ["Top", "Bottom"], {
+      // ====== Implementation → Manual Check ======
+      connect("impl-box", "manual-check", ["Left", "Bottom"], {
         PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
       });
 
@@ -507,17 +486,6 @@
         PaintStyle: { stroke: "#2e7d32", strokeWidth: 2, dashstyle: "4 3" }
       });
 
-      // ====== Consistency Rate ↔ HR Review (bidirectional, labeled "Check Asks") ======
-      connect("consistency-rate", "hr-review", [[0.5, 0, 0, -1], [0.5, 1, 0, 1]], {
-        PaintStyle: { stroke: "#c62828", strokeWidth: 2 },
-        ConnectionOverlays: [
-          ["Arrow", { location: 1, width: 10, length: 10, foldback: 0.8 }],
-          ["Label", { label: "↓↑ Check Asks", location: 0.5, cssClass: "conn-label" }]
-        ]
-      });
-      connect("hr-review", "consistency-rate", [[0.7, 1, 0, 1], [0.7, 0, 0, -1]], {
-        PaintStyle: { stroke: "#c62828", strokeWidth: 2, dashstyle: "4 3" }
-      });
 
       // ====== Augmentation → Implementation (down) ======
       connect("augmentation-box", "impl-box", ["Bottom", "Top"]);
