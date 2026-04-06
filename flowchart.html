@@ -202,13 +202,6 @@
       font-size: 13px;
     }
 
-    .reference-box {
-      background: #fff;
-      border: 2px solid #555;
-      width: 140px;
-      font-size: 12px;
-    }
-
     .node b { display: block; margin-bottom: 3px; }
     .node ul { margin: 3px 0 0 14px; font-size: 12px; }
     .node ul li { margin-bottom: 2px; }
@@ -362,18 +355,11 @@
       </ul>
     </div>
 
-    <div id="manual-check" class="node manual-check" style="left:20px; top:680px;">
+    <div id="manual-check" class="node manual-check" style="left:20px; top:700px;">
       <b>&uarr; Manual Check Calls</b>
       <ul>
         <li>LLM Judge Similarity</li>
         <li>Record Coherence</li>
-      </ul>
-    </div>
-
-    <!-- ===== ROW 4: Reference / Implementation (container) ===== -->
-    <div id="reference-box" class="node reference-box" style="left:20px; top:830px;">
-      <b>Reference</b>
-      <ul>
         <li>Reference control?</li>
       </ul>
     </div>
@@ -389,11 +375,11 @@
     </div>
 
     <!-- Consistency Rate & Labeled Evals (outside Implementation) -->
-    <div id="consistency-rate" class="node consistency-box" style="left:600px; top:800px;">
+    <div id="consistency-rate" class="node consistency-box" style="left:550px; top:800px;">
       Consistency<br>Rate
     </div>
 
-    <div id="labeled-evals" class="node labeled-evals" style="left:600px; top:920px;">
+    <div id="labeled-evals" class="node labeled-evals" style="left:550px; top:920px;">
       Labeled Evals
     </div>
 
@@ -476,26 +462,25 @@
         PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
       });
 
-      // ====== Reference → Implementation ======
-      connect("reference-box", "impl-box", ["Right", "Left"]);
-
       // ====== Obj Def → Implementation (down) ======
       connect("obj-def-box", "impl-box", ["Bottom", "Top"]);
 
       // ====== Implementation → Consistency Rate ======
       connect("impl-box", "consistency-rate", [[1, 0.3, 1, 0], [0, 0.5, -1, 0]]);
 
-      // ====== Consistency Rate → Objective Definitions (feeds back) ======
-      connect("consistency-rate", "obj-def-box", [[0.5, 0, 0, -1], [1, 0.8, 1, 0]], {
-        PaintStyle: { stroke: "#00695c", strokeWidth: 2, dashstyle: "4 3" }
+      // ====== Consistency Rate → Objective Definitions (feeds back up) ======
+      connect("consistency-rate", "obj-def-box", ["Top", "Bottom"], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 40, gap: 4, midpoint: 0.3 }],
+        PaintStyle: { stroke: "#d84315", strokeWidth: 2.5, dashstyle: "6 3" }
       });
 
       // ====== Implementation → Labeled Evals ======
       connect("impl-box", "labeled-evals", [[1, 0.8, 1, 0], [0, 0.5, -1, 0]]);
 
-      // ====== Labeled Evals → Augmentation (feeds back) ======
-      connect("labeled-evals", "augmentation-box", [[0.5, 0, 0, -1], [1, 0.8, 1, 0]], {
-        PaintStyle: { stroke: "#2e7d32", strokeWidth: 2, dashstyle: "4 3" }
+      // ====== Labeled Evals → Augmentation (feeds back up) ======
+      connect("labeled-evals", "augmentation-box", ["Top", "Bottom"], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 40, gap: 4, midpoint: 0.3 }],
+        PaintStyle: { stroke: "#1b5e20", strokeWidth: 2.5, dashstyle: "6 3" }
       });
 
 
