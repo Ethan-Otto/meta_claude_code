@@ -294,11 +294,8 @@
         <li><b>What is every piece of subcriteria we need to evaluate?</b></li>
         <li>All possible edge cases?</li>
         <li>What kind of test / not for best for each subcriteria?</li>
+        <li>How do we quantify success?</li>
       </ul>
-    </div>
-
-    <div id="how-to-quote" class="node" style="left:920px; top:260px; background:#fffde7; border:1px dashed #999; width:130px; font-size:11px; font-style:italic; text-align:center;">
-      How do we quantify success?
     </div>
 
     <!-- ===== ROW 3: Obj Def / Augmentation / Tools ===== -->
@@ -422,9 +419,10 @@
       // ====== Architect → down to Scoping ======
       connect("architect", "scoping-box", ["Bottom", "Top"]);
 
-      // ====== Concept Context → Scoping ======
-      connect("concept-context", "scoping-box", [[0.1, 1, 0, 1], "Top"], {
-        PaintStyle: { stroke: "#2e7d32", strokeWidth: 2 }
+      // ====== Concept Context → Scoping (route far below Meta-Research) ======
+      connect("concept-context", "scoping-box", [[0.05, 1, 0, 1], [1, 0.1, 1, 0]], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: [120, 15], gap: 4 }],
+        PaintStyle: { stroke: "#2e7d32", strokeWidth: 2.5 }
       });
 
       // ====== Scoping → Definition ======
@@ -432,11 +430,6 @@
 
       // ====== Definition → Objectivification ======
       connect("definition-box", "objectivification-box", ["Right", "Left"]);
-
-      // ====== Objectivification → "How to quantify" (dashed note) ======
-      connect("objectivification-box", "how-to-quote", ["Right", "Left"], {
-        PaintStyle: { stroke: "#999", strokeWidth: 1, dashstyle: "3 3" }
-      });
 
       // ====== Tools Category → Objectivification ======
       connect("tools-box", "objectivification-box", [
