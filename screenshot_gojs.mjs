@@ -1,0 +1,23 @@
+import puppeteer from 'puppeteer';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const htmlPath = path.join(__dirname, 'flowchart_gojs.html');
+
+const browser = await puppeteer.launch({
+  executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+  args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  headless: 'new'
+});
+const page = await browser.newPage();
+await page.setViewport({ width: 1550, height: 1600, deviceScaleFactor: 2 });
+await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0', timeout: 30000 });
+await new Promise(r => setTimeout(r, 2500));
+await page.screenshot({
+  path: path.join(__dirname, 'flowchart_gojs.png'),
+  fullPage: true,
+  type: 'png'
+});
+await browser.close();
+console.log('Screenshot saved to flowchart_gojs.png');

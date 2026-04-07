@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Evaluation Pipeline — GoJS</title>
+  <script src="node_modules/gojs/release/go.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fef9e7;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      text-align: center;
+      padding: 14px;
+      font-size: 22px;
+      color: #333;
+      margin: 0;
+    }
+    #myDiagramDiv {
+      width: 1450px;
+      height: 1450px;
+      margin: 10px auto;
+      background: #fef9e7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Evaluation Pipeline Flowchart (GoJS)</h1>
+  <div id="myDiagramDiv"></div>
+
+  <script>
+    const $ = go.GraphObject.make;
+
+    const myDiagram = $(go.Diagram, "myDiagramDiv", {
+      "undoManager.isEnabled": false,
+      "animationManager.isEnabled": false,
+      initialAutoScale: go.Diagram.Uniform,
+      padding: 20,
+      contentAlignment: go.Spot.Center,
+      layout: $(go.Layout),
+      "toolManager.hoverDelay": 100
+    });
+
+    // ============ NODE TEMPLATES ============
+
+    // Helper to build a multi-section content panel
+    function contentPanel(title, bullets, opts = {}) {
+      const parts = [];
+      if (title) {
+        parts.push(
+          $(go.TextBlock, title, {
+            font: "bold 13px Segoe UI",
+            margin: new go.Margin(0, 0, 4, 0),
+            textAlign: opts.align || "left",
+            stroke: "#111"
+          })
+        );
+      }
+      bullets.forEach(b => {
+        parts.push(
+          $(go.TextBlock, b, {
+            font: "12px Segoe UI",
+            margin: new go.Margin(1, 0, 1, 0),
+            textAlign: opts.align || "left",
+            stroke: "#222"
+          })
+        );
+      });
+      return parts;
+    }
+
+    // ============ HELPERS TO BUILD NODES ============
+
+    function processNode(key, pos, title, bullets, color = "#fff", border = "#555", width = 220) {
+      return {
+        key,
+        category: "process",
+        loc: pos,
+        title,
+        bullets,
+        fill: color,
+        stroke: border,
+        width
+      };
+    }
+
+    function stateNode(key, pos, title, bullets, fill = "#e3e3e3", stroke = "#666", width = 220) {
+      return {
+        key,
+        category: "state",
+        loc: pos,
+        title,
+        bullets,
+        fill,
+        stroke,
+        width
+      };
+    }
+
+    // PROCESS (rectangle) template
+    myDiagram.nodeTemplateMap.add("process",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.TopLeft, locationObjectName: "SHAPE" },
+        new go.Binding("location", "loc", go.Point.parse),
+        $(go.Shape, "RoundedRectangle",
+          { name: "SHAPE", parameter1: 6, strokeWidth: 2 },
+          new go.Binding("fill"),
+          new go.Binding("stroke"),
+          new go.Binding("desiredSize", "width", w => new go.Size(w, NaN))
+        ),
+        $(go.Panel, "Vertical",
+          { margin: 10, alignment: go.Spot.TopLeft, defaultAlignment: go.Spot.Left },
+          $(go.TextBlock,
+            { font: "bold 13px Segoe UI", stroke: "#111", margin: new go.Margin(0, 0, 4, 0) },
+            new go.Binding("text", "title"),
+            new go.Binding("visible", "title", t => !!t)
+          ),
+          $(go.Panel, "Vertical",
+            { defaultAlignment: go.Spot.Left },
+            new go.Binding("itemArray", "bullets"),
+            {
+              itemTemplate:
+                $(go.Panel, "Horizontal",
+                  { margin: new go.Margin(1, 0, 1, 0) },
+                  $(go.TextBlock,
+                    { font: "12px Segoe UI", stroke: "#222", wrap: go.TextBlock.WrapFit }
+                  )
+                )
+            }
+          )
+        )
+      )
+    );
+
+    // Simpler state/process: single textblock with bullets joined
+    function buildNodeTemplate(shape, params = {}) {
+      return $(go.Node, "Auto",
+        {
+          locationSpot: go.Spot.TopLeft,
+          ...params.nodeOpts
+        },
+        new go.Binding("location", "loc", go.Point.parse),
+        $(go.Shape, shape,
+          {
+            strokeWidth: params.strokeWidth || 2,
+            parameter1: params.parameter1 || 0
+          },
+          new go.Binding("fill"),
+          new go.Binding("stroke"),
+          new go.Binding("desiredSize", "size", go.Size.parse)
+        ),
+        $(go.Panel, "Vertical",
+          {
+            margin: params.margin || 10,
+            defaultAlignment: params.alignment || go.Spot.Left,
+            alignment: params.panelAlign || go.Spot.Center
+          },
+          $(go.TextBlock,
+            {
+              font: "bold 13px Segoe UI",
+              stroke: "#111",
+              margin: new go.Margin(0, 0, 4, 0),
+              textAlign: params.textAlign || "left"
+            },
+            new go.Binding("text", "title"),
+            new go.Binding("visible", "title", t => !!t)
+          ),
+          $(go.TextBlock,
+            {
+              font: "12px Segoe UI",
+              stroke: "#222",
+              textAlign: params.textAlign || "left"
+            },
+            new go.Binding("text", "body"),
+            new go.Binding("visible", "body", b => !!b)
+          )
+        )
+      );
+    }
+
+    // Rectangle process
+    myDiagram.nodeTemplateMap.add("rect",
+      buildNodeTemplate("RoundedRectangle", { parameter1: 4 })
+    );
+
+    // State (ellipse-like rounded)
+    myDiagram.nodeTemplateMap.add("state",
+      buildNodeTemplate("RoundedRectangle", {
+        parameter1: 30,
+        margin: new go.Margin(16, 26, 16, 26)
+      })
+    );
+
+    // Circle (Architect)
+    myDiagram.nodeTemplateMap.add("circle",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.TopLeft },
+        new go.Binding("location", "loc", go.Point.parse),
+        $(go.Shape, "Circle",
+          { strokeWidth: 3, desiredSize: new go.Size(110, 110) },
+          new go.Binding("fill"),
+          new go.Binding("stroke")
+        ),
+        $(go.TextBlock,
+          {
+            font: "bold 14px Segoe UI",
+            stroke: "#111",
+            textAlign: "center",
+            alignment: go.Spot.Center
+          },
+          new go.Binding("text", "title")
+        )
+      )
+    );
+
+    // Results Report (emphasized)
+    myDiagram.nodeTemplateMap.add("emphasis",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.TopLeft },
+        new go.Binding("location", "loc", go.Point.parse),
+        $(go.Shape, "RoundedRectangle",
+          { parameter1: 10, strokeWidth: 3 },
+          new go.Binding("fill"),
+          new go.Binding("stroke"),
+          new go.Binding("desiredSize", "size", go.Size.parse)
+        ),
+        $(go.TextBlock,
+          {
+            font: "bold 16px Segoe UI",
+            stroke: "#0d47a1",
+            textAlign: "center",
+            alignment: go.Spot.Center,
+            margin: 14
+          },
+          new go.Binding("text", "title")
+        )
+      )
+    );
+
+    // ============ LINK TEMPLATES ============
+    myDiagram.linkTemplate =
+      $(go.Link,
+        {
+          routing: go.Link.Orthogonal,
+          corner: 8,
+          fromEndSegmentLength: 25,
+          toEndSegmentLength: 25,
+          reshapable: false
+        },
+        new go.Binding("routing", "routing", r => r === "bezier" ? go.Link.Normal : go.Link.Orthogonal),
+        new go.Binding("curve", "routing", r => r === "bezier" ? go.Link.Bezier : go.Link.None),
+        new go.Binding("fromSpot", "fromSpot", s => go.Spot.parse(s)),
+        new go.Binding("toSpot", "toSpot", s => go.Spot.parse(s)),
+        $(go.Shape,
+          { strokeWidth: 2, stroke: "#333" },
+          new go.Binding("strokeDashArray", "dashed", d => d ? [6, 4] : null),
+          new go.Binding("stroke", "color")
+        ),
+        $(go.Shape,
+          { toArrow: "Standard", fill: "#333", stroke: null },
+          new go.Binding("fill", "color")
+        ),
+        $(go.Panel, "Auto",
+          { visible: false },
+          new go.Binding("visible", "label", l => !!l),
+          $(go.Shape, "RoundedRectangle",
+            { fill: "#fef9e7", stroke: "#999", parameter1: 3 }),
+          $(go.TextBlock,
+            { font: "italic 11px Segoe UI", stroke: "#555", margin: 3 },
+            new go.Binding("text", "label"))
+        )
+      );
+
+    // ============ NODE DATA ============
+
+    const nodeDataArray = [
+      // Architect (circle)
+      {
+        key: "architect",
+        category: "circle",
+        loc: "20 20",
+        title: "Architect\nAsks",
+        fill: "#fff3cd",
+        stroke: "#c9a800"
+      },
+
+      // Meta-Research
+      {
+        key: "meta",
+        category: "rect",
+        loc: "180 10",
+        title: "Meta-Research",
+        body: "What do we need to research?\n• Web\n• Our content\n• Policies\n• Drawings\n    ◦ Same plot drawings\n    ◦ Sync region drawings\n    ◦ Anti-drawings",
+        fill: "#ffffff",
+        stroke: "#555",
+        size: "220 NaN"
+      },
+
+      // Concept Context (state, rounded)
+      {
+        key: "concept",
+        category: "state",
+        loc: "450 25",
+        title: "Concept Context",
+        body: "• Relevant Pages / Drawings\n• Relevant Policies\n• Plan Highlights UI",
+        fill: "#e8f4e8",
+        stroke: "#2e7d32",
+        size: "240 NaN"
+      },
+
+      // Scoping
+      {
+        key: "scoping",
+        category: "rect",
+        loc: "20 250",
+        title: "Scoping",
+        body: "• What are we working with?\n• What do they want?\n• What questions do we need to answer?\n• Are we missing docs,\n  definitions, drawings?",
+        fill: "#ffffff",
+        stroke: "#555",
+        size: "230 NaN"
+      },
+
+      // Definition (state)
+      {
+        key: "definition",
+        category: "state",
+        loc: "310 270",
+        title: "Definition",
+        body: "Goals\n• Answers with questions\n• With evidence / citations",
+        fill: "#e3e3e3",
+        stroke: "#666",
+        size: "220 NaN"
+      },
+
+      // Objectivification
+      {
+        key: "objectivification",
+        category: "rect",
+        loc: "610 260",
+        title: "Objectivification",
+        body: "• What is every piece of subcriteria\n  we need to evaluate?\n• All possible edge cases?\n• What kind of test for each subcriteria?\n• How do we quantify success?",
+        fill: "#fff8e1",
+        stroke: "#e65100",
+        size: "300 NaN"
+      },
+
+      // Tools Category
+      {
+        key: "tools",
+        category: "rect",
+        loc: "960 420",
+        title: "Tools Category",
+        body: "• Classify Element\n• Find text\n• Scale check\n• Compare text\n• Geometric Eval / Measure\n• Segment element\n• Classify element system\n• BBox element",
+        fill: "#e8eaf6",
+        stroke: "#283593",
+        size: "230 NaN"
+      },
+
+      // Objective Definitions (state, left-aligned)
+      {
+        key: "objdef",
+        category: "state",
+        loc: "140 540",
+        title: "Objective Definitions",
+        body: "Subcriteria Tree\n• Full Citations\n• Drawing Highlights\n• Tool needed?\n  Custom / General / Category\n• Sub Criteria Type:\n    ◦ Single page\n    ◦ Single page+\n    ◦ Multi page drawing\n    ◦ Multi page drawing+",
+        fill: "#e3e3e3",
+        stroke: "#666",
+        size: "260 NaN"
+      },
+
+      // Augmentation
+      {
+        key: "augmentation",
+        category: "rect",
+        loc: "450 580",
+        title: "Augmentation",
+        body: "• Aug/gen drawings to\n  make failing cases\n• Find negative drawings\n• Search additional\n  train/test drawings",
+        fill: "#ffffff",
+        stroke: "#555",
+        size: "240 NaN"
+      },
+
+      // Manual Check Code
+      {
+        key: "manual",
+        category: "rect",
+        loc: "20 840",
+        title: "↑ Manual Check Code",
+        body: "• LLM Judge Similarity\n• Recommend Corrections\n• Reference Relevance",
+        fill: "#f3e5f5",
+        stroke: "#6a1b9a",
+        size: "190 NaN"
+      },
+
+      // Implementation (state)
+      {
+        key: "implementation",
+        category: "state",
+        loc: "240 860",
+        title: "↓ Implementation",
+        body: "• IP / Else Logic\n• LLM\n• VLLM\n• ML Model",
+        fill: "#e3e3e3",
+        stroke: "#666",
+        size: "290 NaN"
+      },
+
+      // Consistency Rate (state, small)
+      {
+        key: "consistency",
+        category: "state",
+        loc: "600 870",
+        title: "Consistency\nRate",
+        body: "",
+        fill: "#ffffff",
+        stroke: "#555",
+        size: "170 90"
+      },
+
+      // Labeled Evals (state, small)
+      {
+        key: "labeled",
+        category: "state",
+        loc: "600 990",
+        title: "Labeled Evals",
+        body: "",
+        fill: "#e8f5e9",
+        stroke: "#2e7d32",
+        size: "170 80"
+      },
+
+      // Results Report (emphasized)
+      {
+        key: "results",
+        category: "emphasis",
+        loc: "600 1130",
+        title: "Results Report",
+        fill: "#bbdefb",
+        stroke: "#1565c0",
+        size: "220 60"
+      },
+
+      // Agent Tool / Registry
+      {
+        key: "registry",
+        category: "rect",
+        loc: "240 1130",
+        title: "↓↑ Agent Tool / Registry",
+        body: "",
+        fill: "#d7ccc8",
+        stroke: "#4e342e",
+        size: "200 60"
+      }
+    ];
+
+    // ============ LINK DATA ============
+    const linkDataArray = [
+      // Top row
+      { from: "architect", to: "meta", fromSpot: "Right", toSpot: "Left" },
+      { from: "meta", to: "concept", fromSpot: "Right", toSpot: "Left" },
+
+      // Architect → Scoping (down)
+      { from: "architect", to: "scoping", fromSpot: "Bottom", toSpot: "Top" },
+
+      // Concept Context → Scoping (route around Meta-Research)
+      { from: "concept", to: "scoping", fromSpot: "BottomLeft", toSpot: "Right",
+        color: "#2e7d32" },
+
+      // Scoping → Definition → Objectivification
+      { from: "scoping", to: "definition", fromSpot: "Right", toSpot: "Left" },
+      { from: "definition", to: "objectivification", fromSpot: "Right", toSpot: "Left" },
+
+      // Tools Category → Objectivification
+      { from: "tools", to: "objectivification", fromSpot: "Left", toSpot: "BottomRight",
+        color: "#283593" },
+
+      // Objectivification → Objective Definitions
+      { from: "objectivification", to: "objdef", fromSpot: "Bottom", toSpot: "Top" },
+
+      // Objective Definitions → Augmentation
+      { from: "objdef", to: "augmentation", fromSpot: "Right", toSpot: "Left" },
+
+      // Obj Def → Implementation
+      { from: "objdef", to: "implementation", fromSpot: "Bottom", toSpot: "Top" },
+
+      // Augmentation → Implementation
+      { from: "augmentation", to: "implementation", fromSpot: "Bottom", toSpot: "Top" },
+
+      // Implementation → Consistency Rate
+      { from: "implementation", to: "consistency", fromSpot: "Right", toSpot: "Left" },
+
+      // Implementation → Labeled Evals
+      { from: "implementation", to: "labeled", fromSpot: "BottomRight", toSpot: "Left" },
+
+      // Implementation → Manual Check
+      { from: "implementation", to: "manual", fromSpot: "Left", toSpot: "Right",
+        color: "#6a1b9a" },
+
+      // Manual Check → Objective Definitions
+      { from: "manual", to: "objdef", fromSpot: "Top", toSpot: "Left",
+        color: "#6a1b9a" },
+
+      // Manual Check → Scoping
+      { from: "manual", to: "scoping", fromSpot: "Left", toSpot: "Left",
+        color: "#6a1b9a", dashed: true },
+
+      // Labeled Evals → Results Report
+      { from: "labeled", to: "results", fromSpot: "Bottom", toSpot: "Top" },
+
+      // Agent Tool/Registry ↔ Implementation
+      { from: "registry", to: "implementation", fromSpot: "Top", toSpot: "Bottom",
+        color: "#4e342e" },
+      { from: "implementation", to: "registry", fromSpot: "BottomLeft", toSpot: "TopLeft",
+        color: "#4e342e", dashed: true },
+
+      // Feedback: Consistency Rate → Objective Definitions
+      { from: "consistency", to: "objdef", fromSpot: "Top", toSpot: "Right",
+        color: "#d84315", dashed: true, label: "refine" },
+
+      // Feedback: Labeled Evals → Augmentation
+      { from: "labeled", to: "augmentation", fromSpot: "Top", toSpot: "Right",
+        color: "#1b5e20", dashed: true, label: "refine" }
+    ];
+
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+  </script>
+</body>
+</html>
