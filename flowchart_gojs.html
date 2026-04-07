@@ -298,15 +298,15 @@
         size: "220 NaN"
       },
 
-      // Concept Context (state, rounded)
+      // Concept Context (state, rounded, grey)
       {
         key: "concept",
         category: "state",
         loc: "450 25",
         title: "Concept Context",
         body: "• Relevant Pages / Drawings\n• Relevant Policies\n• Plan Highlights UI",
-        fill: "#e8f4e8",
-        stroke: "#2e7d32",
+        fill: "#e3e3e3",
+        stroke: "#666",
         size: "240 NaN"
       },
 
@@ -463,9 +463,8 @@
       // Architect → Scoping (down)
       { from: "architect", to: "scoping", fromSpot: "Bottom", toSpot: "Top" },
 
-      // Concept Context → Scoping (route around Meta-Research)
-      { from: "concept", to: "scoping", fromSpot: "BottomLeft", toSpot: "Right",
-        color: "#2e7d32" },
+      // Concept Context → Scoping (route via left, avoiding other boxes)
+      { from: "concept", to: "scoping", fromSpot: "Left", toSpot: "Top" },
 
       // Scoping → Definition → Objectivification
       { from: "scoping", to: "definition", fromSpot: "Right", toSpot: "Left" },
