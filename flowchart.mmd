@@ -1,84 +1,120 @@
-flowchart TD
-    %% ==== Top row: Architect pipeline ====
-    Architect(("Architect<br/>Asks"))
-    MetaResearch["<b>Meta-Research</b><br/>What do we need to research?<br/>• Web<br/>• Our content<br/>• Policies<br/>• Drawings<br/>&nbsp;&nbsp;• Same plot drawings<br/>&nbsp;&nbsp;• Sync region drawings<br/>&nbsp;&nbsp;• Anti-drawings"]
-    ConceptContext(["<b>Concept Context</b><br/>• Relevant Pages / Drawings<br/>• Relevant Policies<br/>• Plan Highlights UI"])
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#fff'
+    primaryTextColor: '#1a1a1a'
+    primaryBorderColor: '#555'
+    lineColor: '#555'
+    fontSize: 14px
+    fontFamily: 'Segoe UI, Arial, sans-serif'
+  flowchart:
+    curve: basis
+    nodeSpacing: 50
+    rankSpacing: 60
+    padding: 15
+    htmlLabels: true
+---
+flowchart TB
 
-    %% ==== Scoping / Definition / Objectivification ====
-    Scoping["<b>Scoping</b><br/>• What are we working with?<br/>• What do they want?<br/>• What questions do we need to answer?<br/>• Are we missing docs, definitions? Drawings?"]
-    Definition(["<b>Definition</b><br/><b>Goals</b><br/>• Answers with questions<br/>• With evidence / citations"])
-    Objectivification["<b>Objectivification</b><br/>• What is every piece of subcriteria we need to evaluate?<br/>• All possible edge cases?<br/>• What kind of test / not for best for each subcriteria?<br/>• How do we quantify success?"]
+%% ============== RESEARCH PHASE ==============
+subgraph RESEARCH["&nbsp;&nbsp;🔍 Research Phase&nbsp;&nbsp;"]
+    direction LR
+    Architect(("<b>Architect</b><br/>Asks"))
+    MetaResearch["<b>Meta-Research</b><hr/>What do we need to research?<br/>• Web • Our content<br/>• Policies • Drawings<br/>&nbsp;&nbsp;◦ Same plot drawings<br/>&nbsp;&nbsp;◦ Sync region drawings<br/>&nbsp;&nbsp;◦ Anti-drawings"]
+    ConceptContext(["<b>Concept Context</b><hr/>• Relevant Pages / Drawings<br/>• Relevant Policies<br/>• Plan Highlights UI"])
+    Architect --> MetaResearch --> ConceptContext
+end
 
-    %% ==== Tools Category ====
-    Tools["<b>Tools Category</b><br/>• Classify Element<br/>• Find text<br/>• Scale check<br/>• Compare text<br/>• Geometric Eval / Measure<br/>• Segment element<br/>• Classify element system<br/>• BBox element"]
+%% ============== PLANNING PHASE ==============
+subgraph PLANNING["&nbsp;&nbsp;📋 Planning Phase&nbsp;&nbsp;"]
+    direction LR
+    Scoping["<b>Scoping</b><hr/>• What are we working with?<br/>• What do they want?<br/>• What questions do we need to answer?<br/>• Are we missing docs,<br/>&nbsp;&nbsp;definitions, drawings?"]
+    Definition(["<b>Definition</b><hr/><b>Goals</b><br/>• Answers with questions<br/>• With evidence / citations"])
+    Objectivification["<b>Objectivification</b><hr/>• <b>What is every piece of<br/>&nbsp;&nbsp;subcriteria to evaluate?</b><br/>• All possible edge cases?<br/>• What kind of test for<br/>&nbsp;&nbsp;each subcriteria?<br/>• How do we quantify success?"]
+    Scoping --> Definition --> Objectivification
+end
 
-    %% ==== Objective Definitions / Augmentation ====
-    ObjDef(["<b>Objective Definitions</b><br/><b>Subcriteria Tree</b><br/>• Full Citations<br/>• Drawing Highlights<br/>• Tool needed? Custom / General / Category<br/>• Sub Criteria Type:<br/>&nbsp;&nbsp;• Single page<br/>&nbsp;&nbsp;• Single page+<br/>&nbsp;&nbsp;• Multi page drawing<br/>&nbsp;&nbsp;• Multi page drawing+"])
-    Augmentation["<b>Augmentation</b><br/>• Aug/gen drawings to make failing cases<br/>• Find negative drawings<br/>• Search additional train/test drawings"]
-
-    %% ==== Manual Check ====
-    ManualCheck["<b>↑ Manual Check Code</b><br/>• LLM Judge Similarity<br/>• Recommend Corrections<br/>• Reference Relevance"]
-
-    %% ==== Implementation (state) ====
-    Implementation(["<b>↓ Implementation</b><br/>• IP / Else Logic<br/>• LLM<br/>• VLLM<br/>• ML Model"])
-
-    %% ==== Consistency Rate / Labeled Evals ====
-    ConsistencyRate(["Consistency<br/>Rate"])
-    LabeledEvals(["Labeled Evals"])
-
-    %% ==== Results / Tool Registry ====
-    ResultsReport["<b>Results Report</b>"]
-    ToolRegistry["↓↑ Agent<br/>Tool / Registry"]
-
-    %% ==== Connections ====
-    Architect --> MetaResearch
-    MetaResearch --> ConceptContext
-    Architect --> Scoping
-    ConceptContext --> Scoping
-    Scoping --> Definition
-    Definition --> Objectivification
-    Tools --> Objectivification
-    Objectivification --> ObjDef
+%% ============== DESIGN PHASE ==============
+subgraph DESIGN["&nbsp;&nbsp;🎯 Design Phase&nbsp;&nbsp;"]
+    direction LR
+    ObjDef(["<b>Objective Definitions</b><hr/><b>Subcriteria Tree</b><br/>• Full Citations<br/>• Drawing Highlights<br/>• Tool needed?<br/>&nbsp;&nbsp;Custom / General / Category<br/>• Sub Criteria Type:<br/>&nbsp;&nbsp;◦ Single page<br/>&nbsp;&nbsp;◦ Single page+<br/>&nbsp;&nbsp;◦ Multi page drawing<br/>&nbsp;&nbsp;◦ Multi page drawing+"])
+    Augmentation["<b>Augmentation</b><hr/>• Aug/gen drawings to<br/>&nbsp;&nbsp;make failing cases<br/>• Find negative drawings<br/>• Search additional<br/>&nbsp;&nbsp;train/test drawings"]
+    Tools["<b>Tools Category</b><hr/>• Classify Element<br/>• Find text<br/>• Scale check<br/>• Compare text<br/>• Geometric Eval / Measure<br/>• Segment element<br/>• Classify element system<br/>• BBox element"]
     ObjDef --> Augmentation
-    ObjDef --> Implementation
-    Augmentation --> Implementation
-    Implementation --> ManualCheck
-    ManualCheck --> ObjDef
-    ManualCheck --> Scoping
-    Implementation --> ConsistencyRate
-    Implementation --> LabeledEvals
-    LabeledEvals --> ResultsReport
-    ToolRegistry <--> Implementation
+end
 
-    %% Feedback loops (dashed)
-    ConsistencyRate -.->|feedback| ObjDef
-    LabeledEvals -.->|feedback| Augmentation
+%% ============== EXECUTION PHASE ==============
+subgraph EXECUTION["&nbsp;&nbsp;⚙️ Execution Phase&nbsp;&nbsp;"]
+    direction LR
+    ManualCheck["<b>Manual Check Code</b><hr/>• LLM Judge Similarity<br/>• Recommend Corrections<br/>• Reference Relevance"]
+    Implementation(["<b>Implementation</b><hr/>• IP / Else Logic<br/>• LLM<br/>• VLLM<br/>• ML Model"])
+    ToolRegistry[/"<b>Agent Tool / Registry</b>"/]
+end
 
-    %% ==== Styling ====
-    classDef processBox fill:#fff,stroke:#555,stroke-width:2px
-    classDef stateBox fill:#e3e3e3,stroke:#666,stroke-width:2px
-    classDef metaBox fill:#fff,stroke:#555,stroke-width:2px
-    classDef conceptBox fill:#e8f4e8,stroke:#2e7d32,stroke-width:2px
-    classDef objBox fill:#fff8e1,stroke:#e65100,stroke-width:2px
-    classDef toolsBox fill:#e8eaf6,stroke:#283593,stroke-width:2px
-    classDef manualBox fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
-    classDef evalsBox fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    classDef resultsBox fill:#bbdefb,stroke:#1565c0,stroke-width:2px
-    classDef registryBox fill:#d7ccc8,stroke:#4e342e,stroke-width:2px
-    classDef architectBox fill:#fff3cd,stroke:#c9a800,stroke-width:3px
+%% ============== EVALUATION PHASE ==============
+subgraph EVALUATION["&nbsp;&nbsp;📊 Evaluation Phase&nbsp;&nbsp;"]
+    direction LR
+    ConsistencyRate(["<b>Consistency<br/>Rate</b>"])
+    LabeledEvals(["<b>Labeled Evals</b>"])
+    ResultsReport[["<b>Results Report</b>"]]
+end
 
-    class Architect architectBox
-    class MetaResearch metaBox
-    class ConceptContext conceptBox
-    class Scoping processBox
-    class Definition stateBox
-    class Objectivification objBox
-    class Tools toolsBox
-    class ObjDef stateBox
-    class Augmentation processBox
-    class ManualCheck manualBox
-    class Implementation stateBox
-    class ConsistencyRate processBox
-    class LabeledEvals evalsBox
-    class ResultsReport resultsBox
-    class ToolRegistry registryBox
+%% ============== CROSS-PHASE CONNECTIONS ==============
+Architect -.-> Scoping
+ConceptContext -.-> Scoping
+Tools --> Objectivification
+Objectivification --> ObjDef
+ObjDef --> Implementation
+Augmentation --> Implementation
+Implementation --> ManualCheck
+ManualCheck --> ObjDef
+ManualCheck --> Scoping
+Implementation --> ConsistencyRate
+Implementation --> LabeledEvals
+LabeledEvals --> ResultsReport
+ToolRegistry <--> Implementation
+
+%% Feedback loops
+ConsistencyRate -. "refine" .-> ObjDef
+LabeledEvals -. "refine" .-> Augmentation
+
+%% ============== STYLING ==============
+classDef architectStyle fill:#fff3cd,stroke:#c9a800,stroke-width:3px,color:#333,font-weight:bold
+classDef metaStyle fill:#ffffff,stroke:#555,stroke-width:2px,color:#333,text-align:left
+classDef conceptStyle fill:#e8f4e8,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+classDef scopingStyle fill:#ffffff,stroke:#555,stroke-width:2px,color:#333
+classDef definitionStyle fill:#f5f5f5,stroke:#424242,stroke-width:2px,color:#212121
+classDef objStyle fill:#fff8e1,stroke:#e65100,stroke-width:2px,color:#bf360c
+classDef toolsStyle fill:#e8eaf6,stroke:#283593,stroke-width:2px,color:#1a237e
+classDef objdefStyle fill:#f5f5f5,stroke:#424242,stroke-width:2px,color:#212121
+classDef augStyle fill:#ffffff,stroke:#555,stroke-width:2px,color:#333
+classDef manualStyle fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px,color:#4a148c
+classDef implStyle fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#004d40
+classDef rateStyle fill:#fff8e1,stroke:#f57f17,stroke-width:2px,color:#e65100
+classDef evalsStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+classDef resultsStyle fill:#bbdefb,stroke:#1565c0,stroke-width:3px,color:#0d47a1,font-weight:bold
+classDef registryStyle fill:#d7ccc8,stroke:#4e342e,stroke-width:2px,color:#3e2723
+
+class Architect architectStyle
+class MetaResearch metaStyle
+class ConceptContext conceptStyle
+class Scoping scopingStyle
+class Definition definitionStyle
+class Objectivification objStyle
+class Tools toolsStyle
+class ObjDef objdefStyle
+class Augmentation augStyle
+class ManualCheck manualStyle
+class Implementation implStyle
+class ConsistencyRate rateStyle
+class LabeledEvals evalsStyle
+class ResultsReport resultsStyle
+class ToolRegistry registryStyle
+
+%% Subgraph styling
+style RESEARCH fill:#fffde7,stroke:#f9a825,stroke-width:2px,stroke-dasharray: 5 5
+style PLANNING fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,stroke-dasharray: 5 5
+style DESIGN fill:#fce4ec,stroke:#c2185b,stroke-width:2px,stroke-dasharray: 5 5
+style EXECUTION fill:#e0f7fa,stroke:#00838f,stroke-width:2px,stroke-dasharray: 5 5
+style EVALUATION fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,stroke-dasharray: 5 5
