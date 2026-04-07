@@ -249,10 +249,12 @@
           toEndSegmentLength: 25,
           reshapable: false
         },
-        new go.Binding("routing", "routing", r => r === "bezier" ? go.Link.Normal : go.Link.Orthogonal),
+        new go.Binding("routing", "routing", r => r === "bezier" ? go.Link.Normal : go.Link.AvoidsNodes),
         new go.Binding("curve", "routing", r => r === "bezier" ? go.Link.Bezier : go.Link.None),
         new go.Binding("fromSpot", "fromSpot", s => go.Spot.parse(s)),
         new go.Binding("toSpot", "toSpot", s => go.Spot.parse(s)),
+        new go.Binding("fromEndSegmentLength"),
+        new go.Binding("toEndSegmentLength"),
         $(go.Shape,
           { strokeWidth: 2, stroke: "#333" },
           new go.Binding("strokeDashArray", "dashed", d => d ? [6, 4] : null),
@@ -334,15 +336,15 @@
         size: "220 NaN"
       },
 
-      // Objectivification
+      // Objectivification (white box, like Meta-Research)
       {
         key: "objectivification",
         category: "rect",
         loc: "610 260",
         title: "Objectivification",
         body: "• What is every piece of subcriteria\n  we need to evaluate?\n• All possible edge cases?\n• What kind of test for each subcriteria?\n• How do we quantify success?",
-        fill: "#fff8e1",
-        stroke: "#e65100",
+        fill: "#ffffff",
+        stroke: "#555",
         size: "300 NaN"
       },
 
@@ -463,8 +465,9 @@
       // Architect → Scoping (down, enters top-left)
       { from: "architect", to: "scoping", fromSpot: "Bottom", toSpot: "0.25 0 0 -1" },
 
-      // Concept Context → Scoping (routes around, enters top-right)
-      { from: "concept", to: "scoping", fromSpot: "0.25 1 0 1", toSpot: "0.75 0 0 -1" },
+      // Concept Context → Scoping (AvoidsNodes finds the path)
+      { from: "concept", to: "scoping", fromSpot: "Top", toSpot: "Left",
+        color: "#d84315" },
 
       // Scoping → Definition → Objectivification
       { from: "scoping", to: "definition", fromSpot: "Right", toSpot: "Left" },
