@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluation Pipeline Flowchart</title>
+  <script src="node_modules/jsplumb/dist/js/jsplumb.min.js"></script>
+  <script>window.jsPlumb || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js"><\/script>')</script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #fef9e7;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: auto;
+    }
+
+    #canvas {
+      position: relative;
+      width: 1350px;
+      height: 1450px;
+      margin: 10px auto;
+    }
+
+    .node {
+      position: absolute;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.35;
+      z-index: 10;
+      cursor: default;
+    }
+
+    /* ---- Legend ---- */
+    .legend {
+      position: absolute;
+      z-index: 10;
+      font-size: 11px;
+      color: #666;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .legend-process {
+      width: 40px; height: 22px;
+      border: 2px solid #666;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .legend-state {
+      width: 40px; height: 22px;
+      border: 2px solid #666;
+      border-radius: 4px;
+      background: #e3e3e3;
+    }
+
+    /* ---- Node styles ---- */
+    .architect {
+      background: #fff3cd;
+      border: 3px solid #c9a800;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .meta-research {
+      background: #fff;
+      border: 2px solid #555;
+      width: 210px;
+    }
+
+    .concept-context {
+      background: #e3e3e3;
+      border: 2px solid #666;
+      border-radius: 50% / 40%;
+      width: 220px;
+      text-align: center;
+      padding: 16px 14px;
+    }
+
+    .section-header {
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: underline;
+      background: transparent;
+      border: none;
+      padding: 2px 6px;
+    }
+
+    .scoping-box {
+      background: #fff;
+      border: 2px solid #555;
+      width: 220px;
+    }
+
+    .definition-box {
+      background: #fff;
+      border: 2px solid #555;
+      width: 210px;
+      border-radius: 50% / 30%;
+      text-align: center;
+      padding: 14px;
+    }
+
+    .objectivification-box {
+      background: #fff;
+      border: 2px solid #555;
+      width: 280px;
+    }
+
+    .refine-label {
+      font-size: 11px;
+      font-style: italic;
+      color: #bf360c;
+      background: #fef9e7;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .obj-def-box {
+      background: #fff;
+      border: 2px solid #555;
+      width: 240px;
+      border-radius: 50% / 20%;
+      text-align: left;
+      padding: 18px 28px;
+    }
+
+    .augmentation-box {
+      background: #fff;
+      border: 2px solid #555;
+      width: 230px;
+    }
+
+    .tools-box {
+      background: #e8eaf6;
+      border: 2px solid #283593;
+      width: 230px;
+    }
+
+    .manual-check {
+      background: #f3e5f5;
+      border: 2px solid #6a1b9a;
+      width: 165px;
+      font-size: 12px;
+    }
+
+    .impl-box {
+      background: #e3e3e3;
+      border: 2px solid #666;
+      border-radius: 50% / 20%;
+      width: 290px;
+      padding: 20px 36px;
+      text-align: left;
+    }
+
+    .consistency-box {
+      background: #fff;
+      border: 2px solid #555;
+      border-radius: 50% / 40%;
+      width: 160px;
+      text-align: center;
+      padding: 14px;
+    }
+
+    .labeled-evals {
+      background: #e8f5e9;
+      border: 2px solid #2e7d32;
+      width: 150px;
+      text-align: center;
+      font-weight: 700;
+      border-radius: 50% / 40%;
+      padding: 14px;
+    }
+
+    .results-report {
+      background: #bbdefb;
+      border: 2px solid #1565c0;
+      width: 190px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    .tool-registry {
+      background: #d7ccc8;
+      border: 2px solid #4e342e;
+      width: 170px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .node b { display: block; margin-bottom: 3px; }
+    .node ul { margin: 3px 0 0 14px; font-size: 12px; }
+    .node ul li { margin-bottom: 2px; }
+
+    h1 {
+      text-align: center;
+      padding: 12px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Evaluation Pipeline Flowchart</h1>
+
+  <div id="canvas">
+
+    <!-- ===== LEGEND (top-right) ===== -->
+    <div class="legend" style="right: 40px; top: 10px;">
+      <div class="legend-item"><div class="legend-process"></div> Process</div>
+      <div class="legend-item"><div class="legend-state"></div> State</div>
+    </div>
+
+    <!-- ===== ROW 1: Architect → Meta-Research → Concept Context → HR ===== -->
+    <div id="architect" class="node architect" style="left:20px; top:20px;">
+      Architect<br>Asks
+    </div>
+
+    <div id="meta-research" class="node meta-research" style="left:170px; top:5px;">
+      <b>Meta-Research</b>
+      What do we need to research?
+      <ul>
+        <li>Web</li>
+        <li>Our content</li>
+        <li>Policies</li>
+        <li>Drawings
+          <ul>
+            <li>Same plot drawings</li>
+            <li>Sync region drawings</li>
+            <li>Anti-drawings</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div id="concept-context" class="node concept-context" style="left:440px; top:10px;">
+      <b>Concept Context</b>
+      <ul style="text-align:left;">
+        <li>Relevant Pages / Drawings</li>
+        <li>Relevant Policies</li>
+        <li>Plan Highlights UI</li>
+      </ul>
+    </div>
+
+
+    <!-- ===== ROW 2: Scoping / Definition / Objectivification ===== -->
+    <div id="scoping-header" class="node section-header" style="left:30px; top:210px;">
+      Scoping
+    </div>
+
+    <div id="scoping-box" class="node scoping-box" style="left:30px; top:240px;">
+      <ul>
+        <li>What are we working with?</li>
+        <li>What do they want?</li>
+        <li>What questions do we need to answer?</li>
+        <li>Are we missing docs, definitions? Drawings?</li>
+      </ul>
+    </div>
+
+
+    <div id="definition-header" class="node section-header" style="left:340px; top:210px;">
+      Definition
+    </div>
+
+    <div id="definition-box" class="node definition-box" style="left:310px; top:260px;">
+      <b>Goals</b>
+      <ul style="text-align:left;">
+        <li>Answers with questions</li>
+        <li>With evidence / citations</li>
+      </ul>
+    </div>
+
+    <div id="objectivification-header" class="node section-header" style="left:620px; top:210px;">
+      Objectivification
+    </div>
+
+    <div id="objectivification-box" class="node objectivification-box" style="left:600px; top:250px;">
+      <ul>
+        <li><b>What is every piece of subcriteria we need to evaluate?</b></li>
+        <li>All possible edge cases?</li>
+        <li>What kind of test / not for best for each subcriteria?</li>
+        <li>How do we quantify success?</li>
+      </ul>
+    </div>
+
+    <!-- ===== ROW 3: Obj Def / Augmentation / Tools ===== -->
+
+    <div id="tools-header" class="node section-header" style="left:960px; top:380px;">
+      Tools Category
+    </div>
+
+    <div id="tools-box" class="node tools-box" style="left:940px; top:410px;">
+      <ul>
+        <li>Classify Element</li>
+        <li>Find text</li>
+        <li>Scale check</li>
+        <li>Compare text</li>
+        <li>Geometric Eval / Measure</li>
+        <li>Segment element</li>
+        <li>Classify element system</li>
+        <li>BBox element</li>
+      </ul>
+    </div>
+
+    <div id="obj-def-header" class="node section-header" style="left:160px; top:510px;">
+      Objective Definitions
+    </div>
+
+    <div id="obj-def-box" class="node obj-def-box" style="left:150px; top:540px;">
+      <b>Subcriteria Tree</b>
+      <ul>
+        <li>Full Citations</li>
+        <li>Drawing Highlights</li>
+        <li>Tool needed?<br>Custom / General / Category</li>
+        <li>Sub Criteria Type:
+          <ul>
+            <li>Single page</li>
+            <li>Single page+</li>
+            <li>Multi page drawing</li>
+            <li>Multi page drawing+</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div id="augmentation-header" class="node section-header" style="left:460px; top:510px;">
+      Augmentation
+    </div>
+
+    <div id="augmentation-box" class="node augmentation-box" style="left:440px; top:540px;">
+      <ul>
+        <li>Aug/gen drawings to make failing cases</li>
+        <li>Find negative drawings</li>
+        <li>Search additional train/test drawings</li>
+      </ul>
+    </div>
+
+    <div id="manual-check" class="node manual-check" style="left:20px; top:700px;">
+      <b>&uarr; Manual Check Code</b>
+      <ul>
+        <li>LLM Judge Similarity</li>
+        <li>Recommend Corrections</li>
+        <li>Reference Relevance</li>
+      </ul>
+    </div>
+
+    <div id="impl-box" class="node impl-box" style="left:200px; top:790px;">
+      <b>&darr; Implementation</b>
+      <ul>
+        <li>IP / Else Logic</li>
+        <li>LLM</li>
+        <li>VLLM</li>
+        <li>ML Model</li>
+      </ul>
+    </div>
+
+    <!-- Consistency Rate & Labeled Evals (outside Implementation) -->
+    <div id="consistency-rate" class="node consistency-box" style="left:550px; top:800px;">
+      Consistency<br>Rate
+    </div>
+
+    <div id="labeled-evals" class="node labeled-evals" style="left:550px; top:920px;">
+      Labeled Evals
+    </div>
+
+
+    <!-- ===== ROW 5: Results / Tool Registry ===== -->
+    <div id="results-report" class="node results-report" style="left:560px; top:1100px;">
+      Results Report
+    </div>
+
+    <div id="tool-registry" class="node tool-registry" style="left:200px; top:1130px;">
+      &darr;&uarr; Agent<br>Tool / Registry
+    </div>
+
+  </div>
+
+  <script>
+    jsPlumb.ready(function () {
+      const instance = jsPlumb.getInstance({
+        Container: "canvas",
+        Connector: ["Flowchart", { cornerRadius: 5, stub: 15, gap: 4 }],
+        PaintStyle: { stroke: "#444", strokeWidth: 2 },
+        EndpointStyle: { fill: "transparent", radius: 1 },
+        Anchors: ["Right", "Left"],
+        ConnectionOverlays: [
+          ["Arrow", { location: 1, width: 10, length: 10, foldback: 0.8 }]
+        ]
+      });
+
+      function connect(src, tgt, anchors, opts) {
+        instance.connect({
+          source: src,
+          target: tgt,
+          anchors: anchors || ["Right", "Left"],
+          ...(opts || {})
+        });
+      }
+
+      // ====== ROW 1: Architect → Meta-Research → Concept Context ======
+      connect("architect", "meta-research", ["Right", "Left"]);
+      connect("meta-research", "concept-context", ["Right", "Left"]);
+
+      // ====== Architect → down to Scoping ======
+      connect("architect", "scoping-box", ["Bottom", "Top"]);
+
+      // ====== Concept Context → Scoping (route far below Meta-Research) ======
+      connect("concept-context", "scoping-box", [[0.05, 1, 0, 1], [1, 0.1, 1, 0]], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: [120, 15], gap: 4 }],
+        PaintStyle: { stroke: "#444", strokeWidth: 2.5 }
+      });
+
+      // ====== Scoping → Definition ======
+      connect("scoping-box", "definition-box", ["Right", "Left"]);
+
+      // ====== Definition → Objectivification ======
+      connect("definition-box", "objectivification-box", ["Right", "Left"]);
+
+      // ====== Tools Category → Objectivification ======
+      connect("tools-box", "objectivification-box", [
+        [0, 0.2, -1, 0], [1, 0.9, 1, 0]
+      ]);
+
+      // ====== Objectivification → Obj Definitions (down) ======
+      connect("objectivification-box", "obj-def-box", ["Bottom", "Top"]);
+
+      // ====== Obj Definitions → Augmentation ======
+      connect("obj-def-box", "augmentation-box", ["Right", "Left"]);
+
+      // ====== Implementation → Manual Check ======
+      connect("impl-box", "manual-check", ["Left", "Bottom"], {
+        PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
+      });
+
+      // ====== Manual Check → Objective Definitions ======
+      connect("manual-check", "obj-def-box", [[0.7, 0, 0, -1], [0.3, 1, 0, 1]], {
+        PaintStyle: { stroke: "#6a1b9a", strokeWidth: 2 }
+      });
+
+      // ====== Manual Check → Scoping ======
+      connect("manual-check", "scoping-box", [[0.2, 0, 0, -1], [0.2, 1, 0, 1]], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 20, gap: 4 }],
+        PaintStyle: { stroke: "#9c27b0", strokeWidth: 2, dashstyle: "6 3" }
+      });
+
+      // ====== Obj Def → Implementation (down) ======
+      connect("obj-def-box", "impl-box", ["Bottom", "Top"]);
+
+      // ====== Implementation → Consistency Rate ======
+      connect("impl-box", "consistency-rate", [[1, 0.3, 1, 0], [0, 0.5, -1, 0]]);
+
+      // ====== Consistency Rate → Objective Definitions (feeds back up) ======
+      connect("consistency-rate", "obj-def-box", ["Top", "Bottom"], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 40, gap: 4, midpoint: 0.3 }],
+        PaintStyle: { stroke: "#d84315", strokeWidth: 2.5, dashstyle: "6 3" }
+      });
+
+      // ====== Implementation → Labeled Evals ======
+      connect("impl-box", "labeled-evals", [[1, 0.8, 1, 0], [0, 0.5, -1, 0]]);
+
+      // ====== Labeled Evals → Augmentation (feeds back up) ======
+      connect("labeled-evals", "augmentation-box", ["Top", "Bottom"], {
+        Connector: ["Flowchart", { cornerRadius: 8, stub: 40, gap: 4, midpoint: 0.3 }],
+        PaintStyle: { stroke: "#1b5e20", strokeWidth: 2.5, dashstyle: "6 3" }
+      });
+
+
+      // ====== Augmentation → Implementation (down) ======
+      connect("augmentation-box", "impl-box", ["Bottom", "Top"]);
+
+      // ====== Labeled Evals → Results Report (down) ======
+      connect("labeled-evals", "results-report", ["Bottom", "Top"]);
+
+      // ====== Tool Registry ↔ Implementation (bidirectional up) ======
+      connect("tool-registry", "impl-box", [[0.5, 0, 0, -1], [0.5, 1, 0, 1]], {
+        PaintStyle: { stroke: "#4e342e", strokeWidth: 2 }
+      });
+      connect("impl-box", "tool-registry", [[0.3, 1, 0, 1], [0.3, 0, 0, -1]], {
+        PaintStyle: { stroke: "#4e342e", strokeWidth: 2, dashstyle: "4 3" }
+      });
+
+    });
+  </script>
+</body>
+</html>

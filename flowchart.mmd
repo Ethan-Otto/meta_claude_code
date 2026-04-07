@@ -1,0 +1,94 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#fff'
+    primaryTextColor: '#1a1a1a'
+    primaryBorderColor: '#333'
+    lineColor: '#333'
+    fontSize: 14px
+    fontFamily: 'Segoe UI, Arial, sans-serif'
+  flowchart:
+    curve: basis
+    nodeSpacing: 50
+    rankSpacing: 60
+    padding: 15
+    htmlLabels: true
+---
+flowchart TB
+
+%% ============== RESEARCH PHASE ==============
+subgraph RESEARCH["&nbsp;&nbsp;Research Phase&nbsp;&nbsp;"]
+    direction LR
+    Architect(("<b>Architect</b><br/>Asks"))
+    MetaResearch["<b>Meta-Research</b><hr/>What do we need to research?<br/>• Web • Our content<br/>• Policies • Drawings<br/>&nbsp;&nbsp;◦ Same plot drawings<br/>&nbsp;&nbsp;◦ Sync region drawings<br/>&nbsp;&nbsp;◦ Anti-drawings"]
+    ConceptContext(["<b>Concept Context</b><hr/>• Relevant Pages / Drawings<br/>• Relevant Policies<br/>• Plan Highlights UI"])
+    Architect --> MetaResearch --> ConceptContext
+end
+
+%% ============== PLANNING PHASE ==============
+subgraph PLANNING["&nbsp;&nbsp;Planning Phase&nbsp;&nbsp;"]
+    direction LR
+    Scoping["<b>Scoping</b><hr/>• What are we working with?<br/>• What do they want?<br/>• What questions do we need to answer?<br/>• Are we missing docs,<br/>&nbsp;&nbsp;definitions, drawings?"]
+    Definition(["<b>Definition</b><hr/><b>Goals</b><br/>• Answers with questions<br/>• With evidence / citations"])
+    Objectivification["<b>Objectivification</b><hr/>• <b>What is every piece of<br/>&nbsp;&nbsp;subcriteria to evaluate?</b><br/>• All possible edge cases?<br/>• What kind of test for<br/>&nbsp;&nbsp;each subcriteria?<br/>• How do we quantify success?"]
+    Scoping --> Definition --> Objectivification
+end
+
+%% ============== DESIGN PHASE ==============
+subgraph DESIGN["&nbsp;&nbsp;Design Phase&nbsp;&nbsp;"]
+    direction LR
+    ObjDef(["<b>Objective Definitions</b><hr/><b>Subcriteria Tree</b><br/>• Full Citations<br/>• Drawing Highlights<br/>• Tool needed?<br/>&nbsp;&nbsp;Custom / General / Category<br/>• Sub Criteria Type:<br/>&nbsp;&nbsp;◦ Single page<br/>&nbsp;&nbsp;◦ Single page+<br/>&nbsp;&nbsp;◦ Multi page drawing<br/>&nbsp;&nbsp;◦ Multi page drawing+"])
+    Augmentation["<b>Augmentation</b><hr/>• Aug/gen drawings to<br/>&nbsp;&nbsp;make failing cases<br/>• Find negative drawings<br/>• Search additional<br/>&nbsp;&nbsp;train/test drawings"]
+    Tools["<b>Tools Category</b><hr/>• Classify Element<br/>• Find text<br/>• Scale check<br/>• Compare text<br/>• Geometric Eval / Measure<br/>• Segment element<br/>• Classify element system<br/>• BBox element"]
+    ObjDef --> Augmentation
+end
+
+%% ============== EXECUTION PHASE ==============
+subgraph EXECUTION["&nbsp;&nbsp;Execution Phase&nbsp;&nbsp;"]
+    direction LR
+    ManualCheck["<b>Manual Check Code</b><hr/>• LLM Judge Similarity<br/>• Recommend Corrections<br/>• Reference Relevance"]
+    Implementation(["<b>Implementation</b><hr/>• IP / Else Logic<br/>• LLM<br/>• VLLM<br/>• ML Model"])
+    ToolRegistry[/"<b>Agent Tool / Registry</b>"/]
+end
+
+%% ============== EVALUATION PHASE ==============
+subgraph EVALUATION["&nbsp;&nbsp;Evaluation Phase&nbsp;&nbsp;"]
+    direction LR
+    ConsistencyRate(["<b>Consistency<br/>Rate</b>"])
+    LabeledEvals(["<b>Labeled Evals</b>"])
+    ResultsReport[["<b>Results Report</b>"]]
+end
+
+%% ============== CROSS-PHASE CONNECTIONS ==============
+Architect -.-> Scoping
+ConceptContext -.-> Scoping
+Tools --> Objectivification
+Objectivification --> ObjDef
+ObjDef --> Implementation
+Augmentation --> Implementation
+Implementation --> ManualCheck
+ManualCheck --> ObjDef
+ManualCheck --> Scoping
+Implementation --> ConsistencyRate
+Implementation --> LabeledEvals
+LabeledEvals --> ResultsReport
+ToolRegistry <--> Implementation
+
+%% Feedback loops
+ConsistencyRate -. "refine" .-> ObjDef
+LabeledEvals -. "refine" .-> Augmentation
+
+%% ============== STYLING (monochrome) ==============
+classDef default fill:#ffffff,stroke:#333,stroke-width:2px,color:#111
+classDef emphasis fill:#ffffff,stroke:#000,stroke-width:3px,color:#000,font-weight:bold
+
+class Architect emphasis
+class ResultsReport emphasis
+
+%% Subgraph styling (monochrome)
+style RESEARCH fill:#fafafa,stroke:#666,stroke-width:1.5px,stroke-dasharray: 4 4
+style PLANNING fill:#fafafa,stroke:#666,stroke-width:1.5px,stroke-dasharray: 4 4
+style DESIGN fill:#fafafa,stroke:#666,stroke-width:1.5px,stroke-dasharray: 4 4
+style EXECUTION fill:#fafafa,stroke:#666,stroke-width:1.5px,stroke-dasharray: 4 4
+style EVALUATION fill:#fafafa,stroke:#666,stroke-width:1.5px,stroke-dasharray: 4 4
