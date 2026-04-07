@@ -243,7 +243,7 @@
     myDiagram.linkTemplate =
       $(go.Link,
         {
-          routing: go.Link.Orthogonal,
+          routing: go.Link.AvoidsNodes,
           corner: 8,
           fromEndSegmentLength: 25,
           toEndSegmentLength: 25,
@@ -460,11 +460,11 @@
       { from: "architect", to: "meta", fromSpot: "Right", toSpot: "Left" },
       { from: "meta", to: "concept", fromSpot: "Right", toSpot: "Left" },
 
-      // Architect → Scoping (down)
-      { from: "architect", to: "scoping", fromSpot: "Bottom", toSpot: "Top" },
+      // Architect → Scoping (down, enters top-left)
+      { from: "architect", to: "scoping", fromSpot: "Bottom", toSpot: "0.25 0 0 -1" },
 
-      // Concept Context → Scoping (route via left, avoiding other boxes)
-      { from: "concept", to: "scoping", fromSpot: "Left", toSpot: "Top" },
+      // Concept Context → Scoping (routes around, enters top-right)
+      { from: "concept", to: "scoping", fromSpot: "0.25 1 0 1", toSpot: "0.75 0 0 -1" },
 
       // Scoping → Definition → Objectivification
       { from: "scoping", to: "definition", fromSpot: "Right", toSpot: "Left" },
