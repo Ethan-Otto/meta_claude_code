@@ -130,10 +130,10 @@
     .obj-def-box {
       background: #fff;
       border: 2px solid #555;
-      width: 220px;
-      border-radius: 50% / 30%;
-      text-align: center;
-      padding: 14px;
+      width: 240px;
+      border-radius: 50% / 20%;
+      text-align: left;
+      padding: 18px 28px;
     }
 
     .augmentation-box {
@@ -354,7 +354,7 @@
     </div>
 
     <div id="manual-check" class="node manual-check" style="left:20px; top:700px;">
-      <b>&uarr; Manual Check Calls</b>
+      <b>&uarr; Manual Check Code</b>
       <ul>
         <li>LLM Judge Similarity</li>
         <li>Record Coherence</li>
@@ -422,14 +422,9 @@
       // ====== Architect → down to Scoping ======
       connect("architect", "scoping-box", ["Bottom", "Top"]);
 
-      // ====== Scoping self-loop (Refine Scoping Process) ======
-      connect("scoping-box", "scoping-box", ["Bottom", "Left"], {
-        Connector: ["Flowchart", { cornerRadius: 8, stub: 35, gap: 4 }],
-        PaintStyle: { stroke: "#bf360c", strokeWidth: 2, dashstyle: "4 3" },
-        ConnectionOverlays: [
-          ["Arrow", { location: 1, width: 10, length: 10, foldback: 0.8 }],
-          ["Label", { label: "Refine Scoping Process", location: 0.5, cssClass: "refine-label" }]
-        ]
+      // ====== Concept Context → Scoping ======
+      connect("concept-context", "scoping-box", [[0.1, 1, 0, 1], "Top"], {
+        PaintStyle: { stroke: "#2e7d32", strokeWidth: 2 }
       });
 
       // ====== Scoping → Definition ======
@@ -497,12 +492,6 @@
 
       // ====== Labeled Evals → Results Report (down) ======
       connect("labeled-evals", "results-report", ["Bottom", "Top"]);
-
-      // ====== Tool Registry ↔ Results Report (bidirectional) ======
-      connect("tool-registry", "results-report", [[1, 0.35, 1, 0], [0, 0.35, -1, 0]]);
-      connect("results-report", "tool-registry", [[0, 0.7, -1, 0], [1, 0.7, 1, 0]], {
-        PaintStyle: { stroke: "#4e342e", strokeWidth: 2, dashstyle: "4 3" }
-      });
 
       // ====== Tool Registry ↔ Implementation (bidirectional up) ======
       connect("tool-registry", "impl-box", [[0.5, 0, 0, -1], [0.5, 1, 0, 1]], {
