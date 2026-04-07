@@ -11,7 +11,7 @@ const browser = await puppeteer.launch({
   headless: 'new'
 });
 const page = await browser.newPage();
-await page.setViewport({ width: 1550, height: 1600, deviceScaleFactor: 2 });
+await page.setViewport({ width: 1550, height: 1600, deviceScaleFactor: 3 });
 await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0', timeout: 30000 });
 await new Promise(r => setTimeout(r, 2500));
 await page.screenshot({
